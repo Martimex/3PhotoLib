@@ -11,7 +11,7 @@ const nbStore = useStatusStore();
 
 
 <template>
-    <nav class="sticky top-0 left-0 right-0 text-black py-7 px-6 bg-gray-200">
+    <nav class="sticky z-10 top-0 left-0 right-0 text-black py-7 px-6 bg-gray-200">
         <div v-if="!nbStore.isSearchbarOpen" class="flex self-start justify-between items-center w-full">
             <span class="text-4xl font-bold align-middle"> 3PhotoLib </span>
             <FontAwesomeIcon :icon="faCircleUser" class="text-4xl text-gray-400"></FontAwesomeIcon>
