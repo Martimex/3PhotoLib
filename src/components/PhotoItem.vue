@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import type PixabayPhoto  from '../types/photoItem_pixabay';
+import PhotoPanel from './PhotoPanel.vue';
+import { useStatusStore } from '@/stores/statusStore';
 import { computed, ref, onMounted } from 'vue';
+
+const sStore = useStatusStore();
 
 const props = defineProps<{
     imgData: PixabayPhoto
 }>();
 
-const [blurRef, imgRef] = [ref<HTMLDivElement>(), ref<HTMLImageElement>()];
+const imgRef = ref<HTMLImageElement>();
+const isImgLoaded = ref<boolean>(false);
 
 function handleImgLoadded() {
     console.log('Handled loading process !');
-    blurRef?.value?.classList.add('loaded');
+    isImgLoaded.value = true;
 }
 
 onMounted(() => {
@@ -21,19 +26,23 @@ onMounted(() => {
     }
 });
 
-const lowResImg = computed(() => props.imgData);
+const photoData = computed(() => props.imgData);
 
 const getBgImg = function() {
-    return `url(${lowResImg.value.previewURL})`
+    return `url(${photoData.value.previewURL})`
+}
+
+const handleFullScreenPhotoView = function() {
+    console.log(' Full screen view: one ');
 }
 
 </script>
 
 <template>
-    <div ref="blurRef" class="blur-bg relative flex justify-center bg-cover bg-center mx-2 my-4 min-w-[80vw] max-w-[90vw] min-h-[20vh] rounded-md shadow-md shadow-black transition-opacity">
+    <div @click="handleFullScreenPhotoView" :class="{ loaded: isImgLoaded }"  class="blur-bg relative flex justify-center bg-cover bg-center mx-2 my-4 min-w-[80vw] max-w-[90vw] min-h-[20vh] rounded-md shadow-md shadow-black transition-opacity">
         <img ref="imgRef" :src="imgData.largeImageURL" loading="lazy" class="min-h-[40vh] object-cover object-center transition-opacity" />    
+        <PhotoPanel :photoData="photoData"/>
     </div>
-
 </template>
 
 
