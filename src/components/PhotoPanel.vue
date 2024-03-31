@@ -22,7 +22,7 @@ const photoTags = computed(() => props.photoData.tags.split(','))
     <div class="absolute inset-0 grid grid-rows-[1fr_auto] text-white bg-black/[.25]">
         <div class="p-[1.5rem] backdrop-blur-lg overflow-auto">
             <figure class="flex items-center justify-start pb-4">
-                <img class="max-w-16 max-h-16 rounded-xl text-xs border-2" :src="photoData.userImageURL" alt="Author profile picture" />
+                <img class="w-16 h-16 rounded-xl text-xs border-2" :src="photoData.userImageURL" alt="Author profile picture" />
                 <figcaption class="mx-4">
                     <p class="text-sm bold"> Photo by: </p>
                     <p class="text-xl bold break-all mr-12"> {{ photoData.user }} </p>

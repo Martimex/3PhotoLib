@@ -12,6 +12,7 @@ const props = defineProps<{
 
 const imgRef = ref<HTMLImageElement>();
 const isImgLoaded = ref<boolean>(false);
+const isPhotoPanelOpen = ref<boolean>(false);
 
 function handleImgLoadded() {
     console.log('Handled loading process !');
@@ -33,7 +34,8 @@ const getBgImg = function() {
 }
 
 const handleFullScreenPhotoView = function() {
-    console.log(' Full screen view: one ');
+    if(!isImgLoaded.value) return;
+    isPhotoPanelOpen.value = !isPhotoPanelOpen.value;
 }
 
 </script>
@@ -41,7 +43,7 @@ const handleFullScreenPhotoView = function() {
 <template>
     <div @click="handleFullScreenPhotoView" :class="{ loaded: isImgLoaded }"  class="blur-bg relative flex justify-center bg-cover bg-center mx-2 my-4 min-w-[80vw] max-w-[90vw] min-h-[20vh] rounded-md shadow-md shadow-black transition-opacity">
         <img ref="imgRef" :src="imgData.largeImageURL" loading="lazy" class="min-h-[40vh] object-cover object-center transition-opacity" />    
-        <PhotoPanel :photoData="photoData"/>
+        <PhotoPanel v-if="isPhotoPanelOpen" :photoData="photoData"/>
     </div>
 </template>
 
