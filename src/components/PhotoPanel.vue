@@ -1,18 +1,25 @@
 <script setup lang="ts">
+import { utilizePhotoProvider } from '@/types/type_utilities';
 import { computed } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faHeart, faSave, faDownload, faInfo } from '@fortawesome/free-solid-svg-icons';
 import type PixabayPhoto from '@/types/photoItem_pixabay';
+import type PexelsPhoto from '@/types/photoItem_pexels';
+import { useSearchQueryStore } from '@/stores/searchQueryStore';
+import { storeToRefs } from 'pinia';
 
 function log() {
     console.log(`TODO: Finish the method for the icon`);
 }
 
+const sqStore = useSearchQueryStore();
+const { currPhotoProvider } = storeToRefs(sqStore);
+
 const props = defineProps<{
-    photoData: PixabayPhoto, 
+    imgData: PixabayPhoto | PexelsPhoto,
 }>();
 
-const photoTags = computed(() => props.photoData.tags.split(','))
+const photoTags = computed(() => currPhotoProvider.value?.retrievePhotoTags(utilizePhotoProvider(props.imgData)))
 
 </script>
 
@@ -22,16 +29,16 @@ const photoTags = computed(() => props.photoData.tags.split(','))
     <div class="absolute inset-0 grid grid-rows-[1fr_auto] text-white bg-black/[.25]">
         <div class="p-[1.5rem] backdrop-blur-lg overflow-auto">
             <figure class="flex items-center justify-start pb-4">
-                <img class="w-16 h-16 rounded-xl text-xs border-2" :src="photoData.userImageURL" alt="Author profile picture" />
+                <img class="w-16 h-16 rounded-xl text-xs border-2" :src="currPhotoProvider?.getPhotoAuthorImage(utilizePhotoProvider(props.imgData))" alt="Author profile picture" />
                 <figcaption class="mx-4">
                     <p class="text-sm bold"> Photo by: </p>
-                    <p class="text-xl bold break-all mr-12"> {{ photoData.user }} </p>
+                    <p class="text-xl bold break-all mr-12"> {{ currPhotoProvider?.getPhotoAuthorName(utilizePhotoProvider(props.imgData)) }} </p>
                 </figcaption>
             </figure>
 
             <ul class="flex flex-wrap mt-3" >
                 <li class="text-base bold py-1 px-4 m-2 border-2 rounded-full"
-                    v-for="tag in photoTags" :key="photoData.id + '__tag=' + tag"
+                    v-for="tag in photoTags" :key="imgData.id + '__tag=' + tag"
                 > 
                     {{ '#' + tag.trim() }} 
                 </li>

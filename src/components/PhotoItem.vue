@@ -1,13 +1,18 @@
 <script setup lang="ts">
-import type PixabayPhoto  from '../types/photoItem_pixabay';
+import { utilizePhotoProvider } from '../types/type_utilities';
+import type PixabayPhoto from '../types/photoItem_pixabay';
+import type PexelsPhoto from '../types/photoItem_pexels';
 import PhotoPanel from './PhotoPanel.vue';
 import { useStatusStore } from '@/stores/statusStore';
+import { useSearchQueryStore } from '@/stores/searchQueryStore';
 import { computed, ref, onMounted } from 'vue';
+import { storeToRefs } from 'pinia';
 
-const sStore = useStatusStore();
+const [sStore, sqStore] = [useStatusStore(), useSearchQueryStore()];
+const { currPhotoProvider } = storeToRefs(sqStore);
 
 const props = defineProps<{
-    imgData: PixabayPhoto
+    imgData: PixabayPhoto | PexelsPhoto
 }>();
 
 const imgRef = ref<HTMLImageElement>();
@@ -27,10 +32,11 @@ onMounted(() => {
     }
 });
 
-const photoData = computed(() => props.imgData);
+//const photoData = computed(() => props.imgData);
 
 const getBgImg = function() {
-    return `url(${photoData.value.previewURL})`
+    return `url(${currPhotoProvider.value?.getLowResImageURL(utilizePhotoProvider(props.imgData))})`
+    //return `url(${photoData.value.previewURL})`
 }
 
 const handleFullScreenPhotoView = function() {
@@ -42,8 +48,8 @@ const handleFullScreenPhotoView = function() {
 
 <template>
     <div @click="handleFullScreenPhotoView" :class="{ loaded: isImgLoaded }"  class="blur-bg relative flex justify-center bg-cover bg-center mx-2 my-4 min-w-[80vw] max-w-[90vw] min-h-[20vh] rounded-md shadow-md shadow-black transition-opacity">
-        <img ref="imgRef" :src="imgData.largeImageURL" loading="lazy" class="min-h-[40vh] object-cover object-center transition-opacity" />    
-        <PhotoPanel v-if="isPhotoPanelOpen" :photoData="photoData"/>
+        <img ref="imgRef" :src="currPhotoProvider?.getHighResImageURL(utilizePhotoProvider(props.imgData))" loading="lazy" class="min-h-[40vh] object-cover object-center transition-opacity" />    
+        <PhotoPanel v-if="isPhotoPanelOpen" :imgData="props.imgData"/>
     </div>
 </template>
 

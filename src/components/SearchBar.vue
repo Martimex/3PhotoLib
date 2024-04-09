@@ -4,6 +4,7 @@ import { faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useSearchQueryStore } from '../stores/searchQueryStore';
 import { useStatusStore } from '../stores/statusStore';
 import { ref, onMounted } from 'vue';
+import PhotoProvider from '@/providers/photoProvidersInitializer';
 
 const [sqStore, sStore] = [useSearchQueryStore(), useStatusStore()];
 
@@ -16,7 +17,9 @@ function getImagesByQuery(searchText: string) {
     });
 
     sqStore.$patch({
-        queryText: searchText
+        queryText: searchText,
+        // Below prop value will be gotten from another Pinia store entity, for now it is just hardcoded value
+        currPhotoProvider: new PhotoProvider('pexels').setCurrentProvider(),
     });
 }
 
