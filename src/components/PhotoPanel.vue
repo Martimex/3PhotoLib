@@ -7,6 +7,7 @@ import type PixabayPhoto from '@/types/photoItem_pixabay';
 import type PexelsPhoto from '@/types/photoItem_pexels';
 import { useSearchQueryStore } from '@/stores/searchQueryStore';
 import { storeToRefs } from 'pinia';
+import type { availablePhotoTypes } from '@/types/type_utilities';
 
 function log() {
     console.log(`TODO: Finish the method for the icon`);
@@ -16,7 +17,7 @@ const sqStore = useSearchQueryStore();
 const { currPhotoProvider } = storeToRefs(sqStore);
 
 const props = defineProps<{
-    imgData: PixabayPhoto | PexelsPhoto,
+    imgData: availablePhotoTypes,
 }>();
 
 const photoTags = computed(() => currPhotoProvider.value?.retrievePhotoTags(utilizePhotoProvider(props.imgData)))

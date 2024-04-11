@@ -9,6 +9,7 @@ import { ref } from 'vue';
 import { useSearchQueryStore } from '@/stores/searchQueryStore';
 import { useStatusStore } from '@/stores/statusStore';
 import { storeToRefs } from 'pinia';
+import type { availablePhotoTypes } from '@/types/type_utilities';
 
 const [sStore, sqStore] = [useStatusStore(), useSearchQueryStore()];
 const { queryText, currPhotoProvider } = storeToRefs(sqStore);
@@ -31,7 +32,7 @@ console.log(/* x,  */currPhotoProvider.value);
     never
 ; */
 
-const imageData = ref<PixabayPhoto[] | PexelsPhoto[]>([]);
+const imageData = ref<availablePhotoTypes[]>([]);
 console.warn(typeof currPhotoProvider.value, typeof currPhotoProvider, currPhotoProvider.value);
 
 // const imageData = ref<typeof currPhotoProvider.value extends PixabayPhoto? PixabayPhoto[] : PexelsPhoto[]>([]);

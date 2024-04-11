@@ -7,12 +7,13 @@ import { useStatusStore } from '@/stores/statusStore';
 import { useSearchQueryStore } from '@/stores/searchQueryStore';
 import { computed, ref, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
+import type { availablePhotoTypes } from '../types/type_utilities';
 
 const [sStore, sqStore] = [useStatusStore(), useSearchQueryStore()];
 const { currPhotoProvider } = storeToRefs(sqStore);
 
 const props = defineProps<{
-    imgData: PixabayPhoto | PexelsPhoto
+    imgData: availablePhotoTypes
 }>();
 
 const imgRef = ref<HTMLImageElement>();
