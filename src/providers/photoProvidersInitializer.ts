@@ -1,16 +1,18 @@
 // This file contains every necessary
 import type PixabayPhoto from "@/types/photoItem_pixabay";
 import type PexelsPhoto from "@/types/photoItem_pexels";
+import type UnsplashPhoto from "@/types/photoItem_unsplash";
 import type PixabayResponseObject from "@/types/responseObject_pixabay";
 import type PexelsResponseObject from "@/types/responseObject_pexels";
+import type UnsplashResponseObject from "@/types/responseObject_unsplash";
+import type { availableProviderNames } from "@/types/type_utilities";
 
-type allowedProviders = PixabayPhotoProvider | PexelsPhotoProvider;
-type allowedProviderNames = 'pixabay' | 'pexels';
+type allowedProviders = PixabayPhotoProvider | PexelsPhotoProvider | UnsplashPhotoProvider;
 type reqHeader = { Authorization: string } | {};
 
 class PhotoProvider {
-    name: allowedProviderNames;
-    constructor(name: allowedProviderNames) {
+    name: availableProviderNames;
+    constructor(name: availableProviderNames) {
         this.name = name;
     }
 
@@ -18,6 +20,7 @@ class PhotoProvider {
         let providerName;
         if (this.name === 'pixabay') providerName = new PixabayPhotoProvider(this.name);
         else if (this.name === 'pexels') providerName = new PexelsPhotoProvider(this.name);
+        else if (this.name === 'unsplash') providerName = new UnsplashPhotoProvider(this.name);
 
         return providerName;
     }
@@ -28,7 +31,7 @@ class PhotoProvider {
 }
 
 class PixabayPhotoProvider extends PhotoProvider {
-    constructor(name: allowedProviderNames) {
+    constructor(name: availableProviderNames) {
         super(name);
     }
 
@@ -70,7 +73,7 @@ class PixabayPhotoProvider extends PhotoProvider {
 }
 
 class PexelsPhotoProvider extends PhotoProvider {
-    constructor(name: allowedProviderNames) {
+    constructor(name: availableProviderNames) {
         super(name);
     }
 
@@ -108,6 +111,48 @@ class PexelsPhotoProvider extends PhotoProvider {
 
     getProviderIntroduction = function() {
         return console.log('hi guys, its pexels there');
+    }
+}
+
+class UnsplashPhotoProvider extends PhotoProvider {
+    constructor(name: availableProviderNames) {
+        super(name);
+    }
+
+    getSearchRequestURL = function(querySearchText: string): string {
+        return `https://api.unsplash.com/search/photos?query=${querySearchText}&page=1&per_page=10&client_id=${import.meta.env.VITE_UNSPLASH_API}`;
+    }
+
+    getSearchRequestHeaders = function(): reqHeader {
+        return {};
+    }
+
+    getResponsePhotos = function(resData: UnsplashResponseObject): UnsplashPhoto[] | [] {
+        return (resData.results.length)? resData.results : [];
+    } 
+
+    getLowResImageURL = function(imgData: UnsplashPhoto): string {
+        return imgData.urls.small;
+    }
+
+    getHighResImageURL = function(imgData: UnsplashPhoto): string {
+        return imgData.urls.regular;
+    }
+
+    retrievePhotoTags = function(imgData: UnsplashPhoto): string[] {
+        return imgData.tags.map(tag => tag.title);
+    }
+
+    getPhotoAuthorImage = function(imgData: UnsplashPhoto): string {
+        return imgData.user.profile_image.medium;
+    }
+
+    getPhotoAuthorName = function(imgData: UnsplashPhoto): string {
+        return imgData.user.name;
+    }
+
+    getProviderIntroduction = function() {
+        return console.log(`here's unsplash provider`);
     }
 }
 

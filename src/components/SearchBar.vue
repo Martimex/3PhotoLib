@@ -19,7 +19,7 @@ function getImagesByQuery(searchText: string) {
     sqStore.$patch({
         queryText: searchText,
         // Below prop value will be gotten from another Pinia store entity, for now it is just hardcoded value
-        currPhotoProvider: new PhotoProvider('pexels').setCurrentProvider(),
+        currPhotoProvider: new PhotoProvider('unsplash').setCurrentProvider(),
     });
 }
 

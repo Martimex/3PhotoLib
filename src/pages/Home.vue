@@ -63,8 +63,7 @@ sqStore.$subscribe(async() => {
         <p class="text-4xl mb-8 bold"> Featured: {{ imageData.length }} </p>
         <Suspense>
             <template #default>
-                <!-- <FeaturedPhotos/> -->
-                <div></div>
+                <FeaturedPhotos/>
             </template>
             <template #fallback>
                 <FeaturedPhotosSkeleton :skeletonsCount="featuredPhotosResultsMax" />
