@@ -132,6 +132,7 @@ class UnsplashPhotoProvider extends PhotoProvider {
     } 
 
     getLowResImageURL = function(imgData: UnsplashPhoto): string {
+        console.log(imgData);
         return imgData.urls.small;
     }
 
