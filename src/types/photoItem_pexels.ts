@@ -7,7 +7,7 @@ export default interface PexelsPhoto {
     photographer_url: string,
     photographer_id: number,
     avg_color: string,
-    src: {
+    src?: {
         original: string,
         large2x: string,
         large: string,

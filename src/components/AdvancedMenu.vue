@@ -1,27 +1,33 @@
 <script setup lang="ts">
-    import { ref } from 'vue';
+    import { onMounted, ref } from 'vue';
     import { useSearchQueryStore } from '../stores/searchQueryStore';
-    import type { availableProviderNames } from '@/types/type_utilities';
+    import type { availableProviderNames, numberInputKeys } from '@/types/type_utilities';
     import PhotoProvider from '@/providers/photoProvidersInitializer';
+import { storeToRefs } from 'pinia';
 
     const allowedKeyboardCharacters = ['backspace', 'delete', 'arrowup', 'arrowright', 'arrowleft', 'arrowdown'];
     const currentInput = ref<HTMLInputElement | null>(null); 
     const sqStore = useSearchQueryStore();
+    const { outputPhotosObj, searchPageObj } = storeToRefs(sqStore);
+    //const [outputPhotosObj.value, searchPageObj] = [sqStore.outputPhotosObj, sqStore.searchPageObj];
 
     const switchPhotoProvider = function(providerName: availableProviderNames) { 
         sqStore.$patch({
-            currPhotoProvider: new PhotoProvider(providerName).setCurrentProvider(),
+            currPhotoProviderName: providerName,
         });
     }
 
-    const isNumberKey = function(event: KeyboardEvent) {
-        //console.log(event/* ?.target *//* ?.value */);
-
-        //console.warn(event.key.toLowerCase());
+    const isNumberKey = function(event: KeyboardEvent, numberInputObj: numberInputKeys) {
 
         // Check for allowed characters that are NOT numbers and allow their functionality as usual
         for(let i=0; i<allowedKeyboardCharacters.length; i++) {
-            if(event?.key?.toLowerCase() === allowedKeyboardCharacters[i]) return;
+            if(event?.key?.toLowerCase() === allowedKeyboardCharacters[i]) {
+                const target = event.target as HTMLInputElement;
+                if(target) {
+                    currentInput.value = target;
+                }
+                return;
+            }
         }
         
         // Strictly block other events - soon it will be detected if a pressed key is a desired number or not
@@ -30,8 +36,6 @@
         if(!validateInputKey(event)) return;
 
         const target = event.target as HTMLInputElement;
-
-        console.log(+target.max, event);
 
         if(target) {
             currentInput.value = target;
@@ -42,17 +46,56 @@
             currentInput.value.value = (+currentInput.value.value < +target.min)? target.min : currentInput.value.value;
 
             // Handle leading 0 issues or empty string value
-            if(currentInput.value.value[0] === '0') { currentInput.value.value = currentInput.value.value.slice(1) }
+            if(currentInput.value.value[0] === '0') { 
+                while(currentInput.value.value[0] === '0') { currentInput.value.value = currentInput.value.value.slice(1) }
+            }
             else if(currentInput.value.value === '') { currentInput.value.value = '0'}
-            
+            else { numberInputObj.current = +currentInput.value.value }
         }
     }
 
     const validateInputKey = function(ev: KeyboardEvent): boolean {
-        //return true;
         if(!isNaN(+ev.key)) return true;
         return false;
     }
+
+    const updateNumberInputValue = function(numberInputObj: numberInputKeys): void {
+        if(!currentInput.value) return;
+        // Keep if chain as it is - do not change any to if-else + below order is very important !
+        if(currentInput.value.value === '0') { numberInputObj.current = numberInputObj.min; }
+        if(currentInput.value.value[0] === '0' && currentInput.value.value.length > 1) {
+            let leadingZerosInput = currentInput.value.value;
+            while(leadingZerosInput[0] === '0') { leadingZerosInput = leadingZerosInput.slice(1); }
+            currentInput.value.value = leadingZerosInput;
+            numberInputObj.current = +leadingZerosInput;
+        }
+        if(currentInput.value.value === '') { numberInputObj.current = numberInputObj.default; }
+
+        // Finally apply the correct value to the input tag
+        if(numberInputObj.min <= +currentInput.value.value  &&  +currentInput.value.value <= numberInputObj.max) {
+            // currentInput.value.value = numberInputObj.current.toString();
+            numberInputObj.current = +currentInput.value.value;
+        } else {
+            currentInput.value.value = (numberInputObj.min > +currentInput.value.value)? numberInputObj.min.toString() : numberInputObj.max.toString();
+            numberInputObj.current = +currentInput.value.value;
+        }
+    }
+
+    onMounted(() => {
+        // Mark the current PhotoProvider input as 'checked'
+        const currentProviderInput = document.querySelector(`#${sqStore.currPhotoProviderName}`) as HTMLInputElement;
+        if(currentProviderInput) currentProviderInput.checked = true;
+    })
+
+    /* For debugging reasons only */
+
+/*     function debugTest() {
+        console.error(`Current values for inputs: 
+            OUTPUT NUMBER:  ${sqStore.outputPhotosObj.current} ||
+            PAGE NUMBER: ${sqStore.searchPageObj.current}
+        `);
+    } */
+
 </script>
 
 
@@ -73,7 +116,7 @@
                 <div class="flex flex-wrap">
                     <!-- Switch input + associated text -->
                     <div class="flex items-center mr-6">
-                        <input type="radio" id="pixabay" name="provider" value="pixabay" checked
+                        <input type="radio" id="pixabay" name="provider" value="pixabay"
                             class="relative w-[4.5rem] h-8 my-4 mr-3 outline-none bg-[#333] appearance-none cursor-pointer rounded-3xl duration-500 shadow-[-0.1rem_-0.1rem_0.5rem_black] checked:bg-[lightgreen]"
                             @click="switchPhotoProvider('pixabay')"
                         >
@@ -111,14 +154,19 @@
 
                 <div class="test mt-9 grid place-content-start grid-rows-[auto] grid-cols-[auto_auto] gap-y-6 items-center">
                     <label for="output_no" class="text-lg font-semibold">Output photos: </label>
-                    <input type="number" id="output_no" name="search" placeholder="10"  value="10" min="1" max="20" @keydown="isNumberKey"
+                    <input type="number" id="output_no" name="search" :placeholder="outputPhotosObj.default.toString()" :value="outputPhotosObj.current" :min="outputPhotosObj.min" :max="outputPhotosObj.max" @keydown="(event) => isNumberKey(event, sqStore.outputPhotosObj)"
                         class="text-base font-semibold text-center min-w-24 py-1 px-2 ml-6 outline-gray-500 bg-neutral-200 appearance-none cursor-pointer rounded-lg shadow-[0.1rem_0.1rem_0.5rem_black]"
+                        @change="updateNumberInputValue(sqStore.outputPhotosObj)"
                     >
 
                     <label for="page_no" class="text-lg font-semibold">Page number: </label>
-                    <input type="number" id="page_no" name="search" placeholder="1" value="1" min="1" max="9999" @keydown="isNumberKey"
+                    <input type="number" id="page_no" name="search" :placeholder="searchPageObj.default.toString()" :value="searchPageObj.current" :min="searchPageObj.min" :max="searchPageObj.max" @keydown="(event) => isNumberKey(event, sqStore.searchPageObj)"
                         class="text-base font-semibold text-center min-w-24 py-1 px-2 ml-6 outline-gray-500 bg-neutral-200 appearance-none cursor-pointer rounded-lg shadow-[0.1rem_0.1rem_0.5rem_black]"
+                        @change="updateNumberInputValue(sqStore.searchPageObj)"
                     >
+
+                    <!-- For debugging reasons only-->
+                    <!-- <div class="w-7 h-4 bg-blue-400 text-white p-6" @click="debugTest"> Click me</div> -->
                 </div>
             </section>
         </div>

@@ -49,7 +49,7 @@ const handleFullScreenPhotoView = function() {
 
 <template>
     <div @click="handleFullScreenPhotoView" :class="{ loaded: isImgLoaded }"  class="blur-bg relative flex justify-center bg-cover bg-center mx-2 my-4 min-w-[80vw] max-w-[90vw] min-h-[20vh] rounded-md shadow-md shadow-black transition-opacity">
-        <img ref="imgRef" :src="currPhotoProvider?.getHighResImageURL(utilizePhotoProvider(props.imgData))" loading="lazy" class="min-h-[40vh] object-cover object-center transition-opacity" />    
+        <img ref="imgRef" :src="currPhotoProvider?.getHighResImageURL(utilizePhotoProvider(props.imgData))" loading="lazy" class="min-h-[40vh] object-cover object-center transition-opacity rounded-md" />    
         <PhotoPanel v-if="isPhotoPanelOpen" :imgData="props.imgData"/>
     </div>
 </template>

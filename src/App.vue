@@ -10,7 +10,8 @@ import ActionPanel from './components/ActionPanel.vue';
     <NavigationBar />
 
     <main class="py-[10vh]">
-      <Home />
+      <!-- <Home /> -->
+      <router-view />
     </main>
 
     <ActionPanel />

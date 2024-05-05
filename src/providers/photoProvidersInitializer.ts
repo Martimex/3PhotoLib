@@ -35,8 +35,10 @@ class PixabayPhotoProvider extends PhotoProvider {
         super(name);
     }
 
-    getSearchRequestURL = function(querySearchText: string): string {
-        return `https://pixabay.com/api/?key=${import.meta.env.VITE_PIXABAY_API}&q=${querySearchText}&image_type=photo&page=1&per_page=15`;
+    getSearchRequestURL = function(querySearchText: string, photosPerPage: number, pageNumber: number): string {
+        // Due to Pixabay internal API restrictions, the lowest number of output photos is set to 3
+        const pixabayMinimalPhotosOutput = (photosPerPage < 3)? 3 : photosPerPage;
+        return `https://pixabay.com/api/?key=${import.meta.env.VITE_PIXABAY_API}&q=${querySearchText}&image_type=photo&page=${pageNumber}&per_page=${pixabayMinimalPhotosOutput}`;
     } 
 
     getSearchRequestHeaders = function(): reqHeader {
@@ -44,7 +46,7 @@ class PixabayPhotoProvider extends PhotoProvider {
     }
     
     getResponsePhotos = function(resData: PixabayResponseObject): PixabayPhoto[] | [] {
-        return (resData.hits.length)? resData.hits : [];
+        return (resData?.hits?.length)? resData.hits : [];
     }
 
     getLowResImageURL = function(imgData: PixabayPhoto): string {
@@ -67,6 +69,11 @@ class PixabayPhotoProvider extends PhotoProvider {
         return imgData.user;
     }
 
+    getMaxPageNumber = function(resData: PixabayResponseObject, photosPerPage: number): number {
+        // resData.total does not seem to work on larger pages, the API is probably set around totalHits
+        return Math.ceil(resData.totalHits / photosPerPage);
+    }
+
     getProviderIntroduction = function() {
         return console.log('HELLO ! I AM PIXABAY PROVIDER');
     }
@@ -77,8 +84,8 @@ class PexelsPhotoProvider extends PhotoProvider {
         super(name);
     }
 
-    getSearchRequestURL = function(querySearchText: string): string {
-        return `https://api.pexels.com/v1/search?page=1&per_page=15&query=${querySearchText}`;
+    getSearchRequestURL = function(querySearchText: string, photosPerPage: number, pageNumber: number): string {
+        return `https://api.pexels.com/v1/search?page=${pageNumber}&per_page=${photosPerPage}&query=${querySearchText}`;
     }
 
     getSearchRequestHeaders = function(): reqHeader {
@@ -86,15 +93,15 @@ class PexelsPhotoProvider extends PhotoProvider {
     }
 
     getResponsePhotos = function(resData: PexelsResponseObject): PexelsPhoto[] | [] {
-        return (resData.photos.length)? resData.photos : [];
+        return (resData?.photos?.length)? resData.photos : [];
     } 
 
     getLowResImageURL = function(imgData: PexelsPhoto): string {
-        return imgData.src.small;
+        return imgData?.src?.small || '';
     }
 
     getHighResImageURL = function(imgData: PexelsPhoto): string {
-        return imgData.src.large;
+        return imgData?.src?.large || '';
     }
 
     retrievePhotoTags = function(imgData: PexelsPhoto): string[] {
@@ -102,11 +109,15 @@ class PexelsPhotoProvider extends PhotoProvider {
     }
 
     getPhotoAuthorImage = function(imgData: PexelsPhoto): string {
-        return imgData.src.small;
+        return imgData?.src?.small || '';
     }
 
     getPhotoAuthorName = function(imgData: PexelsPhoto): string {
         return imgData.photographer;
+    }
+
+    getMaxPageNumber = function(resData: PexelsResponseObject, photosPerPage: number): number {
+        return Math.ceil(resData.total_results / photosPerPage);
     }
 
     getProviderIntroduction = function() {
@@ -119,8 +130,8 @@ class UnsplashPhotoProvider extends PhotoProvider {
         super(name);
     }
 
-    getSearchRequestURL = function(querySearchText: string): string {
-        return `https://api.unsplash.com/search/photos?query=${querySearchText}&page=1&per_page=10&client_id=${import.meta.env.VITE_UNSPLASH_API}`;
+    getSearchRequestURL = function(querySearchText: string, photosPerPage: number, pageNumber: number): string {
+        return `https://api.unsplash.com/search/photos?query=${querySearchText}&page=${pageNumber}&per_page=${photosPerPage}&client_id=${import.meta.env.VITE_UNSPLASH_API}`;
     }
 
     getSearchRequestHeaders = function(): reqHeader {
@@ -128,11 +139,11 @@ class UnsplashPhotoProvider extends PhotoProvider {
     }
 
     getResponsePhotos = function(resData: UnsplashResponseObject): UnsplashPhoto[] | [] {
-        return (resData.results.length)? resData.results : [];
+        return (resData?.results?.length)? resData.results : [];
     } 
 
     getLowResImageURL = function(imgData: UnsplashPhoto): string {
-        console.log(imgData);
+        /* console.log(imgData); */
         return imgData.urls.small;
     }
 
@@ -150,6 +161,10 @@ class UnsplashPhotoProvider extends PhotoProvider {
 
     getPhotoAuthorName = function(imgData: UnsplashPhoto): string {
         return imgData.user.name;
+    }
+
+    getMaxPageNumber = function(resData: UnsplashResponseObject, photosPerPage: number): number {
+        return resData.total_pages;
     }
 
     getProviderIntroduction = function() {

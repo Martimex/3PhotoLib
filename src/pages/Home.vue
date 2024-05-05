@@ -21,10 +21,8 @@ const featuredPhotosResultsMax = ref(3);
     inside one of Pinia stores, and then retrieve it on-demand whenever necessary !!!
 */
 
-const acceptedProviders = ['pixabay', 'pexels'];
-
 //const x = new photoProviders('pexels').setCurrentProvider();
-console.log(/* x,  */currPhotoProvider.value);
+//console.log(/* x,  */currPhotoProvider.value);
 
 /* type GeneralPhoto<T> =
     T extends PixabayPhoto? PixabayPhoto[] :
@@ -33,7 +31,7 @@ console.log(/* x,  */currPhotoProvider.value);
 ; */
 
 const imageData = ref<availablePhotoTypes[]>([]);
-console.warn(typeof currPhotoProvider.value, typeof currPhotoProvider, currPhotoProvider.value);
+//console.warn(typeof currPhotoProvider.value, typeof currPhotoProvider, currPhotoProvider.value);
 
 // const imageData = ref<typeof currPhotoProvider.value extends PixabayPhoto? PixabayPhoto[] : PexelsPhoto[]>([]);
 
@@ -43,7 +41,8 @@ console.warn(typeof currPhotoProvider.value, typeof currPhotoProvider, currPhoto
     return true;
 } */
 
-sqStore.$subscribe(async() => {
+/* sqStore.$subscribe(async() => {
+    //console.error(sqStore.currPhotoProviderName, sqStore.currPhotoProvider);
     if(currPhotoProvider.value === undefined || !currPhotoProvider.value) return; // This line silences error where TS complies that x (Provider Name) can be possibly undefined
     await fetch(currPhotoProvider.value.getSearchRequestURL(queryText.value), {headers: currPhotoProvider.value.getSearchRequestHeaders()})
         .then(res => res.json())
@@ -51,9 +50,10 @@ sqStore.$subscribe(async() => {
         .then(data => { imageData.value =  currPhotoProvider.value!.getResponsePhotos(data); console.warn(data) })
         .catch(err => console.error(err));
     
+    //console.error('WE ARE HERE');
     // After fetching data, resolve status as non-pending
     isRequestPending.value = false;
-});
+}); */
 
 </script>
 
@@ -70,18 +70,17 @@ sqStore.$subscribe(async() => {
             </template>
         </Suspense>
 
-        <div v-if="!imageData.length">
+<!--         <div v-if="!imageData.length">
             <p class="text-2xl bold text-red-400"> No images found ❌</p>
         </div>
         <div v-else-if="imageData">
             <div v-if="!isRequestPending" class="">
-                <!-- <p class="text-2xl bold text-green-400"> Got some images data ✅</p> -->
                 <PhotoItem v-for="image in imageData" :key="image.id" :imgData="image"/>
             </div>
             <div v-if="isRequestPending" class="">
                 <p class="text-2xl bold text-yellow-400"> Pending... Please wait 🥰</p>
             </div>
-        </div>
+        </div> -->
         
     </section>
 </template>
