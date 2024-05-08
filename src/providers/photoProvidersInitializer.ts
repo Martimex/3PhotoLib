@@ -50,11 +50,11 @@ class PixabayPhotoProvider extends PhotoProvider {
     }
 
     getLowResImageURL = function(imgData: PixabayPhoto): string {
-        return imgData.previewURL;
+        return imgData?.previewURL || '';
     }
 
     getHighResImageURL = function(imgData: PixabayPhoto): string {
-        return imgData.largeImageURL;
+        return imgData?.largeImageURL || '';
     }
 
     retrievePhotoTags = function(imgData: PixabayPhoto): string[] {
@@ -143,12 +143,11 @@ class UnsplashPhotoProvider extends PhotoProvider {
     } 
 
     getLowResImageURL = function(imgData: UnsplashPhoto): string {
-        /* console.log(imgData); */
-        return imgData.urls.small;
+        return imgData?.urls?.small || '';
     }
 
     getHighResImageURL = function(imgData: UnsplashPhoto): string {
-        return imgData.urls.regular;
+        return imgData?.urls?.regular || '';
     }
 
     retrievePhotoTags = function(imgData: UnsplashPhoto): string[] {
