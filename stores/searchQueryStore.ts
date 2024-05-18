@@ -1,5 +1,3 @@
-import { defineStore } from 'pinia';
-import { ref } from 'vue';
 import PhotoProvider from '@/providers/photoProvidersInitializer';
 import type { availableProviderNames } from '@/types/type_utilities';
 

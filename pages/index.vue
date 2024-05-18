@@ -2,14 +2,11 @@
 import PhotoItem from '@/components/PhotoItem.vue';
 import FeaturedPhotos from '@/components/FeaturedPhotos.vue';
 import FeaturedPhotosSkeleton from '@/components/FeaturedPhotosSkeleton.vue';
-import photoProviders from '@/providers/photoProvidersInitializer';
-import type PixabayPhoto from '@/types/photoItem_pixabay';
-import type PexelsPhoto from '@/types/photoItem_pexels';
 import { ref } from 'vue';
-import { useSearchQueryStore } from '@/stores/searchQueryStore';
-import { useStatusStore } from '@/stores/statusStore';
 import { storeToRefs } from 'pinia';
 import type { availablePhotoTypes } from '@/types/type_utilities';
+//import type availablePhotoTypes from '';
+
 
 const [sStore, sqStore] = [useStatusStore(), useSearchQueryStore()];
 const { queryText, currPhotoProvider } = storeToRefs(sqStore);
@@ -31,6 +28,7 @@ const featuredPhotosResultsMax = ref(3);
 ; */
 
 const imageData = ref<availablePhotoTypes[]>([]);
+
 //console.warn(typeof currPhotoProvider.value, typeof currPhotoProvider, currPhotoProvider.value);
 
 // const imageData = ref<typeof currPhotoProvider.value extends PixabayPhoto? PixabayPhoto[] : PexelsPhoto[]>([]);
@@ -59,7 +57,8 @@ const imageData = ref<availablePhotoTypes[]>([]);
 
 
 <template>
-    <section class="min-h-screen text-xl mx-4">
+    <NavigationBar />
+    <section class="min-h-screen text-xl mx-4 py-[10vh]">
         <p class="text-4xl mb-8 bold"> Featured: {{ imageData.length }} </p>
         <Suspense>
             <template #default>
@@ -81,8 +80,9 @@ const imageData = ref<availablePhotoTypes[]>([]);
                 <p class="text-2xl bold text-yellow-400"> Pending... Please wait 🥰</p>
             </div>
         </div> -->
-        
+    
     </section>
+    <ActionPanel />
 </template>
 
 

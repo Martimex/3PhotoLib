@@ -7,7 +7,7 @@ import AnimatedPlaceholder from './AnimatedPlaceholder.vue';
 
 <template>
     <div v-for="index in skeletonsCount">
-        <AnimatedPlaceholder  height="40vh" />
+        <AnimatedPlaceholder height="40vh" />
     </div>   
 </template>
 

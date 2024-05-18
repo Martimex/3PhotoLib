@@ -70,7 +70,8 @@ onMounted(() => getPhotos());
 
 
 <template>
-    <section class="min-h-screen text-xl mx-4">
+    <NavigationBar />
+    <section class="min-h-screen text-xl mx-4 py-[10vh]">
         <p class="text-4xl mb-8 bold"> Results for: "{{ queryText }}" </p>
 
         <div v-if="!imageData.length">
@@ -86,6 +87,7 @@ onMounted(() => getPhotos());
             </div>
         </div>
     </section>
+    <ActionPanel />
 </template>
 
 
