@@ -23,7 +23,7 @@ const imageData = ref<availablePhotoTypes[]>([]);
 sqStore.$subscribe(async() => {
     if(currPhotoProvider.value === undefined || !currPhotoProvider.value) return; // This line silences error where TS complies that x (Provider Name) can be possibly undefined
     const initialPageRequestData = await fetch(currPhotoProvider.value.getSearchRequestURL(queryText.value, outputPhotosNumber.value, 1), {headers: currPhotoProvider.value.getSearchRequestHeaders()})
-        .then(res => res.json())
+        .then(res => res? res.json() : '')
         .then(data => data)
         .catch(err => console.error(err))
     
@@ -41,6 +41,7 @@ sqStore.$subscribe(async() => {
             .catch(err => console.error(err))
         
             imageData.value = currPhotoProvider.value.getResponsePhotos(finalSearchPageRequestData);
+            console.error(finalSearchPageRequestData)
     }
 
     // Because we performed an above, initial data request, now we know how many photos are available, and thus what is the latest
@@ -71,26 +72,35 @@ onMounted(() => getPhotos());
 
 <template>
     <NavigationBar />
-    <section class="min-h-screen text-xl mx-4 py-[10vh]">
-        <p class="text-4xl mb-8 bold"> Results for: "{{ queryText }}" </p>
-
-        <div v-if="!imageData.length">
-            <p class="text-2xl bold text-red-400"> No images found ❌</p>
-        </div>
-        <div v-else-if="imageData">
-            <div v-if="!isRequestPending" class="">
-                <!-- Slicing works well for providers API, which reqire minimal response photos, while this app does not  -->
-                <PhotoItem v-for="image in imageData.slice(0, outputPhotosNumber)" :key="image.id" :imgData="image"/>
+    <section class="min-h-screen text-xl mx-4">
+        <Transition> 
+            <div v-if="isRequestPending"> <Loading /> </div>
+            <div v-else-if="!imageData.length"> <NoResults /> </div>
+            <div v-else-if="imageData" class="py-[10vh]">
+                <p class="text-4xl mb-8 bold"> Results for: "{{ queryText }}" </p>
+                <div v-if="!isRequestPending" class="">
+                    <!-- Slicing works well for providers API, which reqire minimal response photos, while this app does not  -->
+                    <PhotoItem v-for="image in imageData.slice(0, outputPhotosNumber)" :key="image.id" :imgData="image"/>
+                </div>
+                <div v-if="isRequestPending" class="">
+                    <p class="text-2xl bold text-yellow-400"> Pending... Please wait 🥰</p>
+                </div>
             </div>
-            <div v-if="isRequestPending" class="">
-                <p class="text-2xl bold text-yellow-400"> Pending... Please wait 🥰</p>
-            </div>
-        </div>
+        </Transition>
     </section>
     <ActionPanel />
 </template>
 
 
 <style scoped>
+
+.v-enter-active,
+.v-leave-active {
+    transition: opacity 400ms ease;
+}
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
+}
 
 </style>
