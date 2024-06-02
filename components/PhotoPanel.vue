@@ -6,6 +6,7 @@ import { faHeart, faSave, faDownload, faInfo } from '@fortawesome/free-solid-svg
 import type PixabayPhoto from '@/types/photoItem_pixabay';
 import type PexelsPhoto from '@/types/photoItem_pexels';
 import { useSearchQueryStore } from '@/stores/searchQueryStore';
+import { usePhotoStore } from '@/stores/photosStore';
 import { storeToRefs } from 'pinia';
 import type { availablePhotoTypes } from '@/types/type_utilities';
 
@@ -13,8 +14,13 @@ function log() {
     console.log(`TODO: Finish the method for the icon`);
 }
 
-const sqStore = useSearchQueryStore();
+const [sqStore, psStore] = [useSearchQueryStore(), usePhotoStore()];
 const { currPhotoProvider } = storeToRefs(sqStore);
+const { viewedPhoto } = storeToRefs(psStore);
+
+function setPhotoAsViewed() {
+    viewedPhoto.value = props.imgData;
+}
 
 const props = defineProps<{
     imgData: availablePhotoTypes,
@@ -45,7 +51,9 @@ const photoTags = computed(() => currPhotoProvider.value?.retrievePhotoTags(util
                 </li>
             </ul>
 
-            <FontAwesomeIcon :icon="faInfo" @click="log()" class="text-2xl absolute top-0 right-0 m-[1.5rem] border-2 px-3 py-1 rounded-full"></FontAwesomeIcon>
+            <NuxtLink :to="{ name: 'results-id_provider', params: {id: currPhotoProvider?.getPhotoId(utilizePhotoProvider(props.imgData)), provider: currPhotoProvider?.name} }"> 
+                <FontAwesomeIcon :icon="faInfo" @click="setPhotoAsViewed()" class="text-2xl absolute top-0 right-0 m-[1.5rem] border-2 px-3 py-1 rounded-full"></FontAwesomeIcon>
+            </NuxtLink>
         </div>
 
         <div class="py-[1rem] px-[1rem] flex w-full items-end justify-between backdrop-blur-md
