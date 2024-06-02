@@ -61,8 +61,8 @@ class PixabayPhotoProvider extends PhotoProvider {
         return imgData.tags.split(',');
     }
 
-    getPhotoAuthorImage = function(imgData: PixabayPhoto): string {
-        return imgData.userImageURL;
+    getPhotoAuthorImage = function(imgData: PixabayPhoto): string | undefined {
+        return imgData.userImageURL || undefined;
     }
 
     getPhotoAuthorName = function(imgData: PixabayPhoto): string {
@@ -95,9 +95,9 @@ class PixabayPhotoProvider extends PhotoProvider {
         return imgData.user_id;
     }
 
-    getAuthorProfileURL = function(imgData: PixabayPhoto): string {
+    getAuthorProfileURL = function(imgData: PixabayPhoto): string | undefined {
         // Pixabay unfortunately does not provide an API to the user profile, so instead we do provide a profile image overview
-        return imgData.userImageURL;
+        return imgData.userImageURL || undefined;
     }
 
     getPhotoOriginalSource = function(imgData: PixabayPhoto): string {
@@ -142,8 +142,8 @@ class PexelsPhotoProvider extends PhotoProvider {
         return imgData.alt.trim().split(' ');
     }
 
-    getPhotoAuthorImage = function(imgData: PexelsPhoto): string {
-        return imgData?.src?.small || '';
+    getPhotoAuthorImage = function(imgData: PexelsPhoto): string | undefined {
+        return imgData?.src?.small || undefined;
     }
 
     getPhotoAuthorName = function(imgData: PexelsPhoto): string {
@@ -175,8 +175,8 @@ class PexelsPhotoProvider extends PhotoProvider {
         return imgData.photographer_id;
     }
 
-    getAuthorProfileURL = function(imgData: PexelsPhoto): string {
-        return imgData.photographer_url;
+    getAuthorProfileURL = function(imgData: PexelsPhoto): string | undefined {
+        return imgData.photographer_url || undefined;
     }
 
     getPhotoOriginalSource = function(imgData: PexelsPhoto): string {
@@ -221,8 +221,8 @@ class UnsplashPhotoProvider extends PhotoProvider {
         return imgData.tags.map(tag => tag.title);
     }
 
-    getPhotoAuthorImage = function(imgData: UnsplashPhoto): string {
-        return imgData.user.profile_image.medium;
+    getPhotoAuthorImage = function(imgData: UnsplashPhoto): string | undefined {
+        return imgData.user.profile_image.medium || undefined;
     }
 
     getPhotoAuthorName = function(imgData: UnsplashPhoto): string {
@@ -254,8 +254,8 @@ class UnsplashPhotoProvider extends PhotoProvider {
         return imgData.user.id;
     }
 
-    getAuthorProfileURL = function(imgData: UnsplashPhoto): string {
-        return imgData.user.links.html;
+    getAuthorProfileURL = function(imgData: UnsplashPhoto): string | undefined {
+        return imgData.user.links.html || undefined;
     }
 
     getPhotoOriginalSource = function(imgData: UnsplashPhoto): string {
