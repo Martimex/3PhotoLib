@@ -222,7 +222,7 @@ class UnsplashPhotoProvider extends PhotoProvider {
     }
 
     getPhotoAuthorImage = function(imgData: UnsplashPhoto): string | undefined {
-        return imgData.user.profile_image.medium || undefined;
+        return imgData.user?.profile_image?.medium || undefined;
     }
 
     getPhotoAuthorName = function(imgData: UnsplashPhoto): string {
@@ -255,7 +255,7 @@ class UnsplashPhotoProvider extends PhotoProvider {
     }
 
     getAuthorProfileURL = function(imgData: UnsplashPhoto): string | undefined {
-        return imgData.user.links.html || undefined;
+        return imgData.user?.links?.html || undefined;
     }
 
     getPhotoOriginalSource = function(imgData: UnsplashPhoto): string {
