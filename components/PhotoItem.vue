@@ -43,6 +43,7 @@ const getBgImg = function() {
 const handleFullScreenPhotoView = function() {
     if(!isImgLoaded.value) return;
     isPhotoPanelOpen.value = !isPhotoPanelOpen.value;
+    console.error('ISPHOTOPANEL OPEN: ', isPhotoPanelOpen.value)
 }
 
 </script>

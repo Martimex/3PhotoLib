@@ -51,7 +51,7 @@ const photoTags = computed(() => currPhotoProvider.value?.retrievePhotoTags(util
                 </li>
             </ul>
 
-            <NuxtLink :to="{ name: 'results-id_provider', params: {id: currPhotoProvider?.getPhotoId(utilizePhotoProvider(props.imgData)), provider: currPhotoProvider?.name} }"> 
+            <NuxtLink :to="{ name: 'home-results-id_provider', params: {id: currPhotoProvider?.getPhotoId(utilizePhotoProvider(props.imgData)), provider: currPhotoProvider?.name} }"> 
                 <FontAwesomeIcon :icon="faInfo" @click="setPhotoAsViewed()" class="text-2xl absolute top-0 right-0 m-[1.5rem] border-2 px-3 py-1 rounded-full"></FontAwesomeIcon>
             </NuxtLink>
         </div>

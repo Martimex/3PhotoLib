@@ -1,75 +1,68 @@
-# Nuxt 3 Minimal Starter
+# 3PhotoLib
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+### The royalty-free photo delivery platform for free-forever use!
 
-## Setup
+<br> <br>
 
-Make sure to install the dependencies:
+**This is a non-commercial project which returns some images based on the user search input. Note that the app is currently in development mode, so stay tuned for the final release soon!**
 
-```bash
-# npm
-npm install
+<br>
 
-# pnpm
-pnpm install
+• The app will allow users not only to search for photos, but also to "heart" them (internally, within the app) <br> <br>
+• There will be possible to create & manage photo collections, where user can "save" and store images that he / she finds interesting. <br> <br>
+• Photos - most likely - will be downloadable. <br> <br>
+• User can view each individual image in detailed mode, which showcases the photo author, the photo provider with appropiate links and will give more detailed information about the image itself. <br> <br>
 
-# yarn
-yarn install
 
-# bun
-bun install
-```
+<br> <br>
 
-## Development Server
+### Project showcase
 
-Start the development server on `http://localhost:3000`:
+<br> <br>
 
-```bash
-# npm
-npm run dev
+1) Search results page
 
-# pnpm
-pnpm run dev
+<br>
 
-# yarn
-yarn dev
+![image_1](public/readme-images/results.png)
 
-# bun
-bun run dev
-```
+<br>
 
-## Production
+<br>
 
-Build the application for production:
 
-```bash
-# npm
-npm run build
+<br>
 
-# pnpm
-pnpm run build
+2) Advanced search options menu
 
-# yarn
-yarn build
+<br>
 
-# bun
-bun run build
-```
+![image_2](public/readme-images/advanced_search.png)
 
-Locally preview production build:
+<br>
 
-```bash
-# npm
-npm run preview
+<br>
 
-# pnpm
-pnpm run preview
 
-# yarn
-yarn preview
+<br>
 
-# bun
-bun run preview
-```
+3) Detailed Photo page (1/2)
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+<br>
+
+![image_3](public/readme-images/photo-detailed-1.png)
+
+<br>
+
+<br>
+
+
+<br>
+
+4) Detailed Photo page (2/2)
+
+<br>
+
+![image_4](public/readme-images/photo-detailed-2.png)
+
+<br>

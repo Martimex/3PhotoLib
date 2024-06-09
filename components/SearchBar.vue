@@ -66,7 +66,7 @@ onMounted(() => { searchbar?.value?.focus() })
 <template>
     <FontAwesomeIcon :icon="faGear" @click="toggleAdvancedMenu()" class="text-4xl text-gray-400 place-self-start"></FontAwesomeIcon>
         <input v-model="searchText" placeholder="Looking for..." class="p-2 min-w-[50vw]" ref="searchbar" />
-    <FontAwesomeIcon :icon="faMagnifyingGlass" @click="{ getImagesByQuery(searchText); closeAdvancedMenu(); $router.push('/results'); }" class="text-4xl text-gray-400 place-self-end"></FontAwesomeIcon>
+    <FontAwesomeIcon :icon="faMagnifyingGlass" @click="{ getImagesByQuery(searchText); closeAdvancedMenu(); $router.push('/home/results'); }" class="text-4xl text-gray-400 place-self-end"></FontAwesomeIcon>
 </template>
 
 <style scoped>
