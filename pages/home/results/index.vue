@@ -29,6 +29,7 @@ sqStore.$subscribe(async() => {
     
     if(searchPageCount.value === 1) {
         imageData.value = currPhotoProvider.value.getResponsePhotos(initialPageRequestData);
+        console.warn('MY RESPONSE IS: ', imageData.value);
     } else {
         // User picked page number is higher than 1 -> perform calculations if requested page number even exists. If so, provide
         // results for the page. Otherwise, return the latest page that contain photos + inform user about the behaviour
