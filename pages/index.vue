@@ -1,5 +1,8 @@
 <script setup lang="ts">
 
+const sStore = useStatusStore();
+const { currentHomePageView } = storeToRefs(sStore);
+
 </script>
 
 <template>
@@ -37,11 +40,9 @@
 
         <section class="">
             <div class="shadow-inner-[0_0_0.5rem_0.12rem_#222] shadow-[0_0_0.5rem_0.2rem_#111] relative min-w-[80vw] text-white bg-[#ccc1] py-8 px-4 my-0 mx-auto border-solid border-y-[0.75rem] border-[#eee4]   backdrop-blur-lg backdrop-contrast-75">
-                <h1 class="main-title text-6xl font-semibold font-mono text-center mt-8 mb-12"> 3PhotoLib </h1>
-                <h2 class="main-title-alt text-xl font-mono text-center my-4"> The royalty-free photo delivery platform for free-forever use! </h2>
-                <div class="mt-8 mb-4 min-w-24 max-w-[40vw] min-h-10 bg-[#111a] rounded-full mx-auto"> 
-                    <p class="main-title-alt text-xl text-center py-5 px-8 font-bold text-nowrap"> Sign In </p> 
-                </div>
+                <LandingComponentsWelcomeView v-if="currentHomePageView === 'welcome'" />
+                <LandingComponentsSigninForm v-if="currentHomePageView === 'signin'" />
+                <LandingComponentsLoginForm v-if="currentHomePageView === 'login'" />
             </div>
         </section>
 
@@ -55,17 +56,6 @@
     height: max(18vw, 18vh);
     box-shadow: .2rem .2rem .85rem #111;
     border-radius: 5%;
-}
-
-.main-title {
-    font-family: Montserrat, 'Arial Narrow Bold', sans-serif, Haettenschweiler;
-    text-shadow: -.25rem -.25rem .33rem #111;
-    filter: drop-shadow(0rem 0rem .25rem #000);
-}
-
-.main-title-alt {
-    font-family: Montserrat, 'Arial Narrow Bold', sans-serif, Haettenschweiler;
-    filter: drop-shadow(.12rem .12rem .1rem #000);
 }
 
 </style>
