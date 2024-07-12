@@ -5,8 +5,11 @@ export const useTemporalStore = defineStore('temporalStore', () => {
     // THIS VALUES WILL BE ONLY USED HERE AS A STORAGE (ARE FILLED UPON SUCCESSFUL REGISTRATION) AND REQUESTED JUST FOR SENDING THE VERIFY CODE THE FIRST TIME
     const [registeredUser_name, registeredUser_email] = [ref<string>(''), ref<string>('') ];
 
-    // The values for keeping track for Login Page 
-    const [loginUser_name, loginUser_email] = [ref<string>(''), ref<string>('')];
+    // The values to keep input text even when switching between Signin and Login Components
+    const inputsText = {
+        signin: { username: ref(''), email: ref(''), password: ref('') },
+        login: { email: ref(''), password: ref('') },
+    };
 
     // The current verification key - sorted here to lower the amount of unnecessary database calls (for local compare)
     const verificationCodeKey = ref<string>('');
@@ -21,5 +24,5 @@ export const useTemporalStore = defineStore('temporalStore', () => {
     const verification_redirectedFrom = ref<'signin' | 'login'>('signin');
 
 
-    return { registeredUser_name, registeredUser_email, loginUser_name, loginUser_email, verificationCodeKey, cooldown_start, requiredElapseHours, calcRemainHoursCooldown, verification_redirectedFrom }
+    return { registeredUser_name, registeredUser_email, inputsText, verificationCodeKey, cooldown_start, requiredElapseHours, calcRemainHoursCooldown, verification_redirectedFrom }
 });

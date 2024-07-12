@@ -4,12 +4,18 @@
     import { keyToValidator } from '@/validators/formValidators';
     import type { registrationFormProp } from '../../types/type_utilities';
 
+    onUnmounted(() => {
+        // Prevent already present text in inputs from clearing when switching from Login to SignIn component 
+        tStore.inputsText.login.email = loginForm.email.text.value;
+        tStore.inputsText.login.password  = loginForm.password.text.value;
+    });
+
     const sStore = useStatusStore();
     const tStore = useTemporalStore();
 
     const loginForm: {[key: string]: registrationFormProp}  = {
-        email: {text: ref<string>(""), isTextCorrect: ref<boolean>(true), inputElement: ref(), errorMsgElement: ref()},
-        password: {text: ref<string>(""), isTextCorrect: ref<boolean>(true), inputElement: ref(), errorMsgElement: ref()}
+        email: {text: ref<string>(tStore.inputsText.login.email), isTextCorrect: ref<boolean>(true), inputElement: ref(), errorMsgElement: ref()},
+        password: {text: ref<string>(tStore.inputsText.login.password), isTextCorrect: ref<boolean>(true), inputElement: ref(), errorMsgElement: ref()}
     };
 
     function handleErrorTracing(isErrorPresent: boolean, key: string, errorMsg?: string): void {

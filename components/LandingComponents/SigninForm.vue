@@ -4,6 +4,14 @@
     import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
     import type { registrationFormProp } from '../../types/type_utilities';
 
+    onUnmounted(() => {
+        // Prevent already present text in inputs from clearing when switching from SignIn to Login component 
+        tStore.inputsText.signin.username = registerForm.username.text.value;
+        tStore.inputsText.signin.email = registerForm.email.text.value;
+        tStore.inputsText.signin.password  = registerForm.password.text.value;
+    });
+
+
     const sStore = useStatusStore();
     const tStore = useTemporalStore();
 
@@ -87,9 +95,9 @@
     }
 
     const registerForm: {[key: string]: registrationFormProp}  = {
-        username: {text: ref<string>(""), isTextCorrect: ref<boolean>(true), inputElement: ref(), errorMsgElement: ref()},
-        email: {text: ref<string>(""), isTextCorrect: ref<boolean>(true), inputElement: ref(), errorMsgElement: ref()},
-        password: {text: ref<string>(""), isTextCorrect: ref<boolean>(true), inputElement: ref(), errorMsgElement: ref()},
+        username: {text: ref<string>(tStore.inputsText.signin.username), isTextCorrect: ref<boolean>(true), inputElement: ref(), errorMsgElement: ref()},
+        email: {text: ref<string>(tStore.inputsText.signin.email), isTextCorrect: ref<boolean>(true), inputElement: ref(), errorMsgElement: ref()},
+        password: {text: ref<string>(tStore.inputsText.signin.password), isTextCorrect: ref<boolean>(true), inputElement: ref(), errorMsgElement: ref()},
         isTOSAccepted: {text: ref<string>(""), isTextCorrect: ref<boolean>(true), inputElement: ref(), errorMsgElement: null}
     };
 
