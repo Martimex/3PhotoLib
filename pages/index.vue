@@ -43,6 +43,8 @@ const { currentHomePageView } = storeToRefs(sStore);
                 <LandingComponentsWelcomeView v-if="currentHomePageView === 'welcome'" />
                 <LandingComponentsSigninForm v-if="currentHomePageView === 'signin'" />
                 <LandingComponentsLoginForm v-if="currentHomePageView === 'login'" />
+                <LandingComponentsAccountVerifyForm v-if="currentHomePageView === 'verify'" />
+                <LandingComponentsPasswordResetForm v-if="currentHomePageView === 'reset'" /> 
             </div>
         </section>
 

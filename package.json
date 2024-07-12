@@ -5,6 +5,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "https-dev": "nuxt dev --https --ssl-cert localhost.pem --ssl-key localhost-key.pem",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
@@ -17,6 +18,7 @@
     "@pinia/nuxt": "^0.5.1",
     "@prisma/client": "^5.15.0",
     "@supabase/supabase-js": "^2.43.4",
+    "@types/nodemailer": "^6.4.15",
     "nuxt": "^3.11.2",
     "pinia": "^2.1.7",
     "vue": "latest",
@@ -24,8 +26,11 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@nuxtjs/supabase": "^1.2.2",
     "@nuxtjs/tailwindcss": "^6.12.0",
     "autoprefixer": "^10.4.19",
+    "nodemailer": "^6.9.14",
+    "nuxt-nodemailer": "^1.1.2",
     "postcss": "^8.4.38",
     "prisma": "^5.15.0",
     "tailwindcss": "^3.4.3"

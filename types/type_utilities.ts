@@ -13,3 +13,11 @@ export const availableProviderNames_Array = <availableProviderNames[]>['pixabay'
 // This utility function helps dealing with TS errors regarding various PhotoProviders having different type fields, which
 // are fully determined by the end API response (that obviously we do not have any control over)
 export const utilizePhotoProvider = (value: availablePhotoTypes) => value as any;
+
+// This utility controls available views that can be called in the Landing Page for log-in / register purposes
+export type availableHomePageViews = 'welcome' | 'signin' | 'login' | 'verify' | 'reset';
+
+// This utility is for validating fields isnide the signin form
+export type registrationFormProp = {text: any, isTextCorrect: any, inputElement: any, errorMsgElement: any}; // This one is non-exportable
+/* export type registrationForm = { username: registrationFormProp, email: registrationFormProp, password: registrationFormProp, isTOSAccepted: registrationFormProp} 
+ */

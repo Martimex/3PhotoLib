@@ -15,11 +15,15 @@ datasource db {
 }
 
 model User {
-  id            Int      @id @default(autoincrement())
-  email         String   @unique
-  name          String
-  profile_image String   @default("")
-  member_since  DateTime @default(now())
+  id                  Int        @id @default(autoincrement())
+  name                String     @unique
+  email               String     @unique
+  password            String
+  isVerified          Boolean?   @default(false)
+  verifyCode          String?    @default("")
+  verifyRetryFrom     BigInt     @default(0)
+  profile_image       String     @default("")
+  member_since        DateTime   @default(now())
 
   likedPhotos Photo[]
   collections Collection[]
