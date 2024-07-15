@@ -68,7 +68,7 @@
                     // User created an account, but it is not yet verified. Redirect to a verification component
                     tStore.registeredUser_name = res;
                     tStore.registeredUser_email = loginForm.email.text.value;
-                    tStore.verification_redirectedFrom = 'login';
+                    sStore.addHomePageViewHierarchy('login');
                     sStore.currentHomePageView = 'verify';
                     return false;
                 }
@@ -91,12 +91,19 @@
         // User logged in! Now redirect to the home page
         await navigateTo('/home');
         sStore.currentHomePageView = 'welcome';
+        sStore.resetHomePageViewHierarchy();
+    }
+
+    function handlePasswordResetLink() {
+        sStore.addHomePageViewHierarchy('login');
+        sStore.setCurrentHomePageView('reset');
     }
 
 </script>
 
 <template>
-    <h1 class="main-title text-6xl font-semibold font-mono text-center mb-8"> Log In </h1>
+    <LandingComponentsFormClose />
+    <h1 class="main-title text-6xl font-semibold font-mono text-center mb-8 pointer-events-none"> Log In </h1>
     <h2 class="main-title-alt text-xl font-mono text-center mt-4 mb-6"> Already using 3PhotoLib? Please login to continue. </h2>
     <form id="login" name="login" method="post" action="" class="mx-3" @submit.prevent="handleUserLogin">
         <div class="my-4">
@@ -124,7 +131,7 @@
         </div>
 
         <span class="main-title-alt text-md underline font-semibold cursor-pointer mx-3"
-            @click="sStore.setCurrentHomePageView('reset')"
+            @click="handlePasswordResetLink"
         > 
             Forgot password ? Reset it here
         </span>

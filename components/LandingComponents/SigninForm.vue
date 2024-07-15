@@ -46,7 +46,7 @@
         }});
 
         // Finally, change component to the Verification form
-        tStore.verification_redirectedFrom = 'signin';
+        sStore.addHomePageViewHierarchy('signin');
         sStore.currentHomePageView = 'verify';
     }
 
@@ -104,7 +104,8 @@
 </script>
 
 <template>
-    <h1 class="main-title text-6xl font-semibold font-mono text-center mb-8"> Sign In </h1>
+    <LandingComponentsFormClose />
+    <h1 class="main-title text-6xl font-semibold font-mono text-center mb-8 pointer-events-none"> Sign In </h1>
     <h2 class="main-title-alt text-xl font-mono text-center mt-4 mb-6"> New to 3PhotoLib? Please register first to use the service. </h2>
     <form id="signin" name="signin" method="post"  class="mx-3" @submit.prevent="handleUserRegistration">
         <div class="my-4">

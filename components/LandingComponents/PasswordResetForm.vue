@@ -3,7 +3,8 @@
 </script>
 
 <template>
-    <h1 class="main-title text-6xl font-semibold font-mono text-center mb-8"> Reset password </h1>
+    <LandingComponentsFormClose />
+    <h1 class="main-title text-6xl font-semibold font-mono text-center mb-8 pointer-events-none"> Reset password </h1>
 </template>
 
 <style scoped>

@@ -15,10 +15,10 @@
     const sStore = useStatusStore();
 
     onMounted(() => {
-        headingFirstSentence.value = (tStore.verification_redirectedFrom === 'signin')? 'Now, we have sent you a verification code'
-                                :    (tStore.verification_redirectedFrom === 'login')? 'You have already got a verification code'
+        headingFirstSentence.value = (sStore.homePageViewsHierarchy[sStore.homePageViewsHierarchy.length - 1] === 'signin')? 'Now, we have sent you a verification code'
+                                :    (sStore.homePageViewsHierarchy[sStore.homePageViewsHierarchy.length - 1] === 'login')? 'You have already got a verification code'
                                 :    '';
-        handleSendVerificationEmail(tStore.verification_redirectedFrom);
+        handleSendVerificationEmail(sStore.homePageViewsHierarchy[sStore.homePageViewsHierarchy.length - 1]);
     });
 
     async function handleSendVerificationEmail(redirectedFrom: string) {
@@ -120,13 +120,15 @@
             }});
             await navigateTo('/home');
             sStore.currentHomePageView = 'welcome';
+            sStore.resetHomePageViewHierarchy();
         }
     }
 
 </script>
 
 <template>
-    <h1 class="main-title text-6xl font-semibold font-mono text-center mb-8"> Verify account </h1>
+    <LandingComponentsFormClose />
+    <h1 class="main-title text-6xl font-semibold font-mono text-center mb-8 pointer-events-none"> Verify account </h1>
     <h2 class="main-title-alt text-xl font-mono text-center mt-6 mb-9"> {{ headingFirstSentence }}. Please add it in the box below and press "Confirm". </h2>
 
     <form id="verify" name="verify" method="get" action="" class="mx-3" @submit.prevent="handleVerificationCodeCheck">

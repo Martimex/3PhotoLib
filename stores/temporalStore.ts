@@ -6,10 +6,21 @@ export const useTemporalStore = defineStore('temporalStore', () => {
     const [registeredUser_name, registeredUser_email] = [ref<string>(''), ref<string>('') ];
 
     // The values to keep input text even when switching between Signin and Login Components
-    const inputsText = {
+    const inputsText: {[key: string]: any}  = {
         signin: { username: ref(''), email: ref(''), password: ref('') },
         login: { email: ref(''), password: ref('') },
     };
+
+    function clearInputsText(iText: any) {
+        // NOTE: THIS DOES NOT REMOVE INPUT VALUES FOR THE INPUTS WHOSE COMPONENT GOT CLOSED BY A TOP-RIGHT BUTTON
+        const inputsText_keys = Object.keys(iText);
+        for(let i=0; i<inputsText_keys.length; i++) {
+            const subTree = Object.keys(inputsText[inputsText_keys[i]]);
+            for(const prop of subTree) {
+                inputsText[inputsText_keys[i]][prop].value = '';
+            }
+        }
+    }
 
     // The current verification key - sorted here to lower the amount of unnecessary database calls (for local compare)
     const verificationCodeKey = ref<string>('');
@@ -20,9 +31,5 @@ export const useTemporalStore = defineStore('temporalStore', () => {
         return requiredElapseHours - Math.floor((time_now - Number(cooldown_start)) / (1000 * 60 * 60));
     }
 
-    // This variable will help to determine whether the Verification component was brought to the user directly from Signin or LoginPage
-    const verification_redirectedFrom = ref<'signin' | 'login'>('signin');
-
-
-    return { registeredUser_name, registeredUser_email, inputsText, verificationCodeKey, cooldown_start, requiredElapseHours, calcRemainHoursCooldown, verification_redirectedFrom }
+    return { registeredUser_name, registeredUser_email, inputsText, verificationCodeKey, cooldown_start, requiredElapseHours, calcRemainHoursCooldown, clearInputsText }
 });
