@@ -15,7 +15,7 @@ export const availableProviderNames_Array = <availableProviderNames[]>['pixabay'
 export const utilizePhotoProvider = (value: availablePhotoTypes) => value as any;
 
 // This utility controls available views that can be called in the Landing Page for log-in / register purposes
-export type availableHomePageViews = 'welcome' | 'signin' | 'login' | 'verify' | 'reset';
+export type availableHomePageViews = 'welcome' | 'signin' | 'login' | 'verify' | 'reset' | 'new';
 
 // This utility is for validating fields isnide the signin form
 export type registrationFormProp = {text: any, isTextCorrect: any, inputElement: any, errorMsgElement: any}; // This one is non-exportable

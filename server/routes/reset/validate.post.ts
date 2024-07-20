@@ -15,7 +15,10 @@ export default defineEventHandler(async (event) => {
 
         if(!currentUser) { throw new Error('[ERROR:: ] User not found by the provided e-mail')}
 
-        return Boolean(currentUser.verifyCode === reqBody.verifyCode_attempt);
+        return { 
+            isVerificationSucessful: Boolean(currentUser.verifyCode === reqBody.verifyCode_attempt),
+            verifyCode: currentUser.verifyCode
+        }
 
     }
     catch(error) {

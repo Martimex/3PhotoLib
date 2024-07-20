@@ -38,7 +38,7 @@
     }
 
     async function handleRetryVerificationEmail() {
-        const remainCooldownHours_local = tStore.calcRemainHoursCooldown(tStore.cooldown_start, new Date().getTime(), tStore.requiredElapseHours);
+        const remainCooldownHours_local = tStore.calcRemainHoursCooldown(tStore.cooldown_start_verificationCode, new Date().getTime(), tStore.requiredElapseHours);
 
         // This is a local check that will be caught every time during the cooldown, preventing from multiple database calls meantime.
         // It stops working as soon as the cooldown ends, so that a new link can be sent again (via server) and now this local check
@@ -66,7 +66,7 @@
                     // Update temporal verification code to reduce db queries
                     tStore.verificationCodeKey = res;
                     // Update temporal cooldown start (to prevent further db queries during the cooldown)
-                    tStore.cooldown_start = BigInt(new Date().getTime());
+                    tStore.cooldown_start_verificationCode = BigInt(new Date().getTime());
                 } 
                 else if(typeof res === 'number') {
                     verifyForm['resendCodeLink'].errorMsgElement.value.classList.replace('text-green-500', 'text-red-500');

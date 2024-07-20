@@ -16,9 +16,11 @@ export const useStatusStore = defineStore(`statusStore`, () => {
         homePageViewsHierarchy.value.push(pView);
     }
 
-    function removeHomePageViewHierarchy() {
-        if(homePageViewsHierarchy.value.length > 1) {
-            homePageViewsHierarchy.value.pop();
+    function removeHomePageViewHierarchy(count = 1) {
+        for(let i=0; i<count; i++) {
+            if(homePageViewsHierarchy.value.length > 1) {
+                homePageViewsHierarchy.value.pop();
+            }
         }
     }
 
