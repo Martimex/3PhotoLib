@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
 
         if(remainCooldownHours <= 0) {
             await prisma.user.update({
-                where: { email: reqBody.account.email },
+                where: { email: reqBody.account.email.toLowerCase() },
                 data: {
                     verifyCode: customCode,
                     verifyRetryFrom:  BigInt(time_now),

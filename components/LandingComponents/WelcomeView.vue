@@ -1,9 +1,20 @@
 <script setup lang="ts">
 
 const sStore = useStatusStore();
+const { isAuthenticated_get, currentUser_get } = useAuthStore();
 
-function handleButtonClick() {
-    sStore.setCurrentHomePageView('signin');
+async function handleButtonClick() {
+
+    console.log('OUR RESULT IS: ', isAuthenticated_get(), currentUser_get());
+
+    const isUser = isAuthenticated_get();
+    if(isUser) {
+        // Session active - transfer to /home
+        await navigateTo('/home');
+    } else {
+        // No session detected - show signin page
+        sStore.setCurrentHomePageView('signin');
+    }
 }
 
 </script>

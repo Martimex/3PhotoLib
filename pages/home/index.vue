@@ -7,11 +7,12 @@ import { storeToRefs } from 'pinia';
 import type { availablePhotoTypes } from '@/types/type_utilities';
 //import type availablePhotoTypes from '';
 
-
+const { currentUser_get } = useAuthStore();
 const [sStore, sqStore] = [useStatusStore(), useSearchQueryStore()];
 const { queryText, currPhotoProvider } = storeToRefs(sqStore);
 const { isRequestPending } = storeToRefs(sStore);
 
+//const token = useCookie('token');
 const featuredPhotosResultsMax = ref(3);
 
 /* TODO: Going to move imgData prop inside the Pinia Store. So instead of doing prop drilling, we will first save response images 
@@ -59,6 +60,7 @@ const imageData = ref<availablePhotoTypes[]>([]);
 <template>
     <NavigationBar />
     <section class="min-h-screen text-xl mx-4 py-[10vh]">
+        <p class="text-4xl mb-8 bold"> Hello, {{ currentUser_get()?.name }}</p>
         <p class="text-4xl mb-8 bold"> Featured: {{ imageData.length }} </p>
         <Suspense>
             <template #default>

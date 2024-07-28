@@ -19,7 +19,12 @@ export default defineEventHandler(async (event) => {
 
         // Return the value for if we found anything based on provided credetials
         if(isAccountFound) {
-            return isAccountFound.isVerified? true : isAccountFound.name;
+            if(isAccountFound.isVerified) {
+                // Set cookie
+                setCookie(event, 'token', isAccountFound.id, { maxAge: (86400 * 7), httpOnly: true, secure: true, sameSite: 'strict' });
+                return true;
+            }
+            return isAccountFound.name;
         }
         return false;
     }

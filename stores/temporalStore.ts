@@ -37,5 +37,5 @@ export const useTemporalStore = defineStore('temporalStore', () => {
         return requiredElapseHours - Math.floor((time_now - Number(cooldown_start)) / (1000 * 60 * 60));
     }
 
-    return { registeredUser_name, registeredUser_email, resetPassword_email, isResetPasswordMailSent, inputsText, verificationCodeKey, cooldown_start_verificationCode, cooldown_start_passwordReset, requiredElapseHours, calcRemainHoursCooldown, clearInputsText }
+    return { registeredUser_name, registeredUser_email, resetPassword_email, isResetPasswordMailSent, inputsText, verificationCodeKey, cooldown_start_verificationCode, cooldown_start_passwordReset, requiredElapseHours, calcRemainHoursCooldown,  clearInputsText }
 });

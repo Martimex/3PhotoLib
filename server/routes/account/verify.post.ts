@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
         const reqBody = await readBody(event).then((data) => data.accountData);
 
         await prisma.user.update({
-            where: { email: reqBody.email },
+            where: { email: reqBody.email.toLowerCase() },
             data: {
                 verifyCode: customCode,
                 verifyRetryFrom: BigInt(0),

@@ -19,5 +19,7 @@ export type availableHomePageViews = 'welcome' | 'signin' | 'login' | 'verify' |
 
 // This utility is for validating fields isnide the signin form
 export type registrationFormProp = {text: any, isTextCorrect: any, inputElement: any, errorMsgElement: any}; // This one is non-exportable
-/* export type registrationForm = { username: registrationFormProp, email: registrationFormProp, password: registrationFormProp, isTOSAccepted: registrationFormProp} 
- */
+
+// When we access session data, and the session is active, the user data will be fetched, controlled by this type
+// LATER ON, CHANGE "ANY" TYPE FOR likedPhotos & collections AND REPLACE THEIR TYPES WITH APPROPIATE ONES
+export type userData = { name: string, email: string, profileImage: string, memberSince: string, likedPhotos: any, collections: any }
