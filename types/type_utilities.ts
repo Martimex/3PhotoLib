@@ -4,7 +4,14 @@ import type UnsplashPhoto from "./photoItem_unsplash";
 
 export type availablePhotoTypes = PixabayPhoto | PexelsPhoto | UnsplashPhoto;
 export type availableProviderNames = 'pixabay' | 'pexels' | 'unsplash';
+export function isAvailableProvider(value: string): value is availableProviderNames {
+    return value === 'pixabay' || value === 'pexels' || value === 'unsplash'
+}
 export type numberInputKeys = {current: number, default: number, min: number, max: number};
+
+// This is for URL validation purposes - if they URL contain a valid param, we need to identify it, and assign a variable to the
+// proper state variable. This type ensures type safety
+export type optionalURLParamsIdentifiers = { key: string, refersTo: string, controlValues: string, type: 'string' | 'number' };
 
 // We use this to iteratively check if a user-provided URL value is associated with one of provider names, that is why
 // it is mandatory to keep the correct values in array aswell

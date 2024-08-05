@@ -218,7 +218,7 @@ class UnsplashPhotoProvider extends PhotoProvider {
     }
 
     retrievePhotoTags = function(imgData: UnsplashPhoto): string[] {
-        return imgData.tags.map(tag => tag.title);
+        return imgData?.tags?.map(tag => tag.title);
     }
 
     getPhotoAuthorImage = function(imgData: UnsplashPhoto): string | undefined {

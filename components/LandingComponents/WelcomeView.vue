@@ -1,11 +1,14 @@
 <script setup lang="ts">
 
-const sStore = useStatusStore();
+const [sStore, sqStore] = [useStatusStore(), useSearchQueryStore()];
 const { isAuthenticated_get, currentUser_get } = useAuthStore();
 
 async function handleButtonClick() {
 
     console.log('OUR RESULT IS: ', isAuthenticated_get(), currentUser_get());
+
+    // Reset the searchQuery store variables
+    sqStore.$reset();
 
     const isUser = isAuthenticated_get();
     if(isUser) {

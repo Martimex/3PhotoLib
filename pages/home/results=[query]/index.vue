@@ -1,20 +1,18 @@
 <script setup lang="ts">
-/* import FeaturedPhotos from '@/components/FeaturedPhotos.vue';
-import FeaturedPhotosSkeleton from '@/components/FeaturedPhotosSkeleton.vue';
-import photoProviders from '@/providers/photoProvidersInitializer';
-import type PixabayPhoto from '@/types/photoItem_pixabay';
-import type PexelsPhoto from '@/types/photoItem_pexels'; */
-import PhotoItem from '@/components/PhotoItem.vue';
+import PhotoItem from '../../../components/PhotoItem.vue';
 import { ref, onMounted } from 'vue';
-import { useSearchQueryStore } from '@/stores/searchQueryStore';
-import { useStatusStore } from '@/stores/statusStore';
+import { useSearchQueryStore } from '../../../stores/searchQueryStore';
+import { useStatusStore } from '../../../stores/statusStore';
 import { storeToRefs } from 'pinia';
-import type { availablePhotoTypes } from '@/types/type_utilities';
+import type { availablePhotoTypes } from '../../../types/type_utilities';
 
 const [sStore, sqStore] = [useStatusStore(), useSearchQueryStore()];
 const { queryText, currPhotoProvider, outputPhotosNumber, searchPageCount } = storeToRefs(sqStore);
 const { isRequestPending } = storeToRefs(sStore);
 
+definePageMeta({
+    middleware: 'handle-url-params'
+})
 
 const imageData = ref<availablePhotoTypes[]>([]);
 

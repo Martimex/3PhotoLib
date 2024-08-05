@@ -6,9 +6,10 @@
 import { storeToRefs } from 'pinia';
 
     const allowedKeyboardCharacters = ['backspace', 'delete', 'arrowup', 'arrowright', 'arrowleft', 'arrowdown'];
-    const currentInput = ref<HTMLInputElement | null>(null); 
+    const currentInput = ref<HTMLInputElement | null>(null);
+    const [outputPhotosInput, pageNumberInput] = [ref<HTMLInputElement | null>(null), ref<HTMLInputElement | null>(null)];
     const sqStore = useSearchQueryStore();
-    const { outputPhotosObj, searchPageObj } = storeToRefs(sqStore);
+    const { outputPhotosObj, searchPageObj, outputPhotosNumber, searchPageCount } = storeToRefs(sqStore);
     //const [outputPhotosObj.value, searchPageObj] = [sqStore.outputPhotosObj, sqStore.searchPageObj];
 
     const switchPhotoProvider = function(providerName: availableProviderNames) { 
@@ -87,14 +88,13 @@ import { storeToRefs } from 'pinia';
         if(currentProviderInput) currentProviderInput.checked = true;
     })
 
-    /* For debugging reasons only */
-
-/*     function debugTest() {
-        console.error(`Current values for inputs: 
-            OUTPUT NUMBER:  ${sqStore.outputPhotosObj.current} ||
-            PAGE NUMBER: ${sqStore.searchPageObj.current}
-        `);
-    } */
+    onBeforeUnmount(() => {
+        // Restore the inputs numeric values before unmounting
+        if(pageNumberInput.value && outputPhotosInput.value) {
+            searchPageObj.value.current = parseInt(pageNumberInput.value.value);
+            outputPhotosObj.value.current = parseInt(outputPhotosInput.value.value);
+        }
+    })
 
 </script>
 
@@ -154,13 +154,13 @@ import { storeToRefs } from 'pinia';
 
                 <div class="test mt-9 grid place-content-start grid-rows-[auto] grid-cols-[auto_auto] gap-y-6 items-center">
                     <label for="output_no" class="text-lg font-semibold">Output photos: </label>
-                    <input type="number" id="output_no" name="search" :placeholder="outputPhotosObj.default.toString()" :value="outputPhotosObj.current" :min="outputPhotosObj.min" :max="outputPhotosObj.max" @keydown="(event) => isNumberKey(event, sqStore.outputPhotosObj)"
+                    <input ref="outputPhotosInput" type="number" id="output_no" name="search" :placeholder="outputPhotosObj.default.toString()" :value="outputPhotosObj.current.toString()" :min="outputPhotosObj.min" :max="outputPhotosObj.max" @keydown="(event) => isNumberKey(event, sqStore.outputPhotosObj)"
                         class="text-base font-semibold text-center min-w-24 py-1 px-2 ml-6 outline-gray-500 bg-neutral-200 appearance-none cursor-pointer rounded-lg shadow-[0.1rem_0.1rem_0.5rem_black]"
                         @change="updateNumberInputValue(sqStore.outputPhotosObj)"
                     >
 
                     <label for="page_no" class="text-lg font-semibold">Page number: </label>
-                    <input type="number" id="page_no" name="search" :placeholder="searchPageObj.default.toString()" :value="searchPageObj.current" :min="searchPageObj.min" :max="searchPageObj.max" @keydown="(event) => isNumberKey(event, sqStore.searchPageObj)"
+                    <input ref="pageNumberInput" type="number" id="page_no" name="search" :placeholder="searchPageObj.default.toString()" :value="searchPageObj.current.toString()" :min="searchPageObj.min" :max="searchPageObj.max" @keydown="(event) => isNumberKey(event, sqStore.searchPageObj)"
                         class="text-base font-semibold text-center min-w-24 py-1 px-2 ml-6 outline-gray-500 bg-neutral-200 appearance-none cursor-pointer rounded-lg shadow-[0.1rem_0.1rem_0.5rem_black]"
                         @change="updateNumberInputValue(sqStore.searchPageObj)"
                     >
