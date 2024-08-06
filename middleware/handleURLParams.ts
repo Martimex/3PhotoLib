@@ -1,4 +1,5 @@
-import { isAvailableProvider } from "~/types/type_utilities";
+import { availableProviderNames_Array } from "~/types/type_utilities";
+import type { availableProviderNames } from "~/types/type_utilities";
 import PhotoProvider from '@/providers/photoProvidersInitializer';
 
 export default defineNuxtRouteMiddleware(async(to, from) => {
@@ -25,9 +26,15 @@ export default defineNuxtRouteMiddleware(async(to, from) => {
                         const paramValue_number = parseInt(paramValue_string);
                         const isWithinValuesRange = checkValuesRange(paramValue_number, sqStore[optionalParam.controlValues].min, sqStore[optionalParam.controlValues].max);
                         
-                        // Now set the URL value to the state varibale
-                        if(isWithinValuesRange === true) { sqStore[optionalParam.refersTo] = paramValue_number; }
-                        else sqStore[optionalParam.refersTo] = sqStore[optionalParam.controlValues][isWithinValuesRange];
+                        // Now set the URL value to the state varibale (update both .current - number input text, and main API query value)
+                        if(isWithinValuesRange === true) { 
+                            sqStore[optionalParam.refersTo] = paramValue_number; // controls API calls
+                            sqStore[optionalParam.controlValues].current = paramValue_number; // controls Advanced Menu UI input value
+                        }                   
+                        else {
+                            sqStore[optionalParam.refersTo] = sqStore[optionalParam.controlValues][isWithinValuesRange]; // controls API calls
+                            sqStore[optionalParam.controlValues].current = sqStore[optionalParam.controlValues][isWithinValuesRange]; // controls Advanced Menu UI input value
+                        }
 
                         // Param and a value are all fine - so lets store them in an array, to further recreate a URL with those params
                         variablesToUpdate.push({key: optionalParam.key, value: paramValue_number})
@@ -35,11 +42,12 @@ export default defineNuxtRouteMiddleware(async(to, from) => {
                 } else if(optionalParam.type === 'string') {
                     switch(optionalParam.key) {
                         case 'provider': {
-                            const isParamValueCorrect = isAvailableProvider(paramValue_string);
+                            const isParamValueCorrect = availableProviderNames_Array.find(provider => provider === paramValue_string);
                             if(isParamValueCorrect) {
-                                sqStore[optionalParam.refersTo] = paramValue_string;
-                                sqStore.currPhotoProvider = new PhotoProvider(paramValue_string).setCurrentProvider();
-                                variablesToUpdate.push({key: optionalParam.key, value: paramValue_string});
+                                const paramValue_provider = paramValue_string as availableProviderNames;
+                                sqStore[optionalParam.refersTo] = paramValue_provider;
+                                sqStore.currPhotoProvider = new PhotoProvider(paramValue_provider).setCurrentProvider();
+                                variablesToUpdate.push({key: optionalParam.key, value: paramValue_provider});
                             }
                             break;
                         } 

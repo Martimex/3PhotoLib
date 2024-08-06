@@ -4,9 +4,6 @@ import type UnsplashPhoto from "./photoItem_unsplash";
 
 export type availablePhotoTypes = PixabayPhoto | PexelsPhoto | UnsplashPhoto;
 export type availableProviderNames = 'pixabay' | 'pexels' | 'unsplash';
-export function isAvailableProvider(value: string): value is availableProviderNames {
-    return value === 'pixabay' || value === 'pexels' || value === 'unsplash'
-}
 export type numberInputKeys = {current: number, default: number, min: number, max: number};
 
 // This is for URL validation purposes - if they URL contain a valid param, we need to identify it, and assign a variable to the
