@@ -49,6 +49,10 @@ class PixabayPhotoProvider extends PhotoProvider {
         return (resData?.hits?.length)? resData.hits : [];
     }
 
+    getSinglePhoto = function(resData: PixabayResponseObject): PixabayPhoto | null {
+        return (resData?.hits?.[0])? resData.hits[0] : null;
+    }
+
     getLowResImageURL = function(imgData: PixabayPhoto): string {
         return imgData?.previewURL || '';
     }
@@ -88,7 +92,7 @@ class PixabayPhotoProvider extends PhotoProvider {
     }
 
     getPhotoDescription = function(imgData: PixabayPhoto): string {
-        return imgData.tags.charAt(0).toUpperCase() + imgData.tags.slice(1);
+        return imgData.tags?  imgData.tags.charAt(0).toUpperCase() + imgData.tags.slice(1) : `*Not provided*`;
     }
 
     getAuthorID = function(imgData: PixabayPhoto): number {
@@ -128,7 +132,11 @@ class PexelsPhotoProvider extends PhotoProvider {
 
     getResponsePhotos = function(resData: PexelsResponseObject): PexelsPhoto[] | [] {
         return (resData?.photos?.length)? resData.photos : [];
-    } 
+    }
+    
+    getSinglePhoto = function(resDataSinglePhoto: PexelsPhoto): PexelsPhoto | null {
+        return (resDataSinglePhoto)? resDataSinglePhoto : null; 
+    }
 
     getLowResImageURL = function(imgData: PexelsPhoto): string {
         return imgData?.src?.small || '';
@@ -168,7 +176,7 @@ class PexelsPhotoProvider extends PhotoProvider {
     }
 
     getPhotoDescription = function(imgData: PexelsPhoto): string {
-        return imgData.alt;
+        return imgData.alt? imgData.alt : `*Not provided*`;
     }
 
     getAuthorID = function(imgData: PexelsPhoto): number {
@@ -208,6 +216,10 @@ class UnsplashPhotoProvider extends PhotoProvider {
     getResponsePhotos = function(resData: UnsplashResponseObject): UnsplashPhoto[] | [] {
         return (resData?.results?.length)? resData.results : [];
     } 
+
+    getSinglePhoto = function(resData: UnsplashPhoto): UnsplashPhoto | null {
+        return (resData)? resData : null; 
+    }
 
     getLowResImageURL = function(imgData: UnsplashPhoto): string {
         return imgData?.urls?.small || '';
