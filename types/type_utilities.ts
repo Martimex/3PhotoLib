@@ -26,4 +26,4 @@ export type registrationFormProp = {text: any, isTextCorrect: any, inputElement:
 
 // When we access session data, and the session is active, the user data will be fetched, controlled by this type
 // LATER ON, CHANGE "ANY" TYPE FOR likedPhotos & collections AND REPLACE THEIR TYPES WITH APPROPIATE ONES
-export type userData = { name: string, email: string, profileImage: string, memberSince: string, likedPhotos: any, collections: any }
+export type userData = { id: string, name: string, email: string, profileImage: string, memberSince: string, likedPhotos: any, collections: any }

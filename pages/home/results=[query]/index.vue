@@ -4,10 +4,10 @@ import { ref, onMounted } from 'vue';
 import { useSearchQueryStore } from '../../../stores/searchQueryStore';
 import { useStatusStore } from '../../../stores/statusStore';
 import { storeToRefs } from 'pinia';
-import type { availablePhotoTypes } from '../../../types/type_utilities';
+import type { availablePhotoTypes, availableProviderNames } from '../../../types/type_utilities';
 
 const [sStore, sqStore] = [useStatusStore(), useSearchQueryStore()];
-const { queryText, currPhotoProvider, outputPhotosNumber, searchPageCount } = storeToRefs(sqStore);
+const { queryText, currPhotoProvider, currPhotoProviderName, outputPhotosNumber, searchPageCount } = storeToRefs(sqStore);
 const { isRequestPending } = storeToRefs(sStore);
 
 definePageMeta({
@@ -15,6 +15,7 @@ definePageMeta({
 })
 
 const imageData = ref<availablePhotoTypes[]>([]);
+const providerName = ref<availableProviderNames>(currPhotoProviderName.value);
 
 // For Pexels only, the search "red" causes no result being displayed and result in weird errors. Investigate this issue further !
 
@@ -79,7 +80,7 @@ onMounted(() => getPhotos());
                 <p class="text-4xl mb-8 bold"> Results for: "{{ queryText }}" </p>
                 <div v-if="!isRequestPending" class="">
                     <!-- Slicing works well for providers API, which reqire minimal response photos, while this app does not  -->
-                    <PhotoItem v-for="image in imageData.slice(0, outputPhotosNumber)" :key="image.id" :imgData="image"/>
+                    <PhotoItem v-for="image in imageData.slice(0, outputPhotosNumber)" :key="image.id" :imgData="image" :provider="providerName"/>
                 </div>
                 <div v-if="isRequestPending" class="">
                     <p class="text-2xl bold text-yellow-400"> Pending... Please wait 🥰</p>

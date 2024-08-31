@@ -4,14 +4,28 @@ import { usePhotoStore } from '@/stores/photosStore';
 import { utilizePhotoProvider } from '~/types/type_utilities';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faHeart, faDownload, faSave, faLink, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import handleLikePhoto from '@/composables/handleLikePhoto';
 
-const sqStore = useSearchQueryStore();
+const [sqStore, pStore] = [useSearchQueryStore(), usePhotoStore()];
+const { likedPhotosOrdered_get, currentUser_get } = useAuthStore();
 const { currPhotoProvider } = storeToRefs(sqStore);
 const { viewedPhoto } = usePhotoStore() as any;
+
+const isPhotoLiked = ref<boolean>(false);
+
+onBeforeMount(() => {
+    console.error('ONBEFORE MOUNT TRIGGERED ! User is: ', currentUser_get());
+    console.warn(' MY VIEWED IMAGE?  ', `${sqStore.currPhotoProviderName}=${pStore.viewedPhoto?.id}`);
+    isPhotoLiked.value = findId(`${sqStore.currPhotoProviderName}=${pStore.viewedPhoto?.id}`, likedPhotosOrdered_get());
+})
 
 definePageMeta({
     middleware: 'handle-single-photo-id'
 })
+
+function handlePhotoLikedToggle() {
+    handleLikePhoto({isPhotoLiked: isPhotoLiked.value, imgData: viewedPhoto, provider: sqStore.currPhotoProviderName }, isPhotoLiked);
+}
 
 </script>
 
@@ -24,8 +38,10 @@ definePageMeta({
             </div>
             <div class="grid grid-cols-4 grid-rows-1 justify-between">
                 <!-- BUTTONS FUNCTIONALITY TO BE IMPLEMENTED SOON -->
-                <div class="p-3 py-5 flex flex-col justify-between align-top shadow-md shadow-red-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0">
-                    <FontAwesomeIcon :icon="faHeart" class="text-3xl text-[#333]" />
+                <div class="p-3 py-5 flex flex-col justify-between align-top shadow-md shadow-red-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0"
+                    @click="handlePhotoLikedToggle"
+                >
+                    <FontAwesomeIcon :icon="faHeart" class="text-3xl text-[#333]" :class="isPhotoLiked && `text-red-500 drop-shadow-[0.15rem_0.15rem_0.25rem_#111111]`" />
                     <span class="text-center hidden">Like</span>
                 </div>
                 <div class="px-3 py-5 flex flex-col justify-center align-top shadow-md shadow-green-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0">

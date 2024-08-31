@@ -1,3 +1,6 @@
+import type PhotoResponseModel from "~/types/responseModel_photo";
+import type { availablePhotoTypes } from "~/types/type_utilities";
+
 export const useTemporalStore = defineStore('temporalStore', () => {
 
     // The store is used for temporary values (that are updated just once and no more) for easier store access rather than prop drilling 
@@ -36,6 +39,13 @@ export const useTemporalStore = defineStore('temporalStore', () => {
     const calcRemainHoursCooldown = function(cooldown_start: bigint, time_now: number, requiredElapseHours: number) {
         return requiredElapseHours - Math.floor((time_now - Number(cooldown_start)) / (1000 * 60 * 60));
     }
+
+    // This one stores likedPhotos currently inside the search results. If user wants to dislike a photo also from there, he is redirected to
+    // the /liked endpoint, which is NOT updated with the recently liked images. This variable is meant to fix that.
+ /*    let photosRecentlyLiked = ref<availablePhotoTypes[]>([]);
+    const photosRecentlyLiked_reset = function() { photosRecentlyLiked.value = []; }
+    const photosRecentlyLiked_set = function(newlyLikedPhoto: availablePhotoTypes) { photosRecentlyLiked.value.push(newlyLikedPhoto); }
+    const photosRecentlyLiked_get = function() { return photosRecentlyLiked.value; } */
 
     return { registeredUser_name, registeredUser_email, resetPassword_email, isResetPasswordMailSent, inputsText, verificationCodeKey, cooldown_start_verificationCode, cooldown_start_passwordReset, requiredElapseHours, calcRemainHoursCooldown,  clearInputsText }
 });

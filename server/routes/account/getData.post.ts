@@ -14,9 +14,13 @@ export default defineEventHandler(async (event) => {
 
         const theUser = await prisma.user.findUnique({
             where: { id: token },
+            include: {
+                likedPhotos: true,
+                collections: true
+            }
         }).then(res => { 
             if(!res) { return null; }
-            return { name: res.name, email: res.email, profile_image: res.profile_image, member_since: res.member_since };
+            return { id: res.id, name: res.name, email: res.email, profile_image: res.profile_image, member_since: res.member_since, likedPhotos: res.likedPhotos, collections: res.collections };
         });
 
         if(!theUser) { 

@@ -62,7 +62,7 @@ class PixabayPhotoProvider extends PhotoProvider {
     }
 
     retrievePhotoTags = function(imgData: PixabayPhoto): string[] {
-        return imgData.tags.split(',');
+        return imgData?.tags?.split(',');
     }
 
     getPhotoAuthorImage = function(imgData: PixabayPhoto): string | undefined {

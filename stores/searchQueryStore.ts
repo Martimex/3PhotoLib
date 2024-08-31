@@ -3,8 +3,10 @@ import type { availableProviderNames, optionalURLParamsIdentifiers } from '@/typ
 import type { numberInputKeys } from '@/types/type_utilities';
 
 export const useSearchQueryStore = defineStore(`searchQueryStore`, () => {
+    const DEFAULT_PROVIDER: availableProviderNames = 'pixabay';
+
     const queryText = ref<string>('');
-    const currPhotoProviderName = ref<availableProviderNames>('pixabay');
+    const currPhotoProviderName = ref<availableProviderNames>(`${DEFAULT_PROVIDER}`);
     const currPhotoProvider = ref(new PhotoProvider('pixabay').setCurrentProvider());
     const outputPhotosObj = ref<numberInputKeys>({current: 10, default: 10, min: 1, max: 25});
     const outputPhotosNumber = ref<number>(10);
@@ -19,7 +21,6 @@ export const useSearchQueryStore = defineStore(`searchQueryStore`, () => {
     ];
 
     function $reset() {
-        const DEFAULT_PROVIDER: availableProviderNames = 'pixabay';
         queryText.value = '';
         currPhotoProviderName.value = `${DEFAULT_PROVIDER}`;
         currPhotoProvider.value = new PhotoProvider(`${DEFAULT_PROVIDER}`).setCurrentProvider();

@@ -7,25 +7,47 @@ import { useStatusStore } from '@/stores/statusStore';
 import { useSearchQueryStore } from '@/stores/searchQueryStore';
 import { computed, ref, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
-import type { availablePhotoTypes } from '../types/type_utilities';
+import type { availablePhotoTypes, availableProviderNames } from '../types/type_utilities';
+import PhotoProvider from '@/providers/photoProvidersInitializer';
+import likeThePhoto from '@/composables/likeThePhoto';
+import keepPhotoAsUnliked from '@/composables/keepPhotoAsUnliked';
 
-const [sStore, sqStore] = [useStatusStore(), useSearchQueryStore()];
+const sqStore = useSearchQueryStore();
+const sStore = useStatusStore();
+const { photosToRemoveArray_modify  } = useStatusStore();
+const { likedPhotos_isEditModeOn } = storeToRefs(sStore);
 const { currPhotoProvider } = storeToRefs(sqStore);
+const { likedPhotosOrdered_get } = useAuthStore();
+const { photoIdToUnlike_get, photoIdToUnlike_set } = usePhotoStore();
 
 const props = defineProps<{
-    imgData: availablePhotoTypes
+    imgData: availablePhotoTypes,
+    provider: availableProviderNames
 }>();
 
+const isPhotoLiked = ref<boolean>(false);
+const isPhotoToRemove = ref<boolean>(false);
 const imgRef = ref<HTMLImageElement>();
 const isImgLoaded = ref<boolean>(false);
 const isPhotoPanelOpen = ref<boolean>(false);
+const providerObj = new PhotoProvider(props.provider).setCurrentProvider()
 
 function handleImgLoadded() {
     console.log('Handled loading process !');
     isImgLoaded.value = true;
 }
 
+onBeforeMount(() => {
+    isPhotoLiked.value = findId(`${props.provider}=${props.imgData.id}`, likedPhotosOrdered_get());
+    const unlikedPhotoId = photoIdToUnlike_get();
+    if(unlikedPhotoId !== null) {
+        isPhotoToRemove.value = Boolean(unlikedPhotoId === `${props.provider}=${props.imgData.id}`);
+    }
+})
+
+
 onMounted(() => {
+    console.log('MY IMAGE IS: ', props.imgData,   '           and provider is: ', props.provider);
     if(imgRef?.value?.complete) {
         handleImgLoadded();
     } else {
@@ -33,25 +55,92 @@ onMounted(() => {
     }
 });
 
+onUnmounted(() => {
+    isPhotoToRemove.value = false;
+})
+
+watch(likedPhotos_isEditModeOn, () => {
+
+    isPhotoPanelOpen.value = false;
+
+    if(!likedPhotos_isEditModeOn.value) {
+        isPhotoToRemove.value = false;
+    }
+});
+
 //const photoData = computed(() => props.imgData);
 
 const getBgImg = function() {
-    return `url(${currPhotoProvider.value?.getLowResImageURL(utilizePhotoProvider(props.imgData))})`
+    return `url(${providerObj?.getLowResImageURL(utilizePhotoProvider(props.imgData))})`
     //return `url(${photoData.value.previewURL})`
 }
 
-const handleFullScreenPhotoView = function() {
+const requestImagePhoto = async function(ev: Event) {
+    // Pixabay is probably constantly changing IMG URL's, in which case the specific photo URL has to be reassigned with photo ID search,
+    // and also appropiate DB data needs to be updated.
+    const targetElement = ev.target as HTMLImageElement;
+
+    const requestedPhoto =  providerObj?.getSinglePhotoById(utilizePhotoProvider(props.imgData.id as any));
+    const data = await $fetch(`${requestedPhoto}`, { headers: providerObj?.getSearchRequestHeaders() })
+        .then(res => providerObj?.getSinglePhoto(utilizePhotoProvider(res as availablePhotoTypes )));
+
+    if(!data) { throw new Error('The photo data fetch has failed'); }
+
+    console.error(`🪲🪲🪲 THE URL FOR LARGE IMAGE HAS ELAPSED AND THEREFORE NEEDS TO BE UPDATED. NOTE ITS DEBUG MESSAGE ONLY. ⭐⭐⭐ The provider is: `, props.provider);
+
+    if(providerObj) {
+        targetElement.src = providerObj?.getHighResImageURL(utilizePhotoProvider(data))
+    }
+
+    // Last of all lets update the photoDetails object (database photo record)
+    await $fetch(`/photo/updateData`, { method: 'post', body: {
+        photoData: data,
+        photoID: `${props.provider}=${data.id}`
+    }});
+}
+
+const handleFullScreenPhotoView = function(ev: Event) {
+
+    //ev.stopPropagation();
+    const targetElement = ev.target as HTMLDivElement;
+
     if(!isImgLoaded.value) return;
+    if(targetElement.dataset && targetElement.dataset['role'] === 'panel') return;
     isPhotoPanelOpen.value = !isPhotoPanelOpen.value;
-    console.error('ISPHOTOPANEL OPEN: ', isPhotoPanelOpen.value)
+    console.error('ISPHOTOPANEL OPEN: ', isPhotoPanelOpen.value,  '   and el is:  ', targetElement.dataset);
+}
+
+const checkIfPhotoToRemove = function() {
+    if(!likedPhotos_isEditModeOn.value) return;
+    isPhotoToRemove.value = !isPhotoToRemove.value;
+    //photoEmit('photosToDeleteCount', isPhotoToRemove.value);
+    photosToRemoveArray_modify({id: '', provider: props.provider, photoId: `${props.provider}=${props.imgData.id}`, photoDetails: props.imgData});
+}
+
+/* function handlePhotoDislike(photoID: string) {
+    keepPhotoAsUnliked(isPhotoLiked, photoID);
+    isPhotoToRemove.value = true;
+}
+
+function handlePhotoLike() {
+    likeThePhoto(isPhotoLiked);
+} */
+
+function handlePhotoLikedToggle() {
+    if(isPhotoLiked.value === true) { isPhotoToRemove.value = true; }
+    handleLikePhoto({isPhotoLiked: isPhotoLiked.value, imgData: props.imgData, provider: props.provider}, isPhotoLiked);
 }
 
 </script>
 
 <template>
-    <div @click="handleFullScreenPhotoView" :class="{ loaded: isImgLoaded }"  class="blur-bg relative flex justify-center bg-cover bg-center mx-2 my-4 min-w-[80vw] max-w-[90vw] min-h-[20vh] rounded-md shadow-md shadow-black transition-opacity">
-        <img ref="imgRef" :src="currPhotoProvider?.getHighResImageURL(utilizePhotoProvider(props.imgData))" loading="lazy" class="min-h-[40vh] object-cover object-center transition-opacity rounded-md" />    
-        <PhotoPanel v-if="isPhotoPanelOpen" :imgData="props.imgData"/>
+    <div @click="[handleFullScreenPhotoView($event), checkIfPhotoToRemove()]" :class="{ loaded: isImgLoaded }"  class="blur-bg relative flex justify-center bg-cover bg-center mx-2 my-4 min-w-[80vw] max-w-[90vw] min-h-[20vh] rounded-md shadow-md shadow-black transition-opacity">
+        <img ref="imgRef" @error="requestImagePhoto($event)" :src="providerObj?.getHighResImageURL(utilizePhotoProvider(props.imgData))" loading="lazy" class="min-h-[40vh] object-cover object-center transition-opacity rounded-md" />    
+        <PhotoPanel v-if="Boolean(isPhotoPanelOpen && !likedPhotos_isEditModeOn)"  
+            :imgData="props.imgData" :provider="props.provider" :isPhotoLiked="isPhotoLiked" 
+            @photoLikedToggle="handlePhotoLikedToggle"
+        />
+        <PhotoRemoveLayer v-if="Boolean(likedPhotos_isEditModeOn && isPhotoToRemove)" />
     </div>
 </template>
 
