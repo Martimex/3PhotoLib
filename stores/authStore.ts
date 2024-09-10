@@ -1,5 +1,6 @@
 import type { availablePhotoTypes, userData } from "~/types/type_utilities";
 import type PhotoResponseModel from "~/types/responseModel_photo"
+import type CollectionResponseModel from "~/types/responseModel_collection";
 import { sortById } from "#imports";
 
 export const useAuthStore = defineStore('auth', () => {
@@ -79,6 +80,10 @@ export const useAuthStore = defineStore('auth', () => {
     function collections_sortAscending(arrayOfCollections: PhotoResponseModel[][]) {
         // Reset the state and then reapply the sorted collections
         collectionsOrdered.value = [];
+        console.warn('arrayofCollections; ', arrayOfCollections);
+
+        return; 
+
         for(let i=0; i<arrayOfCollections.length; i++) {
             const collection_photoIDs = arrayOfCollections[i].map(collectionPhoto => collectionPhoto.photoId);
             collectionsOrdered.value.push(sortById(collection_photoIDs));
@@ -87,6 +92,11 @@ export const useAuthStore = defineStore('auth', () => {
 
     function collectionsOrdered_get(): string[][] {
         return collectionsOrdered.value;
+    }
+
+    function collections_add(newCollection: CollectionResponseModel) {
+        if(!currentUser.value) { return; }
+        currentUser.value.collections = [...currentUser.value.collections, newCollection];
     }
 
     function collections_set(): void {
@@ -104,6 +114,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     return { isAuthenticated_get, isAuthenticated_set, currentUser_get, currentUser_set, currentUser_clear,  authenticateUser,
         likedPhotosOrdered_get, collectionsOrdered_get,
-        likedPhotos_set, likedPhotos_update, collections_set
+        likedPhotos_set, likedPhotos_update, 
+        collections_set, collections_add
     };
 })

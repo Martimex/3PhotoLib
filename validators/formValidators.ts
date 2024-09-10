@@ -19,4 +19,14 @@ export const passwordValidator =  z.string()
 
 export const isTOSAcceptedValidator = z.literal(true, {message: 'You need to accept our Terms of Service'})
 
-export const keyToValidator: {[key: string]: any} = {username: usernameValidator, email: emailValidator, password: passwordValidator, isTOSAccepted: isTOSAcceptedValidator};
+export const collectionNameValidator = z.string()
+.min(3, {message: 'Please include at least 3 characters'})
+.max(12, {message: 'Please do not exceed 12 characters'})
+.refine(val => /^[A-z0-9]*$/.test(val), {message: 'Please do not use special characters'});
+
+export const descriptionValidator = z.string()
+.min(1, {message: 'Description cannot be empty'})
+.max(90, {message: 'Please do not exceed 90 characters'})
+.refine(val => !/[/\\\\]/.test(val), {message: 'Slash characters are not allowed'});
+
+export const keyToValidator: {[key: string]: any} = {username: usernameValidator, email: emailValidator, password: passwordValidator, isTOSAccepted: isTOSAcceptedValidator, collectionName: collectionNameValidator, description: descriptionValidator};
