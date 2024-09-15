@@ -99,8 +99,11 @@ export const useAuthStore = defineStore('auth', () => {
         currentUser.value.collections = [...currentUser.value.collections, newCollection];
     }
 
-    function collections_set(): void {
-
+    function collections_edit(collectionEditData: CollectionResponseModel) {
+        if(!currentUser.value) { return; }
+        const outDatedCollectionIndex = currentUser.value.collections.find((collection: CollectionResponseModel) => collection.releaseId === collectionEditData.releaseId)
+        if(outDatedCollectionIndex < 0) { return; }
+        currentUser.value.collections[outDatedCollectionIndex] = collectionEditData;
     }
 
     function currentUser_clear() {
@@ -115,6 +118,6 @@ export const useAuthStore = defineStore('auth', () => {
     return { isAuthenticated_get, isAuthenticated_set, currentUser_get, currentUser_set, currentUser_clear,  authenticateUser,
         likedPhotosOrdered_get, collectionsOrdered_get,
         likedPhotos_set, likedPhotos_update, 
-        collections_set, collections_add
+        collections_add, collections_edit
     };
 })

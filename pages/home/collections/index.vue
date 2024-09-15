@@ -4,6 +4,7 @@
     import type CollectionResponseModel from '~/types/responseModel_collection';
     
     const { currentUser_get, collections_add } = useAuthStore();
+    const { viewedCollection_set } = useCollectionStore();
 
     const isAddCollectionModalOpen = ref<boolean>(false);
 
@@ -17,6 +18,10 @@
     function handleAddCollection(newCollection: CollectionResponseModel) {
         collections_add(newCollection);
         userCollections.value = currentUser_get()?.collections;
+    }
+
+    function setCollectionAsViewed(clickedCollection: CollectionResponseModel) {
+        viewedCollection_set(clickedCollection);
     }
 
 </script>
@@ -37,7 +42,12 @@
                     <div class="bg-black h-[0.15rem] ml-3 shadow-xl shadow-black"></div>
                 </div>
                 <div class="grid grid-cols-[auto_1fr] my-4 gap-x-9">
-                    <FontAwesomeIcon :icon="faFolder" class="text-[25vw] width-full block drop-icon m-auto px-1 drop-shadow-[0rem_0rem_0.20rem_#222d]" :class="`text-[${collection.folderColor}]`" ></FontAwesomeIcon>
+                    <NuxtLink :to="{name: 'home-collections-id', params: { id: collection.releaseId}}" >
+                        <FontAwesomeIcon :icon="faFolder" class="text-[25vw] width-full block drop-icon m-auto px-1 drop-shadow-[0.25rem_0.25rem_0.3rem_#222d]" :class="`text-[${collection.folderColor}]`" 
+                            @click="setCollectionAsViewed(collection)"
+                        >
+                        </FontAwesomeIcon>
+                    </NuxtLink>
                     <div class="flex flex-col align-start justify-center">
                         <span class="text-lg block"> Created at: <p class="text-lg font-semibold inline"> {{ collection.collectionDetails.createdAt }} </p> </span>
                         <span class="text-lg block"> Collection size: <p class="text-lg font-semibold inline"> 30 / 50 </p> </span>
@@ -69,7 +79,6 @@
 
     <ModalsAddOrEditCollection  v-if="isAddCollectionModalOpen" :isEditMode="false" 
         @add="handleAddCollection" 
-        @edit="" 
         @modalClose="closeAddCollectionModal" 
     />
     

@@ -3,6 +3,7 @@ export default defineNuxtRouteMiddleware(async(to, from) => {
     // This fetch process is actually helpful, when user likes some photos and right after (not switching routes) he wants to unlike one.
     // This middleware helps deal with keeping likedPhotos up to date and to avoid some mismatches inside /liked UI.
 
+    console.log('EIJPGTEIJIPJGIPJIPJGPIEGIPJEIPRGEIJPG')
     // First get the user data, then perform the database query
     const { currentUser_get, likedPhotos_set } = useAuthStore();
     
