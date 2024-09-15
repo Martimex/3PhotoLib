@@ -2,9 +2,12 @@ import type CollectionResponseModel from "~/types/responseModel_collection";
 
 
 export default defineNuxtRouteMiddleware(async(to, from) => { 
-    
+
     const { currentUser_get } = useAuthStore();
-    const { viewedCollection_set } = useCollectionStore();
+    const { viewedCollection_set, viewedCollection_get } = useCollectionStore();
+
+    // If we visit the /id route from UI, then we should not proceed further over here
+    if(viewedCollection_get()) { return; }
 
     const currentUser = currentUser_get();
 
