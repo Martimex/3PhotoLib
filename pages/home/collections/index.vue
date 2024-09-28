@@ -16,6 +16,7 @@
     onMounted(() =>  { console.error('USER COLL: ', userCollections.value)});
 
     function handleAddCollection(newCollection: CollectionResponseModel) {
+        console.warn('NEW COLLECTION IS: ', newCollection);
         collections_add(newCollection);
         userCollections.value = currentUser_get()?.collections;
     }
@@ -50,7 +51,7 @@
                     </NuxtLink>
                     <div class="flex flex-col align-start justify-center">
                         <span class="text-lg block"> Created at: <p class="text-lg font-semibold inline"> {{ collection.collectionDetails.createdAt }} </p> </span>
-                        <span class="text-lg block"> Collection size: <p class="text-lg font-semibold inline"> 30 / 50 </p> </span>
+                        <span class="text-lg block"> Collection size: <p class="text-lg font-semibold inline"> {{ collection.collectionPhotos.length }} / 50 </p> </span>
                     </div>
                 </div>
             </div>

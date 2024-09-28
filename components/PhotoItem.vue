@@ -8,17 +8,19 @@ import { useSearchQueryStore } from '@/stores/searchQueryStore';
 import { computed, ref, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import type { availablePhotoTypes, availableProviderNames } from '../types/type_utilities';
+import type CollectionResponseModel from '~/types/responseModel_collection';
 import PhotoProvider from '@/providers/photoProvidersInitializer';
 import likeThePhoto from '@/composables/likeThePhoto';
 import keepPhotoAsUnliked from '@/composables/keepPhotoAsUnliked';
 
 const sqStore = useSearchQueryStore();
 const sStore = useStatusStore();
-const { photosToRemoveArray_modify  } = useStatusStore();
+const { photosToRemoveArray_modify, isAddToNewCollectionTextActive_set } = useStatusStore();
 const { likedPhotos_isEditModeOn } = storeToRefs(sStore);
 const { currPhotoProvider } = storeToRefs(sqStore);
-const { likedPhotosOrdered_get } = useAuthStore();
+const { likedPhotosOrdered_get, collections_add } = useAuthStore();
 const { photoIdToUnlike_get, photoIdToUnlike_set } = usePhotoStore();
+const { collectionsToAddPhoto } = useTemporalStore();
 
 const props = defineProps<{
     imgData: availablePhotoTypes,
@@ -26,11 +28,20 @@ const props = defineProps<{
 }>();
 
 const isPhotoLiked = ref<boolean>(false);
+const isPhotoRecentlyAddedToCollection = ref<boolean>(false);
 const isPhotoToRemove = ref<boolean>(false);
 const imgRef = ref<HTMLImageElement>();
 const isImgLoaded = ref<boolean>(false);
 const isPhotoPanelOpen = ref<boolean>(false);
-const providerObj = new PhotoProvider(props.provider).setCurrentProvider()
+const providerObj = new PhotoProvider(props.provider).setCurrentProvider();
+
+const isSaveToCollectionModalOpen = ref<boolean>(false);
+    const closeSaveToCollectionModal = () => { collectionsToAddPhoto.reset(); isSaveToCollectionModalOpen.value = false; }
+    const openSaveToCollectionModal = () => isSaveToCollectionModalOpen.value = true;
+
+const isAddCollectionModalOpen = ref<boolean>(false);
+    const closeAddCollectionModal = () => isAddCollectionModalOpen.value = false;
+    const openAddCollectionModal = () => isAddCollectionModalOpen.value = true;
 
 function handleImgLoadded() {
     console.log('Handled loading process !');
@@ -131,17 +142,43 @@ function handlePhotoLikedToggle() {
     handleLikePhoto({isPhotoLiked: isPhotoLiked.value, imgData: props.imgData, provider: props.provider}, isPhotoLiked);
 }
 
+function handleAddCollection(newCollection: CollectionResponseModel) {
+    // This function only happens when user adds a collection by a blue text "Add to new collection" (inside SaveOrMoveToCollection)
+    collections_add(newCollection);
+    collectionsToAddPhoto.addNew(newCollection);
+    isAddToNewCollectionTextActive_set(false);
+}
+
+function handleConfirmAddToCollection() {
+    isPhotoRecentlyAddedToCollection.value = true;
+}
+
 </script>
 
 <template>
     <div @click="[handleFullScreenPhotoView($event), checkIfPhotoToRemove()]" :class="{ loaded: isImgLoaded }"  class="blur-bg relative flex justify-center bg-cover bg-center mx-2 my-4 min-w-[80vw] max-w-[90vw] min-h-[20vh] rounded-md shadow-md shadow-black transition-opacity">
         <img ref="imgRef" @error="requestImagePhoto($event)" :src="providerObj?.getHighResImageURL(utilizePhotoProvider(props.imgData))" loading="lazy" class="min-h-[40vh] object-cover object-center transition-opacity rounded-md" />    
         <PhotoPanel v-if="Boolean(isPhotoPanelOpen && !likedPhotos_isEditModeOn)"  
-            :imgData="props.imgData" :provider="props.provider" :isPhotoLiked="isPhotoLiked" 
+            :imgData="props.imgData" :provider="props.provider" :isPhotoLiked="isPhotoLiked" :isNowAddedToCollection="isPhotoRecentlyAddedToCollection"
             @photoLikedToggle="handlePhotoLikedToggle"
+            @modalOpen="openSaveToCollectionModal"
         />
         <PhotoRemoveLayer v-if="Boolean(likedPhotos_isEditModeOn && isPhotoToRemove)" />
     </div>
+
+    <ModalsSaveOrMoveToCollection v-if="isSaveToCollectionModalOpen" 
+        :isMoveToMode="false" :imgData="props.imgData" :provider="props.provider"
+        @modalClose="closeSaveToCollectionModal" 
+        @addCollectionModalOpen="openAddCollectionModal"
+        @confirmAddedToCollection="handleConfirmAddToCollection"
+    />
+
+    <ModalsAddOrEditCollection v-if="isAddCollectionModalOpen"
+        :isEditMode="false"
+        @add="handleAddCollection" 
+        @modalClose="closeAddCollectionModal"
+    />
+
 </template>
 
 

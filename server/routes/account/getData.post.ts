@@ -12,11 +12,17 @@ export default defineEventHandler(async (event) => {
 
         if(!token) { return null; }
 
+        // WORK ON THIS, SINCE COLLECTION PHOTOS ARE NOT BEING INCLUDED ONCE PAGE IS REFRESHED. THIS DATA PIECE DISAPPEARS FOR NO REASON
+
         const theUser = await prisma.user.findUnique({
             where: { id: token },
             include: {
                 likedPhotos: true,
-                collections: true
+                collections: {
+                    include: {
+                        collectionPhotos: true,
+                    }
+                }
             }
         }).then(res => { 
             if(!res) { return null; }

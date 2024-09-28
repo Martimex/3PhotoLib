@@ -83,7 +83,7 @@ export default interface UnsplashPhoto {
             paypal_email: string | null,
         },
     },
-    tags: Tag[],
+    tags: Tag[],  // TAGS SEEMS TO BE REMOVED COMPLETELY BY UNSPLASH FROM THE API RESPONSE, SO THERE IS A BRIEF UPDATE NEEDED
 }
 
 type BreadCrumbs = {

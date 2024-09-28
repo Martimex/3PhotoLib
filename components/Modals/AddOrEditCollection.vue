@@ -145,7 +145,7 @@ const handleAddNewCollection = async function() {
                 <p class="text-lg font-semibold ml-3"> Short description </p>
                 
                 <div class="relative mt-3 mb-6">
-                    <textarea :ref="addCollectionForm.description.inputElement" maxlength="90" rows="5" placeholder="Describe the content or theme of the collection..." class="w-full p-4 bg-neutral-100 rounded-md -mb-2 border-b-4 shadow-[0.1rem_0.1rem_0.5rem_black]" v-model="addCollectionForm.description.text.value"> </textarea>
+                    <textarea :ref="addCollectionForm.description.inputElement" maxlength="90" rows="5" placeholder="Describe the content or theme of the collection..." class="text-base leading-6 w-full p-4 bg-neutral-100 rounded-md -mb-2 border-b-4 shadow-[0.1rem_0.1rem_0.5rem_black]" v-model="addCollectionForm.description.text.value"> </textarea>
                     <span :ref="addCollectionForm.description.errorMsgElement" class="absolute bottom-0 left-0 text-red-500 font-bold text-xs w-full inline-block text-center" :class="addCollectionForm.description.isTextCorrect.value? 'hidden' : 'inline-block'"> Error: Some error occured </span>
                 </div>
 

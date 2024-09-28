@@ -1,3 +1,5 @@
+import type PhotoResponseModel from "./responseModel_photo"
+
 export default interface CollectionResponseModel {
     id: string,
     userId: string,
@@ -5,7 +7,8 @@ export default interface CollectionResponseModel {
     name: string,
     description: string,
     folderColor: string,
-    collectionDetails: collectionDetailsObject
+    collectionDetails: collectionDetailsObject,
+    collectionPhotos: PhotoResponseModel[]
 };
 
 export type collectionDetailsObject = {

@@ -27,7 +27,7 @@ export const useAuthStore = defineStore('auth', () => {
         return currentUser.value;
     }
 
-    function currentUser_set(id: string, name: string, email: string, profileImage: string, memberSince: string, likedPhotos: any, collections: any): void {
+    function currentUser_set(id: string, name: string, email: string, profileImage: string, memberSince: string, likedPhotos: any, collections: CollectionResponseModel[]): void {
         currentUser.value = {
             id,
             name,
@@ -77,17 +77,18 @@ export const useAuthStore = defineStore('auth', () => {
         currentUser.value.likedPhotos = newValue;
     }
 
-    function collections_sortAscending(arrayOfCollections: PhotoResponseModel[][]) {
+    function collections_sortAscending(arrayOfCollections: CollectionResponseModel[]) {
+        return;
         // Reset the state and then reapply the sorted collections
         collectionsOrdered.value = [];
         console.warn('arrayofCollections; ', arrayOfCollections);
 
         return; 
 
-        for(let i=0; i<arrayOfCollections.length; i++) {
+/*         for(let i=0; i<arrayOfCollections.length; i++) {
             const collection_photoIDs = arrayOfCollections[i].map(collectionPhoto => collectionPhoto.photoId);
             collectionsOrdered.value.push(sortById(collection_photoIDs));
-        }
+        } */
     }
 
     function collectionsOrdered_get(): string[][] {
@@ -95,14 +96,16 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     function collections_add(newCollection: CollectionResponseModel) {
+        console.warn('FINALLY, COLLECTIONS ADD: ', newCollection);
         if(!currentUser.value) { return; }
-        currentUser.value.collections = [...currentUser.value.collections, newCollection];
+        currentUser.value.collections.push(newCollection);
     }
 
     function collections_edit(collectionEditData: CollectionResponseModel) {
         if(!currentUser.value) { return; }
-        const outDatedCollectionIndex = currentUser.value.collections.find((collection: CollectionResponseModel) => collection.releaseId === collectionEditData.releaseId)
+        const outDatedCollectionIndex = currentUser.value.collections.findIndex((collection: CollectionResponseModel) => collection.releaseId === collectionEditData.releaseId)
         if(outDatedCollectionIndex < 0) { return; }
+        console.log('edited!', currentUser.value.collections[outDatedCollectionIndex]);
         currentUser.value.collections[outDatedCollectionIndex] = collectionEditData;
     }
 

@@ -13,10 +13,11 @@ import PhotoProvider from '@/providers/photoProvidersInitializer';
 import handleLikePhoto from '@/composables/handleLikePhoto';
 
 const { photoIdToUnlike_set } = usePhotoStore();
-const { currentUser_set } = useAuthStore();
+const { currentUser_set, currentUser_get } = useAuthStore();
 
 function log() {
     console.log(`TODO: Finish the method for the icon`);
+    console.log('USER DATTA: ', currentUser_get());
 }
 
 /* onBeforeMount(() => {
@@ -24,25 +25,27 @@ function log() {
     isPhotoLiked.value = findId(`${props.provider}=${props.imgData.id}`, likedPhotosOrdered_get());
 }) */
 
-const photoPanelEmit = defineEmits(['photoLikedToggle']);
+const photoPanelEmit = defineEmits(['photoLikedToggle', 'modalOpen']);
 
 /* const isPhotoLiked = ref<boolean | null>(null); */
 
 const props = defineProps<{
     imgData: availablePhotoTypes,
     provider: availableProviderNames,
-    isPhotoLiked: boolean
+    isPhotoLiked: boolean,
+    isNowAddedToCollection: boolean
 }>();
-
 
 const [sqStore, psStore, aStore] = [useSearchQueryStore(), usePhotoStore(), useAuthStore()];
 const { currPhotoProvider } = storeToRefs(sqStore);
 const { viewedPhoto } = storeToRefs(psStore);
 const { likedPhotos_setEditMode, collections_setEditMode, asyncProcess_get, asyncProcess_set } = useStatusStore();
 
-
 const providerObj = new PhotoProvider(props.provider).setCurrentProvider();
 
+/* const isSaveToCollectionModalOpen = ref<boolean>(false);
+    const closeSaveToCollectionModal = () => isSaveToCollectionModalOpen.value = false;
+    const openSaveToCollectionModal = () => isSaveToCollectionModalOpen.value = true; */
 
 function setPhotoAsViewed() {
     viewedPhoto.value = props.imgData;
@@ -104,6 +107,8 @@ const photoTags = computed(() => providerObj?.retrievePhotoTags(utilizePhotoProv
     }
 } */
 
+onUnmounted(() => { console.warn('UNMOUNTED !!!!!!!!!!!!!')})
+
 </script>
 
 <!-- backdrop-blur-sm -->
@@ -135,11 +140,15 @@ const photoTags = computed(() => providerObj?.retrievePhotoTags(utilizePhotoProv
         <div data-role="panel" class="py-[1rem] px-[1rem] flex w-full items-end justify-between backdrop-blur-md
             border-t-2 border-white shadow-[0rem_-.25rem_.5rem_0rem_#fffa]
         ">
-            <FontAwesomeIcon :icon="faHeart" @click.stop="photoPanelEmit('photoLikedToggle')" class="text-3xl mx-[1.5rem] place-self-start" :class="isPhotoLiked && `text-red-500 drop-shadow-[0_0_0.5rem_red]`"></FontAwesomeIcon>
+            <FontAwesomeIcon :icon="faHeart" @click.stop="photoPanelEmit('photoLikedToggle')" class="text-3xl mx-[1.5rem] place-self-start" :class="isPhotoLiked && `text-red-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#ef4444]`"></FontAwesomeIcon>
             <FontAwesomeIcon :icon="faDownload" @click.stop="log()" class="text-3xl mx-[1.5rem] place-self-start"></FontAwesomeIcon>
-            <FontAwesomeIcon :icon="faSave" @click.stop="log()" class="text-3xl mx-[1.5rem] place-self-start"></FontAwesomeIcon>
+            <FontAwesomeIcon :icon="faSave" @click.stop="$emit('modalOpen')" class="text-3xl mx-[1.5rem] place-self-start" :class="isNowAddedToCollection && `text-yellow-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#eab308]`"></FontAwesomeIcon>
         </div>
     </div>
+
+<!--     <ModalsSaveOrMoveToCollection v-if="isSaveToCollectionModalOpen" :isMoveToMode="false"
+        @modalClose="closeSaveToCollectionModal"
+    /> -->
     
 </template>
 

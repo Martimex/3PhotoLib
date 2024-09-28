@@ -39,8 +39,8 @@ model Collection {
 
   userId                String
 
-  User   User?   @relation(fields: [userId], references: [id])
-  Photos Photo[]
+  collectionPhotos Photo[]
+  User   User  @relation(fields: [userId], references: [id])
 }
 
 model Photo {

@@ -5,13 +5,26 @@ import { utilizePhotoProvider } from '~/types/type_utilities';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faHeart, faDownload, faSave, faLink, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import handleLikePhoto from '@/composables/handleLikePhoto';
+import type CollectionResponseModel from '~/types/responseModel_collection';
 
 const [sqStore, pStore] = [useSearchQueryStore(), usePhotoStore()];
-const { likedPhotosOrdered_get, currentUser_get } = useAuthStore();
+const { likedPhotosOrdered_get, currentUser_get, collections_add } = useAuthStore();
+const { isAddToNewCollectionTextActive_set } = useStatusStore();
 const { currPhotoProvider } = storeToRefs(sqStore);
 const { viewedPhoto } = usePhotoStore() as any;
 
+const { collectionsToAddPhoto } = useTemporalStore();
+
 const isPhotoLiked = ref<boolean>(false);
+const isPhotoRecentlyAddedToCollection = ref<boolean>(false);
+
+const isSaveToCollectionModalOpen = ref<boolean>(false);
+    const closeSaveToCollectionModal = () => { collectionsToAddPhoto.reset(); isSaveToCollectionModalOpen.value = false; }
+    const openSaveToCollectionModal = () => isSaveToCollectionModalOpen.value = true;
+
+const isAddCollectionModalOpen = ref<boolean>(false);
+    const closeAddCollectionModal = () => isAddCollectionModalOpen.value = false;
+    const openAddCollectionModal = () => isAddCollectionModalOpen.value = true;
 
 onBeforeMount(() => {
     console.error('ONBEFORE MOUNT TRIGGERED ! User is: ', currentUser_get());
@@ -25,6 +38,17 @@ definePageMeta({
 
 function handlePhotoLikedToggle() {
     handleLikePhoto({isPhotoLiked: isPhotoLiked.value, imgData: viewedPhoto, provider: sqStore.currPhotoProviderName }, isPhotoLiked);
+}
+
+function handleConfirmAddToCollection() {
+    isPhotoRecentlyAddedToCollection.value = true;
+}
+
+function handleAddCollection(newCollection: CollectionResponseModel) {
+    // This function only happens when user adds a collection by a blue text "Add to new collection" (inside SaveOrMoveToCollection)
+    collections_add(newCollection);
+    collectionsToAddPhoto.addNew(newCollection);
+    isAddToNewCollectionTextActive_set(false);
 }
 
 </script>
@@ -41,7 +65,7 @@ function handlePhotoLikedToggle() {
                 <div class="p-3 py-5 flex flex-col justify-between align-top shadow-md shadow-red-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0"
                     @click="handlePhotoLikedToggle"
                 >
-                    <FontAwesomeIcon :icon="faHeart" class="text-3xl text-[#333]" :class="isPhotoLiked && `text-red-500 drop-shadow-[0.15rem_0.15rem_0.25rem_#111111]`" />
+                    <FontAwesomeIcon :icon="faHeart" class="text-3xl text-[#333]" :class="isPhotoLiked && `text-red-400 drop-shadow-[0.15rem_0.15rem_0.125rem_#ef4444]`" />
                     <span class="text-center hidden">Like</span>
                 </div>
                 <div class="px-3 py-5 flex flex-col justify-center align-top shadow-md shadow-green-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0">
@@ -52,8 +76,10 @@ function handlePhotoLikedToggle() {
                     <FontAwesomeIcon :icon="faLink" class="text-3xl text-[#333]" />
                     <span class="text-center hidden">Website</span>
                 </div>
-                <div class="p-3 flex flex-col justify-center align-top shadow-md shadow-yellow-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0">
-                    <FontAwesomeIcon :icon="faSave" class="text-3xl text-[#333]" />
+                <div class="p-3 flex flex-col justify-center align-top shadow-md shadow-yellow-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0"
+                    @click="openSaveToCollectionModal"
+                >
+                    <FontAwesomeIcon :icon="faSave" class="text-3xl text-[#333]" :class="isPhotoRecentlyAddedToCollection && `text-yellow-400 drop-shadow-[0.15rem_0.15rem_0.125rem_#eab308]`" />
                     <span class="text-center hidden">Add</span>
                 </div>
             </div>
@@ -88,6 +114,20 @@ function handlePhotoLikedToggle() {
             <p class="mb-3"><span class="text-base my-3 mr-2">Support the creator by visiting his profile on the Provider website. Also you can check out the original image source </span> <a :href="currPhotoProvider?.getPhotoOriginalSource(utilizePhotoProvider(viewedPhoto))" target="_blank" class="-mx-1 underline font-medium italic text-base"> <FontAwesomeIcon :icon="faUpRightFromSquare" /> available  here </a>  </p>
 
         </section>
+
+        <ModalsSaveOrMoveToCollection v-if="isSaveToCollectionModalOpen" 
+            :isMoveToMode="false" :imgData="viewedPhoto" :provider="sqStore.currPhotoProviderName" 
+            @modalClose="closeSaveToCollectionModal" 
+            @addCollectionModalOpen="openAddCollectionModal"
+            @confirmAddedToCollection="handleConfirmAddToCollection"
+        />
+
+        <ModalsAddOrEditCollection v-if="isAddCollectionModalOpen"
+            :isEditMode="false"
+            @add="handleAddCollection" 
+            @modalClose="closeAddCollectionModal"
+        />
+
     </section>
     <ActionPanel />
 </template>

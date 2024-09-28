@@ -27,3 +27,6 @@ export type registrationFormProp = {text: any, isTextCorrect: any, inputElement:
 // When we access session data, and the session is active, the user data will be fetched, controlled by this type
 // LATER ON, CHANGE "ANY" TYPE FOR likedPhotos & collections AND REPLACE THEIR TYPES WITH APPROPIATE ONES
 export type userData = { id: string, name: string, email: string, profileImage: string, memberSince: string, likedPhotos: any, collections: any }
+
+// Used to safe type account limitation variables and values
+export type accountLimitationsData = { COLLECTIONS_LIMIT: number, PHOTOS_IN_COLLECTION_LIMIT: number, LIKED_PHOTOS_LIMIT: number }

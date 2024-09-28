@@ -9,7 +9,8 @@ export default defineEventHandler(async (event) => {
         const reqBody = await readBody(event).then(data => { return { collectionID: data.collectionID, userID: data.userID } } );
 
         const requestedCollection = await prisma.collection.findUnique({
-            where: { releaseId: parseInt(reqBody.collectionID), userId: reqBody.userID }
+            where: { releaseId: parseInt(reqBody.collectionID), userId: reqBody.userID },
+            include: { collectionPhotos: true }
         });
 
         if(!requestedCollection) { throw new Error('[MIDDLEWARE:: ] ERROR - Requested collection is not found') }

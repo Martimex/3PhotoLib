@@ -34,7 +34,7 @@ export default async function handleLikePhoto({isPhotoLiked, imgData, provider}:
                 const currentUser = await $fetch('/account/getData', { method: 'post'});
 
                 if(currentUser) {
-                    currentUser_set(currentUser.id, currentUser.name, currentUser.email, currentUser.profile_image, currentUser.member_since, currentUser.likedPhotos, currentUser.collections);
+                    currentUser_set(currentUser.id, currentUser.name, currentUser.email, currentUser.profile_image, currentUser.member_since, currentUser.likedPhotos, currentUser.collections as any);
                 }
 
                 await navigateTo('/home/liked');

@@ -10,7 +10,7 @@ export default defineEventHandler(async(event) => {
 
         const date_now = new Date().toLocaleDateString(); 
 
-        const newCollection = await prisma.collection.create({
+        const collection_setup = await prisma.collection.create({
             data: {
                 User: { connect: { id: reqBody.currentUser.id } },
                 name: reqBody.name,
@@ -21,6 +21,13 @@ export default defineEventHandler(async(event) => {
                 } as collectionDetailsObject,
             }
         });
+
+        const newCollection = await prisma.collection.findUnique({
+            where: { releaseId: collection_setup.releaseId },
+            include: {
+                collectionPhotos: true,
+            }
+        })
 
         return newCollection;
     }
