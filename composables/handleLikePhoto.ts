@@ -9,9 +9,12 @@ export default async function handleLikePhoto({isPhotoLiked, imgData, provider}:
     const { photoIdToUnlike_set } = usePhotoStore();
 
     const currentUser = currentUser_get();
+    const isAsyncRunning = asyncProcess_get();
     if(!currentUser) { throw new Error('User not found! Photo cannot be further liked')}
 
-    if(asyncProcess_get()) { 
+    console.log('ASYNC PROCESS GET123: ', isAsyncRunning);
+
+    if(isAsyncRunning) { 
         // Here, beside returning we will have to add a dialog box to inform user that a process is currently running
         return; 
     }
@@ -20,6 +23,8 @@ export default async function handleLikePhoto({isPhotoLiked, imgData, provider}:
         // Handle showup of liked photos deletion panel and automatically mark the unliked photo as a removed one
         /* if(typeof eventEmitter === 'function') { eventEmitter('photoDislike', `${provider}=${imgData.id}`); } */
         /* else { keepPhotoAsUnliked(eventEmitter, `${provider}=${imgData.id}`) } */
+        asyncProcess_set(true);
+
         keepPhotoAsUnliked(isPhotoLikedRef, {id: '', provider: provider, photoId: `${provider}=${imgData.id}`, photoDetails: imgData})
         const currentRoute = useRoute().name;
         if(currentRoute) {
@@ -42,6 +47,8 @@ export default async function handleLikePhoto({isPhotoLiked, imgData, provider}:
 
             likedPhotos_setEditMode(true);
         }
+
+        asyncProcess_set(false);
     }
 
     
