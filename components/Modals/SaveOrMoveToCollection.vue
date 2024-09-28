@@ -83,8 +83,8 @@ onUnmounted(() => {
     <div class="h-screen w-full bg-[#222b] fixed top-0 left-0 z-10 backdrop-blur flex items-center justify-center overflow-auto" @click.self="!asyncProcess_get() && modalEmits('modalClose')">
         <section class="bg-[#eee] m-auto w-full h-fit px-3 py-6 rounded-md shadow-[0.3rem_0.3rem_0.5rem_#222] border-2 border-[#222] border-solid">
             <h2 class="max-w-[80%] align-middle mx-auto text-4xl font-bold text-center py-6 mb-9 border-[#222] border-solid border-b-4"> {{ props.isMoveToMode? `Move to collection` : `Save to collection` }} </h2>
-            <div>
-                <img ref="imgRef" :src="providerObj?.getHighResImageURL(utilizePhotoProvider(props.imgData))" loading="lazy" class="min-h-[40vh] mb-6 object-cover object-center transition-opacity rounded-md shadow-lg shadow-[#222]" />    
+            <div class="flex justify-center">
+                <img ref="imgRef" :src="providerObj?.getHighResImageURL(utilizePhotoProvider(props.imgData))" loading="lazy" class="min-h-[40vh] max-h-[75vh] mb-6 object-cover object-center transition-opacity rounded-md shadow-lg shadow-[#222]" />    
             </div>
             <div class="flex flex-col mb-6">
                 <ModalCollectionListItem v-for="collection in allCollections" :key="`id-${collection.releaseId}`" :collectionData="collection" :viewedImageID="`${props.provider}=${props.imgData.id}`"
