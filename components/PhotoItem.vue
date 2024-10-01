@@ -16,7 +16,7 @@ import keepPhotoAsUnliked from '@/composables/keepPhotoAsUnliked';
 const sqStore = useSearchQueryStore();
 const sStore = useStatusStore();
 const { photosToRemoveArray_modify, isAddToNewCollectionTextActive_set } = useStatusStore();
-const { likedPhotos_isEditModeOn } = storeToRefs(sStore);
+const { collectionsOrlikedPhotos_isEditModeOn } = storeToRefs(sStore);
 const { currPhotoProvider } = storeToRefs(sqStore);
 const { likedPhotosOrdered_get, collections_add } = useAuthStore();
 const { photoIdToUnlike_get, photoIdToUnlike_set } = usePhotoStore();
@@ -70,15 +70,24 @@ onUnmounted(() => {
     isPhotoToRemove.value = false;
 })
 
-watch(likedPhotos_isEditModeOn, () => {
+watch(collectionsOrlikedPhotos_isEditModeOn, () => {
 
     isPhotoPanelOpen.value = false;
 
-    if(!likedPhotos_isEditModeOn.value) {
+    if(!collectionsOrlikedPhotos_isEditModeOn.value) {
         isPhotoToRemove.value = false;
     }
 });
 
+/* watch(collections_isEditModeOn, () => {
+
+    isPhotoPanelOpen.value = false;
+
+    if(!collections_isEditModeOn.value) {
+        isPhotoToRemove.value = false;
+    }
+})
+ */
 //const photoData = computed(() => props.imgData);
 
 const getBgImg = function() {
@@ -122,7 +131,7 @@ const handleFullScreenPhotoView = function(ev: Event) {
 }
 
 const checkIfPhotoToRemove = function() {
-    if(!likedPhotos_isEditModeOn.value) return;
+    if(!collectionsOrlikedPhotos_isEditModeOn.value) return;
     isPhotoToRemove.value = !isPhotoToRemove.value;
     //photoEmit('photosToDeleteCount', isPhotoToRemove.value);
     photosToRemoveArray_modify({id: '', provider: props.provider, photoId: `${props.provider}=${props.imgData.id}`, photoDetails: props.imgData});
@@ -158,12 +167,12 @@ function handleConfirmAddToCollection() {
 <template>
     <div @click="[handleFullScreenPhotoView($event), checkIfPhotoToRemove()]" :class="{ loaded: isImgLoaded }"  class="blur-bg relative flex justify-center bg-cover bg-center mx-2 my-4 min-w-[80vw] max-w-[90vw] min-h-[20vh] rounded-md shadow-md shadow-black transition-opacity">
         <img ref="imgRef" @error="requestImagePhoto($event)" :src="providerObj?.getHighResImageURL(utilizePhotoProvider(props.imgData))" loading="lazy" class="min-h-[40vh] object-cover object-center transition-opacity rounded-md" />    
-        <PhotoPanel v-if="Boolean(isPhotoPanelOpen && !likedPhotos_isEditModeOn)"  
+        <PhotoPanel v-if="Boolean(isPhotoPanelOpen && !collectionsOrlikedPhotos_isEditModeOn)"  
             :imgData="props.imgData" :provider="props.provider" :isPhotoLiked="isPhotoLiked" :isNowAddedToCollection="isPhotoRecentlyAddedToCollection"
             @photoLikedToggle="handlePhotoLikedToggle"
             @modalOpen="openSaveToCollectionModal"
         />
-        <PhotoRemoveLayer v-if="Boolean(likedPhotos_isEditModeOn && isPhotoToRemove)" />
+        <PhotoRemoveLayer v-if="Boolean((collectionsOrlikedPhotos_isEditModeOn) && isPhotoToRemove)" />
     </div>
 
     <ModalsSaveOrMoveToCollection v-if="isSaveToCollectionModalOpen" 

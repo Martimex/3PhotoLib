@@ -2,23 +2,23 @@
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import LikedPhotosActionPanel from '@/components/Panels/LikedPhotosActionPanel.vue';
-import LikedPhotosEditPanel from '@/components/Panels/LikedPhotosEditPanel.vue';
+import LikedOrSavedPhotosEditPanel from '~/components/Panels/LikedOrSavedPhotosEditPanel.vue';
+import { getLikedPhotosLimit } from '#imports';
 import type PhotoResponseModel from '@/types/responseModel_photo';
+import type { availablePhotoStorages } from '~/types/type_utilities';
 
 /* definePageMeta({
     middleware: 'fetch-liked-photos'
 }) */
 
-
 const sStore = useStatusStore();
 
 const { currentUser_get, likedPhotos_set, likedPhotos_update } = useAuthStore();
-const { isRequestPending, likedPhotos_isEditModeOn } = storeToRefs(sStore);
-const { likedPhotos_setEditMode, photosToRemoveArray_reset } = useStatusStore();
+const { isRequestPending, collectionsOrlikedPhotos_isEditModeOn } = storeToRefs(sStore);
+const { collectionsOrlikedPhotos_setEditMode, photosToRemoveArray_reset } = useStatusStore();
 const { photoIdToUnlike_set, photoIdToUnlike_get } = usePhotoStore();
 
 const userLikedPhotos = ref(currentUser_get()?.likedPhotos);
-const LIKED_PHOTOS_MAX = 100;
 
 function handleCurrentPhotosUpdate(deletedPhotos: PhotoResponseModel[]) {
     likedPhotos_update('remove', deletedPhotos);
@@ -41,7 +41,7 @@ onMounted(() => {
 
 onUnmounted(() => {
     photoIdToUnlike_set(null);
-    likedPhotos_setEditMode(false);
+    collectionsOrlikedPhotos_setEditMode(false);
     photosToRemoveArray_reset();
 })
 
@@ -56,7 +56,7 @@ onUnmounted(() => {
         <p class="py-3"> You are able to manage your liked photo collection at any time inside this panel. </p>
         <div class="flex items-center justify-start w-fit py-6 px-4 my-6 border-black rounded-md border-2">
             <FontAwesomeIcon :icon="faHeart" class="text-5xl text-red-500 mr-4"></FontAwesomeIcon>
-            <h2 class="text-4xl font-semibold"> {{ userLikedPhotos.length }} / {{ LIKED_PHOTOS_MAX }} </h2>
+            <h2 class="text-4xl font-semibold"> {{ userLikedPhotos.length }} / {{ getLikedPhotosLimit() }} </h2>
         </div>
 
         <Transition> 
@@ -75,7 +75,7 @@ onUnmounted(() => {
 
     </section>
 
-    <LikedPhotosEditPanel v-if="likedPhotos_isEditModeOn" @photosRemove="handleCurrentPhotosUpdate"  />
+    <LikedOrSavedPhotosEditPanel v-if="collectionsOrlikedPhotos_isEditModeOn" storageType="liked" @photosRemove="handleCurrentPhotosUpdate"  />
     <LikedPhotosActionPanel v-else />
 </template>
 

@@ -2,16 +2,22 @@
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
 import type PhotoResponseModel from '@/types/responseModel_photo';
+import type { availablePhotoStorages } from '~/types/type_utilities';
 
-const { likedPhotos_setEditMode, photosToRemoveArray_get, photosToRemoveArray_reset } = useStatusStore();
+const { collectionsOrlikedPhotos_setEditMode, photosToRemoveArray_get, photosToRemoveArray_reset } = useStatusStore();
 const { currentUser_get } = useAuthStore();
+const { viewedCollection_get } = useCollectionStore();
 
-const likedPhotoEmits = defineEmits(['photosRemove']);
+const collectionsOrlikedPhotosEmits = defineEmits(['photosRemove']);
+
+const props = defineProps<{
+    storageType: availablePhotoStorages,
+}>();
 
 const userLikedPhotos = ref(currentUser_get()?.likedPhotos);
 
 function handleCloseEditMode() {
-    likedPhotos_setEditMode(false);
+    collectionsOrlikedPhotos_setEditMode(false);
     photosToRemoveArray_reset();
 }
 
@@ -24,14 +30,29 @@ async function handlePhotosDeletion() {
     // If no photos are picked, then this button will work as close
     if(!photosToBeRemoved.length) { handleCloseEditMode(); return; }
 
+    console.warn('PHOTOSTOBEREMOVED: =111 , ', photosToBeRemoved);
+
     const currentUserData = currentUser_get();
+    const viewedCollectionData = viewedCollection_get();
 
     if(!currentUserData) { throw new Error('ERROR: User data not found !')}
+    if(!viewedCollectionData) { throw new Error('ERROR: Viewed collection data not found !')}
 
-    await $fetch(`/photo/delete`, { method: 'post', body: {
-        photosToRemoveArray: photosToBeRemoved,
-        userData: currentUserData
-    }});
+    if(props.storageType === 'liked') {
+        await $fetch(`/photo/deleteFromLiked`, { method: 'post', body: {
+            photosToRemoveArray: photosToBeRemoved,
+            userData: currentUserData
+        }});
+    }
+
+    else if(props.storageType === 'collection') {
+        await $fetch(`/photo/deleteFromCollection`, { method: 'post', body: {
+            photosToRemoveArray: photosToBeRemoved,
+            collectionID: viewedCollectionData.releaseId
+        }});
+    }
+
+
 
     //const userLikedPhotos_copy = [...userLikedPhotos.value];
     //photosToBeRemoved.forEach((photo, index) => userLikedPhotos_copy.splice(userLikedPhotos_copy.indexOf(photosToBeRemoved[index]), 1));
@@ -41,7 +62,7 @@ async function handlePhotosDeletion() {
         }
     ); */
 
-    likedPhotoEmits('photosRemove', photosToBeRemoved);
+    collectionsOrlikedPhotosEmits('photosRemove', photosToBeRemoved);
 
     handleCloseEditMode();
 
@@ -49,7 +70,7 @@ async function handlePhotosDeletion() {
 }
 
 onUnmounted(() => {
-    likedPhotos_setEditMode(false);
+    collectionsOrlikedPhotos_setEditMode(false);
 })
 
 

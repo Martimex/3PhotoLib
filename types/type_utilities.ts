@@ -4,6 +4,7 @@ import type UnsplashPhoto from "./photoItem_unsplash";
 
 export type availablePhotoTypes = PixabayPhoto | PexelsPhoto | UnsplashPhoto;
 export type availableProviderNames = 'pixabay' | 'pexels' | 'unsplash';
+export type availablePhotoStorages = 'liked' | 'collection';
 export type numberInputKeys = {current: number, default: number, min: number, max: number};
 
 // This is for URL validation purposes - if they URL contain a valid param, we need to identify it, and assign a variable to the
@@ -30,3 +31,8 @@ export type userData = { id: string, name: string, email: string, profileImage: 
 
 // Used to safe type account limitation variables and values
 export type accountLimitationsData = { COLLECTIONS_LIMIT: number, PHOTOS_IN_COLLECTION_LIMIT: number, LIKED_PHOTOS_LIMIT: number }
+
+// Used to provide better type safety for only Photo ID's in Collections (ordered)
+export type orderedCollectionsPhotoIDs = {
+    [key: `${string}`]: string[],
+}

@@ -61,6 +61,30 @@ async function handleSaveToCollection() {
     asyncProcess_set(false);
 }
 
+const requestImagePhoto = async function(ev: Event) {
+    // Pixabay is probably constantly changing IMG URL's, in which case the specific photo URL has to be reassigned with photo ID search,
+    // and also appropiate DB data needs to be updated.
+    const targetElement = ev.target as HTMLImageElement;
+
+    const requestedPhoto =  providerObj?.getSinglePhotoById(utilizePhotoProvider(props.imgData.id as any));
+    const data = await $fetch(`${requestedPhoto}`, { headers: providerObj?.getSearchRequestHeaders() })
+        .then(res => providerObj?.getSinglePhoto(utilizePhotoProvider(res as availablePhotoTypes )));
+
+    if(!data) { throw new Error('The photo data fetch has failed'); }
+
+    console.error(`🪲🪲🪲 THE URL FOR LARGE IMAGE HAS ELAPSED AND THEREFORE NEEDS TO BE UPDATED. NOTE ITS DEBUG MESSAGE ONLY. ⭐⭐⭐ The provider is: `, props.provider);
+
+    if(providerObj) {
+        targetElement.src = providerObj?.getHighResImageURL(utilizePhotoProvider(data))
+    }
+
+    // Last of all lets update the photoDetails object (database photo record)
+    await $fetch(`/photo/updateData`, { method: 'post', body: {
+        photoData: data,
+        photoID: `${props.provider}=${data.id}`
+    }});
+}
+
 onMounted(() => console.error(currentUser_get()?.collections))
 
 /* watch(shouldAddToNewCollectionTextBeDisplayed, () => {
@@ -84,7 +108,7 @@ onUnmounted(() => {
         <section class="bg-[#eee] m-auto w-full h-fit px-3 py-6 rounded-md shadow-[0.3rem_0.3rem_0.5rem_#222] border-2 border-[#222] border-solid">
             <h2 class="max-w-[80%] align-middle mx-auto text-4xl font-bold text-center py-6 mb-9 border-[#222] border-solid border-b-4"> {{ props.isMoveToMode? `Move to collection` : `Save to collection` }} </h2>
             <div class="flex justify-center">
-                <img ref="imgRef" :src="providerObj?.getHighResImageURL(utilizePhotoProvider(props.imgData))" loading="lazy" class="min-h-[40vh] max-h-[75vh] mb-6 object-cover object-center transition-opacity rounded-md shadow-lg shadow-[#222]" />    
+                <img ref="imgRef" :src="providerObj?.getHighResImageURL(utilizePhotoProvider(props.imgData))" @error="requestImagePhoto" loading="lazy" class="min-h-[40vh] max-h-[75vh] mb-6 object-cover object-center transition-opacity rounded-md shadow-lg shadow-[#222]" />    
             </div>
             <div class="flex flex-col mb-6">
                 <ModalCollectionListItem v-for="collection in allCollections" :key="`id-${collection.releaseId}`" :collectionData="collection" :viewedImageID="`${props.provider}=${props.imgData.id}`"

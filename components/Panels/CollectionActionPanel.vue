@@ -2,13 +2,13 @@
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faArrowLeft, faTools, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
-const { collections_setEditMode } = useStatusStore();
+const { collectionsOrlikedPhotos_setEditMode } = useStatusStore();
 
 const collectionsEmits = defineEmits(['openEditCollection']);
 
 
 function handleSetEditMode() {
-    collections_setEditMode(true);
+    collectionsOrlikedPhotos_setEditMode(true);
 }
 
 </script>

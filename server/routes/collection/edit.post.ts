@@ -10,7 +10,7 @@ export default defineEventHandler(async(event) => {
 
         const newCollection = await prisma.collection.update({
             where: { userId: reqBody.currentUser.id, releaseId: reqBody.releaseId },
-            
+            include: { collectionPhotos: true },
             data: {
                 name: reqBody.name,
                 description: reqBody.description,

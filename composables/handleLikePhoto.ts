@@ -5,7 +5,7 @@ import keepPhotoAsUnliked from './keepPhotoAsUnliked';
 export default async function handleLikePhoto({isPhotoLiked, imgData, provider}: {isPhotoLiked: boolean, imgData: availablePhotoTypes, provider:  availableProviderNames}, isPhotoLikedRef: globalThis.Ref<boolean>) {
     
     const { currentUser_get, currentUser_set, likedPhotos_update } = useAuthStore();
-    const { asyncProcess_get, asyncProcess_set, likedPhotos_setEditMode } = useStatusStore();
+    const { asyncProcess_get, asyncProcess_set, collectionsOrlikedPhotos_setEditMode } = useStatusStore();
     const { photoIdToUnlike_set } = usePhotoStore();
 
     const currentUser = currentUser_get();
@@ -45,7 +45,7 @@ export default async function handleLikePhoto({isPhotoLiked, imgData, provider}:
                 await navigateTo('/home/liked');
             }
 
-            likedPhotos_setEditMode(true);
+            collectionsOrlikedPhotos_setEditMode(true);
         }
 
         asyncProcess_set(false);

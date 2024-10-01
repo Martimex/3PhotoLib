@@ -1,4 +1,4 @@
-import type { availablePhotoTypes, userData } from "~/types/type_utilities";
+import type { availablePhotoTypes, orderedCollectionsPhotoIDs, userData } from "~/types/type_utilities";
 import type PhotoResponseModel from "~/types/responseModel_photo"
 import type CollectionResponseModel from "~/types/responseModel_collection";
 import { sortById } from "#imports";
@@ -8,7 +8,7 @@ export const useAuthStore = defineStore('auth', () => {
     const isAuthenticated = ref<boolean>(false);
     const currentUser = ref<null | userData>(null); 
     const likedPhotosOrdered = ref<string[]>([]); 
-    const collectionsOrdered = ref<string[][]>([]);
+    const collectionsOrdered = ref<orderedCollectionsPhotoIDs>({});
 
     // We will store a copy of cookie value in case when user manually changes the cookie. In crucial parts there will be performed
     // a check if cookie value equals this varaible value. If they mismatch or cookie is not present (user deletes it), user will be
@@ -77,21 +77,44 @@ export const useAuthStore = defineStore('auth', () => {
         currentUser.value.likedPhotos = newValue;
     }
 
-    function collections_sortAscending(arrayOfCollections: CollectionResponseModel[]) {
-        return;
-        // Reset the state and then reapply the sorted collections
-        collectionsOrdered.value = [];
-        console.warn('arrayofCollections; ', arrayOfCollections);
+    //---------------------------------------------------------------------------
 
-        return; 
+    function collections_updatePhotos(collectionReleaseID: number, photosToRemoveArr: PhotoResponseModel[]) {
+        // This one is for removing photos only (BUT NOT REMOVING THE COLLECTION ITSELF)
+        if(!currentUser.value) return;
+        const currentCollectionToBeUpdated_index = currentUser.value.collections.findIndex((col: CollectionResponseModel) => col.releaseId === collectionReleaseID);
+        const photosToRemoveArr_onlyPhotoIDs_sorted = sortById(photosToRemoveArr.map(el => el.photoId));
+        const collectionPhotosUpdated = [...currentUser.value.collections[currentCollectionToBeUpdated_index].collectionPhotos].filter(el => {
+            return Boolean(!findId(el.photoId, photosToRemoveArr_onlyPhotoIDs_sorted));
+        });
 
-/*         for(let i=0; i<arrayOfCollections.length; i++) {
-            const collection_photoIDs = arrayOfCollections[i].map(collectionPhoto => collectionPhoto.photoId);
-            collectionsOrdered.value.push(sortById(collection_photoIDs));
-        } */
+        currentUser.value.collections[currentCollectionToBeUpdated_index].collectionPhotos = collectionPhotosUpdated;
+
+        // Last off, sync the order version with current, local likedPhotos array
+        singleCollection_sortAscending(currentUser.value.collections[currentCollectionToBeUpdated_index]);
     }
 
-    function collectionsOrdered_get(): string[][] {
+    function singleCollection_sortAscending(collectionToUpdate: CollectionResponseModel) {
+        const collectionsOrdered_deepCopy = JSON.parse(JSON.stringify(collectionsOrdered.value));
+        collectionsOrdered_deepCopy[collectionToUpdate.releaseId] = sortById(collectionToUpdate.collectionPhotos.map(photo => photo.photoId));
+
+        collectionsOrdered.value = collectionsOrdered_deepCopy;
+    }
+
+    function collections_sortAscending(allCollectionsObj: CollectionResponseModel[] /* orderedCollectionsPhotoIDs */) {
+        const orderedObjForUpdate: orderedCollectionsPhotoIDs  = {};
+        const allCollectionsKeys = allCollectionsObj.map(collection => collection.releaseId);
+        for(let collectionKeyNo=0; collectionKeyNo<allCollectionsKeys.length; collectionKeyNo++ ) {
+            const currentCollectionToBeSorted = allCollectionsObj.find((col => col.releaseId === allCollectionsKeys[collectionKeyNo]))
+            if(currentCollectionToBeSorted) {
+                orderedObjForUpdate[allCollectionsKeys[collectionKeyNo]] = sortById(currentCollectionToBeSorted.collectionPhotos.map(photo => photo.photoId));
+            }
+            else { /*This should generally never happen. its for debugging purposes */ throw new Error('Error while trying to sort collection photo IDs'); }
+        }
+        collectionsOrdered.value =  orderedObjForUpdate;
+    }
+
+    function collectionsOrdered_get(): orderedCollectionsPhotoIDs {
         return collectionsOrdered.value;
     }
 
@@ -121,6 +144,6 @@ export const useAuthStore = defineStore('auth', () => {
     return { isAuthenticated_get, isAuthenticated_set, currentUser_get, currentUser_set, currentUser_clear,  authenticateUser,
         likedPhotosOrdered_get, collectionsOrdered_get,
         likedPhotos_set, likedPhotos_update, 
-        collections_add, collections_edit
+        collections_add, collections_edit, collections_updatePhotos
     };
 })

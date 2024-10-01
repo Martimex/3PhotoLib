@@ -5,6 +5,8 @@ import { utilizePhotoProvider } from '~/types/type_utilities';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faHeart, faDownload, faSave, faLink, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import handleLikePhoto from '@/composables/handleLikePhoto';
+import PhotoProvider from '~/providers/photoProvidersInitializer';
+import type { availablePhotoTypes } from '~/types/type_utilities';
 import type CollectionResponseModel from '~/types/responseModel_collection';
 
 const [sqStore, pStore] = [useSearchQueryStore(), usePhotoStore()];
@@ -12,6 +14,7 @@ const { likedPhotosOrdered_get, currentUser_get, collections_add } = useAuthStor
 const { isAddToNewCollectionTextActive_set } = useStatusStore();
 const { currPhotoProvider } = storeToRefs(sqStore);
 const { viewedPhoto } = usePhotoStore() as any;
+const providerObj = new PhotoProvider(sqStore.currPhotoProviderName).setCurrentProvider();
 
 const { collectionsToAddPhoto } = useTemporalStore();
 
@@ -51,6 +54,30 @@ function handleAddCollection(newCollection: CollectionResponseModel) {
     isAddToNewCollectionTextActive_set(false);
 }
 
+const requestImagePhoto = async function(ev: Event) {
+    // Pixabay is probably constantly changing IMG URL's, in which case the specific photo URL has to be reassigned with photo ID search,
+    // and also appropiate DB data needs to be updated.
+    const targetElement = ev.target as HTMLImageElement;
+
+    const requestedPhoto =  providerObj?.getSinglePhotoById(utilizePhotoProvider(pStore.viewedPhoto?.id as any));
+    const data = await $fetch(`${requestedPhoto}`, { headers: providerObj?.getSearchRequestHeaders() })
+        .then(res => providerObj?.getSinglePhoto(utilizePhotoProvider(res as availablePhotoTypes )));
+
+    if(!data) { throw new Error('The photo data fetch has failed'); }
+
+    console.error(`🪲🪲🪲 THE URL FOR LARGE IMAGE HAS ELAPSED AND THEREFORE NEEDS TO BE UPDATED. NOTE ITS DEBUG MESSAGE ONLY. ⭐⭐⭐ The provider is: `, sqStore.currPhotoProviderName);
+
+    if(providerObj) {
+        targetElement.src = providerObj?.getHighResImageURL(utilizePhotoProvider(data))
+    }
+
+    // Last of all lets update the photoDetails object (database photo record)
+    await $fetch(`/photo/updateData`, { method: 'post', body: {
+        photoData: data,
+        photoID: `${sqStore.currPhotoProviderName}=${data.id}`
+    }});
+}
+
 </script>
 
 <template>
@@ -58,7 +85,7 @@ function handleAddCollection(newCollection: CollectionResponseModel) {
     <section class="min-h-screen text-lg">
         <section>
             <div class="flex justify-center">
-                <img :src="currPhotoProvider?.getHighResImageURL(utilizePhotoProvider(viewedPhoto))" loading="lazy" class="my-1 w-full object-cover object-center transition-opacity rounded-md shadow-md shadow-black" />
+                <img :src="currPhotoProvider?.getHighResImageURL(utilizePhotoProvider(viewedPhoto))" @error="requestImagePhoto($event)" loading="lazy" class="my-1 w-full object-cover object-center transition-opacity rounded-md shadow-md shadow-black" />
             </div>
             <div class="grid grid-cols-4 grid-rows-1 justify-between">
                 <!-- BUTTONS FUNCTIONALITY TO BE IMPLEMENTED SOON -->

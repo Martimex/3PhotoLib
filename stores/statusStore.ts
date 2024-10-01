@@ -10,8 +10,7 @@ export const useStatusStore = defineStore(`statusStore`, () => {
     const currentHomePageView = ref<availableHomePageViews>('welcome');
     const homePageViewsHierarchy = ref<availableHomePageViews[]>(['welcome']);
     const photosToRemoveArray = ref<PhotoResponseModel[]>([]);
-    const likedPhotos_isEditModeOn = ref<boolean>(false);
-    const collections_isEditModeOn = ref<boolean>(false);
+    const collectionsOrlikedPhotos_isEditModeOn = ref<boolean>(false);
     const isAddToNewCollectionTextActive = ref<boolean>(true); // Determines if blue text (Add to new collection) should be present inside SaveOrMoveToCollection (mode: Save)
 
     function isAddToNewCollectionTextActive_set(newVal: boolean) {
@@ -63,13 +62,13 @@ export const useStatusStore = defineStore(`statusStore`, () => {
         photosToRemoveArray.value = [];
     }
 
-    function likedPhotos_setEditMode(newValue: boolean): void {
-        likedPhotos_isEditModeOn.value = newValue;
+    function collectionsOrlikedPhotos_setEditMode(newValue: boolean): void {
+        collectionsOrlikedPhotos_isEditModeOn.value = newValue;
     }
 
-    function collections_setEditMode(newValue: boolean): void {
+/*     function collections_setEditMode(newValue: boolean): void {
         collections_isEditModeOn.value = newValue;
     }
-
-    return { isAddToNewCollectionTextActive, isAddToNewCollectionTextActive_set, isSearchbarOpen, isAdvancedMenuOpen, isRequestPending, isFullScreenPhotoView, currentHomePageView, setCurrentHomePageView, homePageViewsHierarchy, addHomePageViewHierarchy, removeHomePageViewHierarchy, resetHomePageViewHierarchy, likedPhotos_isEditModeOn, collections_isEditModeOn, likedPhotos_setEditMode, collections_setEditMode, photosToRemoveArray_get, photosToRemoveArray_modify, photosToRemoveArray_reset, asyncProcess_get, asyncProcess_set }
+ */
+    return { isAddToNewCollectionTextActive, isAddToNewCollectionTextActive_set, isSearchbarOpen, isAdvancedMenuOpen, isRequestPending, isFullScreenPhotoView, currentHomePageView, setCurrentHomePageView, homePageViewsHierarchy, addHomePageViewHierarchy, removeHomePageViewHierarchy, resetHomePageViewHierarchy, collectionsOrlikedPhotos_isEditModeOn, /* collections_isEditModeOn, */ collectionsOrlikedPhotos_setEditMode, /* collections_setEditMode, */ photosToRemoveArray_get, photosToRemoveArray_modify, photosToRemoveArray_reset, asyncProcess_get, asyncProcess_set }
 });
