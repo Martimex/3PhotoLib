@@ -2,10 +2,10 @@
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faArrowLeft, faTools } from '@fortawesome/free-solid-svg-icons';
 
-const { likedPhotos_setEditMode } = useStatusStore();
+const { collectionsOrlikedPhotos_setEditMode } = useStatusStore();
 
 function handleSetEditMode() {
-    likedPhotos_setEditMode(true);
+    collectionsOrlikedPhotos_setEditMode(true);
 }
 
 </script>

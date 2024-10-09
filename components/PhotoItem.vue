@@ -21,6 +21,7 @@ const { currPhotoProvider } = storeToRefs(sqStore);
 const { likedPhotosOrdered_get, collections_add } = useAuthStore();
 const { photoIdToUnlike_get, photoIdToUnlike_set } = usePhotoStore();
 const { collectionsToAddPhoto } = useTemporalStore();
+const { viewedCollection_get } = useCollectionStore();
 
 const props = defineProps<{
     imgData: availablePhotoTypes,
@@ -34,6 +35,11 @@ const imgRef = ref<HTMLImageElement>();
 const isImgLoaded = ref<boolean>(false);
 const isPhotoPanelOpen = ref<boolean>(false);
 const providerObj = new PhotoProvider(props.provider).setCurrentProvider();
+
+const testIfInsideCollection = computed(() => {
+    // By checking if viewed collection is present, we may know if the photo Item is clicked from /collections/[id] endpoint or not
+    return viewedCollection_get()? true : false;
+})
 
 const isSaveToCollectionModalOpen = ref<boolean>(false);
     const closeSaveToCollectionModal = () => { collectionsToAddPhoto.reset(); isSaveToCollectionModalOpen.value = false; }
@@ -176,7 +182,7 @@ function handleConfirmAddToCollection() {
     </div>
 
     <ModalsSaveOrMoveToCollection v-if="isSaveToCollectionModalOpen" 
-        :isMoveToMode="false" :imgData="props.imgData" :provider="props.provider"
+        :isMoveToMode="testIfInsideCollection" :imgData="props.imgData" :provider="props.provider"
         @modalClose="closeSaveToCollectionModal" 
         @addCollectionModalOpen="openAddCollectionModal"
         @confirmAddedToCollection="handleConfirmAddToCollection"

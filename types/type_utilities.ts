@@ -1,3 +1,4 @@
+import type CollectionResponseModel from "./responseModel_collection";
 import type PexelsPhoto from "./photoItem_pexels";
 import type PixabayPhoto from "./photoItem_pixabay";
 import type UnsplashPhoto from "./photoItem_unsplash";
@@ -31,6 +32,23 @@ export type userData = { id: string, name: string, email: string, profileImage: 
 
 // Used to safe type account limitation variables and values
 export type accountLimitationsData = { COLLECTIONS_LIMIT: number, PHOTOS_IN_COLLECTION_LIMIT: number, LIKED_PHOTOS_LIMIT: number }
+
+// Used for SaveOrMoveToCollection to set fetched collections to their respective statuses (states)
+export type collectionStates = {
+	base: CollectionResponseModel[],
+	moveFrom: CollectionResponseModel[],
+	addOrMoveTo: CollectionResponseModel[],
+	maxPhotos: CollectionResponseModel[],
+	hasThatPhoto: CollectionResponseModel[]
+}
+
+export type collectionStatesKeys = keyof collectionStates;
+
+export type collectionStateCheckObject = {
+    collection_viewed: CollectionResponseModel | undefined,
+    image_targetID: string,
+    limit_photosInCollection: number
+}
 
 // Used to provide better type safety for only Photo ID's in Collections (ordered)
 export type orderedCollectionsPhotoIDs = {

@@ -48,13 +48,13 @@
     }) */
 
     onBeforeMount(() => {
+        console.log('HI ! MY COLLECTION: ', viewedCollection_get());
         if(!viewedCollection.value) throw new Error('ERROR: Collection data is missing!');
     })
 
     onUnmounted(() => {
         collectionsOrlikedPhotos_setEditMode(false);
-        photosToRemoveArray_reset();
-})
+    })
 
 </script>
 
@@ -64,7 +64,7 @@
     <section class="min-h-screen my-12 mx-4">
         <section class="mx-[10vw] mb-3 text-center">
             <h1 class="text-5xl font-bold mb-8 break-words leading-12 max-w-screen"> {{ viewedCollection?.name }} </h1>
-            <p class="text-xl py-3"> {{ viewedCollection?.description }}  </p>
+            <p class="text-lg py-3"> {{ viewedCollection?.description }}  </p>
         </section>
         
         <section class="grid grid-rows-1 grid-cols-[1fr_auto_1fr] items-center">

@@ -39,7 +39,7 @@ const props = defineProps<{
 const [sqStore, psStore, aStore] = [useSearchQueryStore(), usePhotoStore(), useAuthStore()];
 const { currPhotoProvider } = storeToRefs(sqStore);
 const { viewedPhoto } = storeToRefs(psStore);
-const { likedPhotos_setEditMode, collections_setEditMode, asyncProcess_get, asyncProcess_set } = useStatusStore();
+const { collectionsOrlikedPhotos_setEditMode,  asyncProcess_get, asyncProcess_set } = useStatusStore();
 
 const providerObj = new PhotoProvider(props.provider).setCurrentProvider();
 

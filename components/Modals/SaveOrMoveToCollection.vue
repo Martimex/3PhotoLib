@@ -3,8 +3,9 @@ import { utilizePhotoProvider } from '../../types/type_utilities';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import PhotoProvider from '@/providers/photoProvidersInitializer';
-import { getCollectionsLimit } from '~/utils/getAccountLimitations';
-import type { availablePhotoTypes, availableProviderNames } from '~/types/type_utilities';
+import { getCollectionsLimit, getPhotosInCollectionLimit } from '~/utils/getAccountLimitations';
+import setCollectionState from '~/composables/setCollectionState';
+import type { availablePhotoTypes, availableProviderNames, collectionStates, collectionStateCheckObject } from '~/types/type_utilities';
 import type PhotoResponseModel from '~/types/responseModel_photo';
 import type CollectionResponseModel from '~/types/responseModel_collection';
 
@@ -16,21 +17,36 @@ const props = defineProps<{
 
 const { currentUser_get, collections_edit } = useAuthStore();
 const { isAddToNewCollectionTextActive_set, asyncProcess_get, asyncProcess_set } = useStatusStore();
+const { viewedCollection_get } = useCollectionStore();
 const sStore = useStatusStore();
 
+const currentCollection = ref<CollectionResponseModel | undefined>(viewedCollection_get());
 const providerObj = new PhotoProvider(props.provider).setCurrentProvider();
+const isCloneOptionActive = ref<boolean>(false);
 
 const modalEmits = defineEmits(['modalClose', 'addCollectionModalOpen', 'confirmAddedToCollection']);
 
 const { collectionsToAddPhoto } = useTemporalStore();
 
-// THIS IS NOT UPDATES WHEN currentUser_get()?.collections CHANGE !!! FIX THAT
 const allCollections = ref<CollectionResponseModel[]>(currentUser_get()?.collections);
+const collectionStatesObj = reactive<collectionStates>({
+    base: [], moveFrom: [], addOrMoveTo: [], maxPhotos: [], hasThatPhoto: []
+})
 
 const shouldAddToNewCollectionTextBeDisplayed = computed(() => {
     if(allCollections.value.length >= getCollectionsLimit()) return false;
     return sStore.isAddToNewCollectionTextActive;
 });
+
+const applyHeadingText = computed(() => {
+    return (isCloneOptionActive.value)? `Cloning from` : `Moving from`;
+})
+
+const stateCheckDependencies = {
+    collection_viewed: viewedCollection_get(),
+    image_targetID: `${props.provider}=${props.imgData.id}`,
+    limit_photosInCollection: getPhotosInCollectionLimit()
+}
 
 function handleSimulateAddToCollection(collectionData: CollectionResponseModel, isCollectionChosen: boolean) {
     isCollectionChosen? collectionsToAddPhoto.addNew(collectionData) : collectionsToAddPhoto.removeExisting(collectionData);
@@ -61,6 +77,10 @@ async function handleSaveToCollection() {
     asyncProcess_set(false);
 }
 
+function handleChangeCloneOrMoveOption() {
+    isCloneOptionActive.value = !isCloneOptionActive.value;
+}
+
 const requestImagePhoto = async function(ev: Event) {
     // Pixabay is probably constantly changing IMG URL's, in which case the specific photo URL has to be reassigned with photo ID search,
     // and also appropiate DB data needs to be updated.
@@ -85,7 +105,16 @@ const requestImagePhoto = async function(ev: Event) {
     }});
 }
 
-onMounted(() => console.error(currentUser_get()?.collections))
+onBeforeMount(() => {
+	if(!allCollections.value) throw new Error('FAILED TO FETCH USER COLLECTIONS');
+	Object.assign(collectionStatesObj, setCollectionState(allCollections.value, props.isMoveToMode, stateCheckDependencies));
+})
+
+watch(allCollections.value, () => {
+    Object.assign(collectionStatesObj, setCollectionState(allCollections.value, props.isMoveToMode, stateCheckDependencies));
+})
+
+onMounted(() => console.error(/* currentUser_get()?.collections */ collectionStatesObj))
 
 /* watch(shouldAddToNewCollectionTextBeDisplayed, () => {
     console.log('SOMETHING TEST 123');
@@ -106,21 +135,37 @@ onUnmounted(() => {
 <template>
     <div class="h-screen w-full bg-[#222b] fixed top-0 left-0 z-10 backdrop-blur flex items-center justify-center overflow-auto" @click.self="!asyncProcess_get() && modalEmits('modalClose')">
         <section class="bg-[#eee] m-auto w-full h-fit px-3 py-6 rounded-md shadow-[0.3rem_0.3rem_0.5rem_#222] border-2 border-[#222] border-solid">
-            <h2 class="max-w-[80%] align-middle mx-auto text-4xl font-bold text-center py-6 mb-9 border-[#222] border-solid border-b-4"> {{ props.isMoveToMode? `Move to collection` : `Save to collection` }} </h2>
+            <h2 class="max-w-[80%] align-middle mx-auto text-5xl font-bold text-center py-6 mb-9 border-[#222] border-solid border-b-4"> {{ props.isMoveToMode? `Move To` : `Save To` }} </h2>
             <div class="flex justify-center">
-                <img ref="imgRef" :src="providerObj?.getHighResImageURL(utilizePhotoProvider(props.imgData))" @error="requestImagePhoto" loading="lazy" class="min-h-[40vh] max-h-[75vh] mb-6 object-cover object-center transition-opacity rounded-md shadow-lg shadow-[#222]" />    
+                <img ref="imgRef" :src="providerObj?.getHighResImageURL(utilizePhotoProvider(props.imgData))" @error="requestImagePhoto" class="min-h-[40vh] max-h-[75vh] mb-12 object-cover object-center transition-opacity rounded-md shadow-lg shadow-[#222]" />    
             </div>
-            <div class="flex flex-col mb-6">
-                <ModalCollectionListItem v-for="collection in allCollections" :key="`id-${collection.releaseId}`" :collectionData="collection" :viewedImageID="`${props.provider}=${props.imgData.id}`"
-                    @simulateAddToCollection="handleSimulateAddToCollection"
+            <div v-if="props.isMoveToMode && collectionStatesObj.moveFrom.length" class="mb-6 py-3 border-b-2 border-dashed border-[#222]">
+                <h3 class="text-3xl font-semibold mx-6 mb-4"> {{ applyHeadingText }} </h3>
+                <ModalCollectionListItem v-for="coll in collectionStatesObj.moveFrom" :key="`mf-${coll.releaseId}`" :collectionData="coll" :viewedImageID="`${props.provider}=${props.imgData.id}`" status="moveFrom" 
+                    @changeCloneOrMoveOption="handleChangeCloneOrMoveOption"
                 />
+            </div>
+            <div class="flex flex-col mb-6 pb-6 border-b-4 border-[#222b] border-double">
+                <h3 v-if="props.isMoveToMode" class="text-3xl font-semibold mx-6 my-4"> To collections </h3>
+                <div v-if="collectionStatesObj.addOrMoveTo.length">
+                    <ModalCollectionListItem v-for="coll in collectionStatesObj.addOrMoveTo" :key="`aomt-${coll.releaseId}`" :collectionData="coll" :viewedImageID="`${props.provider}=${props.imgData.id}`" status="addOrMoveTo"
+                        @simulateAddToCollection="handleSimulateAddToCollection"
+                    />
+                </div>
                 <!-- IF USER DOES NOT REACH MAXIMUM COLLECTIONS YET, SHOW THE ONCE-TO-USE BUTTON -->
-                <div v-if="shouldAddToNewCollectionTextBeDisplayed" @click="!asyncProcess_get() && $emit('addCollectionModalOpen')" class="flex items-center mt-4 mx-3 pb-1 border-blue-300 border-b-2 border-bottom-solid w-fit">
+                <div v-if="shouldAddToNewCollectionTextBeDisplayed" @click="!asyncProcess_get() && $emit('addCollectionModalOpen')" class="flex items-center mt-4 mx-3 py-1 mb-3 border-blue-300 border-b-2 border-bottom-solid w-fit">
                     <FontAwesomeIcon :icon="faPlus" class="text-3xl mr-4 text-blue-400 drop-icon my-auto px-1 drop-shadow-[0rem_0rem_0.40rem_#fff]"></FontAwesomeIcon>
-                    <p class="text-blue-400 text-extrabold text-xl  custom-text-shadow drop-shadow-[0rem_0rem_0.40rem_#fff]"> Add to new collection </p>
+                    <p class="text-blue-400 text-extrabold text-xl  custom-text-shadow drop-shadow-[0rem_0rem_0.40rem_#fff]"> {{ props.isMoveToMode? `Move to new collection` : `Add to new collection` }} </p>
                 </div>
             </div>
-
+            <div v-if="collectionStatesObj.hasThatPhoto.length" class="flex flex-col mb-6">
+                <h3 class="text-2xl font-semibold mx-6 my-3"> This photo is inside: </h3>
+                <ModalCollectionListItem v-for="coll in collectionStatesObj.hasThatPhoto" :key="`htp-${coll.releaseId}`" :collectionData="coll" :viewedImageID="`${props.provider}=${props.imgData.id}`" status="hasThatPhoto" />
+            </div>
+            <div v-if="collectionStatesObj.maxPhotos.length" class="flex flex-col mb-6">
+                <h3 class="text-2xl font-semibold mx-6 my-3"> Filled collections: </h3>
+                <ModalCollectionListItem v-for="coll in collectionStatesObj.maxPhotos" :key="`mp-${coll.releaseId}`" :collectionData="coll" :viewedImageID="`${props.provider}=${props.imgData.id}`" status="maxPhotos"  />
+            </div>
             <div class="grid grid-cols-2 grid-rows-1 pt-9">
                 <button type="reset" @click.self="!asyncProcess_get() && modalEmits('modalClose')" class="font-normal text-lg border-2 border-black rounded-md py-4"> Cancel </button>
                 <button type="submit" @click.self="!asyncProcess_get() && handleSaveToCollection()" class="font-bold text-lg border-2 border-black bg-[#222d] text-neutral-100 rounded-md py-4"> Confirm </button>
