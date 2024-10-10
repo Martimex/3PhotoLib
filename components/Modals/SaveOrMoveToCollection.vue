@@ -24,7 +24,7 @@ const currentCollection = ref<CollectionResponseModel | undefined>(viewedCollect
 const providerObj = new PhotoProvider(props.provider).setCurrentProvider();
 const isCloneOptionActive = ref<boolean>(false);
 
-const modalEmits = defineEmits(['modalClose', 'addCollectionModalOpen', 'confirmAddedToCollection']);
+const modalEmits = defineEmits(['modalClose', 'addCollectionModalOpen', 'confirmAddedToCollection', 'confirmMoveToAnotherCollection']);
 
 const { collectionsToAddPhoto } = useTemporalStore();
 
@@ -52,16 +52,43 @@ function handleSimulateAddToCollection(collectionData: CollectionResponseModel, 
     isCollectionChosen? collectionsToAddPhoto.addNew(collectionData) : collectionsToAddPhoto.removeExisting(collectionData);
 }
 
-async function handleSaveToCollection() {
+async function handleSaveOrMoveToCollection() {
     asyncProcess_set(true);
 
+    console.warn('=> ', collectionsToAddPhoto.chosenCollections.length, ' || is clone option enabled: ', isCloneOptionActive.value);
     if(collectionsToAddPhoto.chosenCollections.length) {
-        const thePhoto = await $fetch(`/photo/saveTo`, { method: 'post', body: {
-            collections: collectionsToAddPhoto.chosenCollections,
-            photoID: `${props.provider}=${props.imgData.id}`,
-            photoData: props.imgData,
-            provider: props.provider
-        }}) as PhotoResponseModel;
+        let thePhoto; 
+
+        if(collectionStatesObj.moveFrom.length && !isCloneOptionActive.value) {
+            if(collectionStatesObj.moveFrom.length > 1) { throw new Error('Move from status should contain just 1 folder and no more!')}
+            // Will only happen for MoveTo operation (not cloning!)
+            thePhoto = await $fetch(`/photo/moveTo`, { method: 'post', body: {
+                collectionsToAddImage: collectionsToAddPhoto.chosenCollections,
+                collectionToRemoveImage: collectionStatesObj.moveFrom[0],
+                photoID: `${props.provider}=${props.imgData.id}`,
+                photoData: props.imgData,
+                provider: props.provider
+            }}) as PhotoResponseModel;
+
+            // Finally update UI to remove the moved photo from initial collection
+            // First create a copy and collections_edit with ( colectiona data - the photo which was moved)
+
+            const collectionToRemovePhoto_copy = {...collectionStatesObj.moveFrom[0]};
+            const updatedCollectionPhotos = collectionToRemovePhoto_copy.collectionPhotos.toSpliced(collectionToRemovePhoto_copy.collectionPhotos.map(photo => photo.photoId).indexOf(`${props.provider}=${props.imgData.id}`), 1);
+            collectionToRemovePhoto_copy.collectionPhotos = updatedCollectionPhotos;
+            collections_edit(collectionToRemovePhoto_copy);
+
+            modalEmits('confirmMoveToAnotherCollection', collectionToRemovePhoto_copy);
+
+        } else {
+            // This code will be targeted for every SaveTo and CloneTo operations
+            thePhoto = await $fetch(`/photo/saveTo`, { method: 'post', body: {
+                collections: collectionsToAddPhoto.chosenCollections,
+                photoID: `${props.provider}=${props.imgData.id}`,
+                photoData: props.imgData,
+                provider: props.provider
+            }}) as PhotoResponseModel;
+        }
 
         // Afterwards lets update UI so that collections photos count is correct
         [...collectionsToAddPhoto.chosenCollections].forEach(collection => {
@@ -168,7 +195,7 @@ onUnmounted(() => {
             </div>
             <div class="grid grid-cols-2 grid-rows-1 pt-9">
                 <button type="reset" @click.self="!asyncProcess_get() && modalEmits('modalClose')" class="font-normal text-lg border-2 border-black rounded-md py-4"> Cancel </button>
-                <button type="submit" @click.self="!asyncProcess_get() && handleSaveToCollection()" class="font-bold text-lg border-2 border-black bg-[#222d] text-neutral-100 rounded-md py-4"> Confirm </button>
+                <button type="submit" @click.self="!asyncProcess_get() && handleSaveOrMoveToCollection()" class="font-bold text-lg border-2 border-black bg-[#222d] text-neutral-100 rounded-md py-4"> Confirm </button>
             </div>
         </section>
     </div>

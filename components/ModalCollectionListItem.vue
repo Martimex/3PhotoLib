@@ -11,6 +11,7 @@ const props = defineProps<{
 }>();
 
 const { isAddToNewCollectionTextActive, asyncProcess_get } = useStatusStore();
+const { collectionsToAddPhoto } = useTemporalStore();
 const useEmit = defineEmits(['simulateAddToCollection', 'changeCloneOrMoveOption']);
 
 const canPhotoBeAdded = ref<boolean>(props.status === 'addOrMoveTo');
@@ -25,7 +26,8 @@ const testCollectionChosen = computed(() => isCollectionChosen.value? `text-[#81
 const testCloneOptionChosen = computed(() => isCloneOptionChosen.value? `text-[#ffdf33]` : `text-[#ddd]`)
 
 const simulateCollectionPhotosCount = computed(() => {
-    if(isChosenPhotoInCollection.value) { return 'x'};
+    if(isChosenPhotoInCollection.value) { return 'x'}
+    else if(isMoveFromFolder.value) { return props.collectionData.collectionPhotos.length - (((collectionsToAddPhoto.chosenCollections.length > 0) && (!isCloneOptionChosen.value))? 1 : 0)}
     return props.collectionData.collectionPhotos.length + (isCollectionChosen.value? 1 : 0) 
 });
 

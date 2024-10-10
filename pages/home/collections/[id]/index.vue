@@ -17,9 +17,9 @@
     const { collectionsOrlikedPhotos_setEditMode, photosToRemoveArray_reset } = useStatusStore();
     const { currentUser_get, collections_edit, collections_updatePhotos } = useAuthStore();
     const { isRequestPending, collectionsOrlikedPhotos_isEditModeOn } = storeToRefs(sStore);
+    const { viewedCollection } = storeToRefs(useCollectionStore());
 
     const isEditCollectionModalOpen = ref<boolean>(false);
-    const viewedCollection = ref(viewedCollection_get());
     
     const userCollections = ref(currentUser_get()?.collections);
 

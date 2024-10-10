@@ -21,7 +21,8 @@ const { currPhotoProvider } = storeToRefs(sqStore);
 const { likedPhotosOrdered_get, collections_add } = useAuthStore();
 const { photoIdToUnlike_get, photoIdToUnlike_set } = usePhotoStore();
 const { collectionsToAddPhoto } = useTemporalStore();
-const { viewedCollection_get } = useCollectionStore();
+const { viewedCollection_get, viewedCollection_set } = useCollectionStore();
+const { viewedCollection } = storeToRefs(useCollectionStore());
 
 const props = defineProps<{
     imgData: availablePhotoTypes,
@@ -168,6 +169,10 @@ function handleConfirmAddToCollection() {
     isPhotoRecentlyAddedToCollection.value = true;
 }
 
+function handleConfirmMoveToAnotherCollection(collectionWithoutMovedPhoto: CollectionResponseModel) {
+    viewedCollection_set(collectionWithoutMovedPhoto);
+}
+
 </script>
 
 <template>
@@ -186,6 +191,7 @@ function handleConfirmAddToCollection() {
         @modalClose="closeSaveToCollectionModal" 
         @addCollectionModalOpen="openAddCollectionModal"
         @confirmAddedToCollection="handleConfirmAddToCollection"
+        @confirmMoveToAnotherCollection="handleConfirmMoveToAnotherCollection"
     />
 
     <ModalsAddOrEditCollection v-if="isAddCollectionModalOpen"

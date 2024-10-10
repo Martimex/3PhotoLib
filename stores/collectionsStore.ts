@@ -6,5 +6,5 @@ export const useCollectionStore = defineStore(`collectionsStore`, () => {
     const viewedCollection_get = function() { return viewedCollection.value; }
     const viewedCollection_set = function(collectionToView: CollectionResponseModel) { viewedCollection.value = collectionToView; }
 
-    return { viewedCollection_get, viewedCollection_set };
+    return { viewedCollection_get, viewedCollection_set, viewedCollection };
 });
