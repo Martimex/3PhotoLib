@@ -119,7 +119,6 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     function collections_add(newCollection: CollectionResponseModel) {
-        console.warn('FINALLY, COLLECTIONS ADD: ', newCollection);
         if(!currentUser.value) { return; }
         currentUser.value.collections.push(newCollection);
     }
@@ -130,6 +129,14 @@ export const useAuthStore = defineStore('auth', () => {
         if(outDatedCollectionIndex < 0) { return; }
         console.log('edited!', currentUser.value.collections[outDatedCollectionIndex]);
         currentUser.value.collections[outDatedCollectionIndex] = collectionEditData;
+    }
+
+    function collections_delete(deletedCollection: CollectionResponseModel) {
+        if(!currentUser.value) { return; }
+        const deletedCollectionIndex = currentUser.value.collections.findIndex((collection: CollectionResponseModel) => collection.releaseId === deletedCollection.releaseId);
+        if(deletedCollectionIndex < 0) { return; /* Normally, it should never happen */}
+        const userCollections_copy = [...currentUser.value.collections].toSpliced(deletedCollectionIndex, 1);
+        currentUser.value.collections = userCollections_copy;
     }
 
     function currentUser_clear() {
@@ -144,6 +151,6 @@ export const useAuthStore = defineStore('auth', () => {
     return { isAuthenticated_get, isAuthenticated_set, currentUser_get, currentUser_set, currentUser_clear,  authenticateUser,
         likedPhotosOrdered_get, collectionsOrdered_get,
         likedPhotos_set, likedPhotos_update, 
-        collections_add, collections_edit, collections_updatePhotos
+        collections_add, collections_edit, collections_delete, collections_updatePhotos
     };
 })

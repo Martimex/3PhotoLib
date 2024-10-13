@@ -19,7 +19,8 @@ export const useTemporalStore = defineStore('temporalStore', () => {
     const inputsText: {[key: string]: any}  = {
         signin: { username: ref(''), email: ref(''), password: ref('') },
         login: { email: ref(''), password: ref('') },
-        addCollection: { name: ref(''), description: ref('') }
+        addCollection: { name: ref(''), description: ref('') },
+        deleteCollection: { phrase: ref('') }
     };
 
     function clearInputsText(iText: any) {

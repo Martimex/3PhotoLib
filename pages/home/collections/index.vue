@@ -1,12 +1,13 @@
 <script setup lang="ts">
     import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-    import { faFolder } from '@fortawesome/free-solid-svg-icons';
+    import { faFolder, faMinusCircle, faInfoCircle, faShareAltSquare, faExternalLinkSquareAlt } from '@fortawesome/free-solid-svg-icons';
     import type CollectionResponseModel from '~/types/responseModel_collection';
     
-    const { currentUser_get, collections_add } = useAuthStore();
+    const { currentUser_get, collections_add, collections_delete } = useAuthStore();
     const { viewedCollection_set } = useCollectionStore();
 
     const isAddCollectionModalOpen = ref<boolean>(false);
+    const collectionToDeleteData = ref<false | CollectionResponseModel>(false);
 
     const userCollections = ref(currentUser_get()?.collections);
 
@@ -21,8 +22,21 @@
         userCollections.value = currentUser_get()?.collections;
     }
 
-    function setCollectionAsViewed(clickedCollection: CollectionResponseModel) {
+    function handleSetCollectionAsViewed(clickedCollection: CollectionResponseModel) {
         viewedCollection_set(clickedCollection);
+    }
+
+    function handleTryToDeleteCollection(clickedCollection: CollectionResponseModel) {
+        collectionToDeleteData.value =  clickedCollection;
+    }
+
+    function handleCancelDeleteCollection() {
+        collectionToDeleteData.value = false;
+    }
+
+    function handleConfirmDeleteCollection(deletedCollection: CollectionResponseModel) {
+        collections_delete(deletedCollection);
+        userCollections.value = currentUser_get()?.collections;
     }
 
 </script>
@@ -35,27 +49,10 @@
         <p class="py-3"> Here you can find the list of all collections you have created. Optionally, you can also add an empty collection.   </p>
         <p class="py-3"> You may also click on the specific collection to view its photos, edit the collection and more! </p>
 
-        <div>
-            <div v-for="collection in userCollections" :key="collection.id" class="mt-6 mb-16" >
-                <div class="grid grid-rows-1 grid-cols-[1fr_auto_1fr] items-center">
-                    <div class="bg-black h-[0.15rem] mr-3 shadow-xl shadow-black"></div>
-                    <h2 class="text-2xl font-semibold text-wrap break-all my-2 text-center border-black rounded-full border-2 py-2 px-4 shadow-[0.25rem_0.25rem_0.3rem_#222d]"> {{ collection.name }}</h2>
-                    <div class="bg-black h-[0.15rem] ml-3 shadow-xl shadow-black"></div>
-                </div>
-                <div class="grid grid-cols-[auto_1fr] my-4 gap-x-9">
-                    <NuxtLink :to="{name: 'home-collections-id', params: { id: collection.releaseId}}" >
-                        <FontAwesomeIcon :icon="faFolder" class="text-[25vw] width-full block drop-icon m-auto px-1 drop-shadow-[0.25rem_0.25rem_0.3rem_#222d]" :class="`text-[${collection.folderColor}]`" 
-                            @click="setCollectionAsViewed(collection)"
-                        >
-                        </FontAwesomeIcon>
-                    </NuxtLink>
-                    <div class="flex flex-col align-start justify-center">
-                        <span class="text-lg block"> Created at: <p class="text-lg font-semibold inline"> {{ collection.collectionDetails.createdAt }} </p> </span>
-                        <span class="text-lg block"> Collection size: <p class="text-lg font-semibold inline"> {{ collection.collectionPhotos.length }} / 50 </p> </span>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <CollectionPreviewListItem v-for="collection in userCollections" :key="collection.id"  :collectionData="collection" 
+            @set-collection-as-viewed="handleSetCollectionAsViewed(collection)"
+            @try-to-delete-collection="handleTryToDeleteCollection(collection)"
+        /> 
 
 <!--         <div class="flex flex-col my-12">
             <div v-for="collection in userCollections" :key="collection.id" class="grid grid-cols-[auto_1fr] place-items-start my-4 gap-x-9">
@@ -82,10 +79,17 @@
         @add="handleAddCollection" 
         @modalClose="closeAddCollectionModal" 
     />
+
+    <ModalsDeleteCollection v-if="collectionToDeleteData" :collectionData="collectionToDeleteData"
+        @modal-close="handleCancelDeleteCollection"
+        @confirm-delete="handleConfirmDeleteCollection"
+    />
     
     <PanelsCollectionsMainPanel @openAddCollection="openAddCollectionModal" />
 </template>
 
 <style scoped>
-
+    ._custom-text-shadow {
+        text-shadow: .15rem .15rem .1rem #999;
+    }
 </style>

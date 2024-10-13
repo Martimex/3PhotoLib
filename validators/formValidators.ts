@@ -29,4 +29,7 @@ export const descriptionValidator = z.string()
 .max(90, {message: 'Please do not exceed 90 characters'})
 .refine(val => !/[/\\\\]/.test(val), {message: 'Slash characters are not allowed'});
 
-export const keyToValidator: {[key: string]: any} = {username: usernameValidator, email: emailValidator, password: passwordValidator, isTOSAccepted: isTOSAcceptedValidator, collectionName: collectionNameValidator, description: descriptionValidator};
+export const confirmationTextValidator = z.string()
+.regex(/^DELETE$/i, {message: 'Provided phrase is incorrect'});
+
+export const keyToValidator: {[key: string]: any} = {username: usernameValidator, email: emailValidator, password: passwordValidator, isTOSAccepted: isTOSAcceptedValidator, collectionName: collectionNameValidator, description: descriptionValidator, confirmationText: confirmationTextValidator};

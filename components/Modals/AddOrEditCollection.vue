@@ -8,6 +8,7 @@ import { keyToValidator } from '~/validators/formValidators';
 const tStore = useTemporalStore();
 const { currentUser_get } = useAuthStore();
 const { viewedCollection_get } = useCollectionStore();
+const { asyncProcess_get, asyncProcess_set } = useStatusStore();
 
 onMounted(() => { /* console.log(pickedFolderColor)  */})
 
@@ -50,7 +51,10 @@ function handleErrorTracing(isErrorPresent: boolean, key: string, errorMsg?: str
     }
 }
 
-const validateCollectionData = function() {
+const validateCollectionData = async function() {
+
+    if(asyncProcess_get()) return;
+
     let validationsPassed = 0;
 
     Object.keys(addCollectionForm).forEach((key: string) => { 
@@ -68,7 +72,9 @@ const validateCollectionData = function() {
     });
 
     if(validationsPassed === Object.keys(addCollectionForm).length) {
-        props.isEditMode? handleEditNewCollection() : handleAddNewCollection();
+        asyncProcess_set(true);
+        props.isEditMode? await handleEditNewCollection() : await handleAddNewCollection();
+        asyncProcess_set(false);
     }
 }
 
@@ -121,7 +127,7 @@ const handleAddNewCollection = async function() {
 </script>
 
 <template>
-    <div class="h-screen w-full bg-[#222b] fixed top-0 left-0 z-20 backdrop-blur flex items-center justify-center overflow-auto" @click.self="modalEmits('modalClose')">
+    <div class="h-screen w-full bg-[#222b] fixed top-0 left-0 z-20 backdrop-blur flex items-center justify-center overflow-auto" @click.self="!asyncProcess_get() && modalEmits('modalClose')">
         <section class="bg-[#eee] m-auto w-full h-fit px-3 py-6 rounded-md shadow-[0.3rem_0.3rem_0.5rem_#222] border-2 border-[#222] border-solid">
             <form :id="checkActionMode()" :name="checkActionMode()" :method="$props.isEditMode? 'put' : 'post'" @submit.prevent="validateCollectionData"
                 class="mx-2"
