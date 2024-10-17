@@ -36,7 +36,6 @@ async function handlePhotosDeletion() {
     const viewedCollectionData = viewedCollection_get();
 
     if(!currentUserData) { throw new Error('ERROR: User data not found !')}
-    if(!viewedCollectionData) { throw new Error('ERROR: Viewed collection data not found !')}
 
     if(props.storageType === 'liked') {
         await $fetch(`/photo/deleteFromLiked`, { method: 'post', body: {
@@ -46,6 +45,7 @@ async function handlePhotosDeletion() {
     }
 
     else if(props.storageType === 'collection') {
+        if(!viewedCollectionData) { throw new Error('ERROR: Viewed collection data not found !'); }
         await $fetch(`/photo/deleteFromCollection`, { method: 'post', body: {
             photosToRemoveArray: photosToBeRemoved,
             collectionID: viewedCollectionData.releaseId

@@ -28,7 +28,7 @@ export default defineNuxtRouteMiddleware(async(to, from) => {
 
         // In case we found user data
         if(accountData) {
-            currentUser_set(accountData.id, accountData.name, accountData.email, accountData.profile_image, accountData.member_since, accountData.likedPhotos, accountData.collections);
+            currentUser_set(accountData.id, accountData.name, accountData.email, accountData.profile_image, accountData.member_since, accountData.likedPhotos as any, accountData.collections as any);
             isAuthenticated_set(true);
         }
 

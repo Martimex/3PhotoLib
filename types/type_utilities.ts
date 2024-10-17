@@ -31,7 +31,7 @@ export type registrationFormProp = {text: any, isTextCorrect: any, inputElement:
 export type userData = { id: string, name: string, email: string, profileImage: string, memberSince: string, likedPhotos: any, collections: any }
 
 // Used to safe type account limitation variables and values
-export type accountLimitationsData = { COLLECTIONS_LIMIT: number, PHOTOS_IN_COLLECTION_LIMIT: number, LIKED_PHOTOS_LIMIT: number }
+export type accountLimitationsData = { COLLECTIONS_LIMIT: number, PHOTOS_IN_COLLECTION_LIMIT: number, LIKED_PHOTOS_LIMIT: number, USERACCOUNT_RANDOMLIKEDPHOTOSVIEWED_LIMIT: number, USERACCOUNT_RANDOMCOLLECTIONSVIEWED_LIMIT: number, }
 
 // Used for SaveOrMoveToCollection to set fetched collections to their respective statuses (states)
 export type collectionStates = {
@@ -42,8 +42,16 @@ export type collectionStates = {
 	hasThatPhoto: CollectionResponseModel[]
 }
 
+// Used to properly type keys for User Account tabs for random LikedPhotos and Collections
+export type randomlyPickedObj = {
+	likedPhotos: any,
+	collections: any,
+}
+
+// Used for determining collection folders statuses (full, hasThePhoto, etc.)
 export type collectionStatesKeys = keyof collectionStates;
 
+// Also used for determining collection folders statuses (full, hasThePhoto, etc.)
 export type collectionStateCheckObject = {
     collection_viewed: CollectionResponseModel | undefined,
     image_targetID: string,

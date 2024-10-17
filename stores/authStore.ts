@@ -27,7 +27,7 @@ export const useAuthStore = defineStore('auth', () => {
         return currentUser.value;
     }
 
-    function currentUser_set(id: string, name: string, email: string, profileImage: string, memberSince: string, likedPhotos: any, collections: CollectionResponseModel[]): void {
+    function currentUser_set(id: string, name: string, email: string, profileImage: string, memberSince: string, likedPhotos: PhotoResponseModel[], collections: CollectionResponseModel[]): void {
         currentUser.value = {
             id,
             name,

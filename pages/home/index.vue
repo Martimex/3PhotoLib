@@ -60,8 +60,8 @@ const imageData = ref<availablePhotoTypes[]>([]);
 <template>
     <NavigationBar />
     <section class="min-h-screen text-xl mx-4 py-[10vh]">
-        <p class="text-4xl mb-8 bold"> Hello, {{ currentUser_get()?.name }}</p>
-        <p class="text-4xl mb-8 bold"> Featured: {{ imageData.length }} </p>
+        <p class="text-4xl mb-24 bold text-center underline"> Hello, {{ currentUser_get()?.name }}</p>
+        <p class="text-2xl my-8 text-center"> Featured photos </p>
         <Suspense>
             <template #default>
                 <FeaturedPhotos/>

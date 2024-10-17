@@ -5,7 +5,6 @@ export default defineEventHandler(async (event) => {
 
         const cookies = parseCookies(event);
         const token = cookies?.token;
-
         if(token) { deleteCookie(event, 'token'); }
         else { throw new Error('[LOGOUT:::] Session token is not found!'); }
 
