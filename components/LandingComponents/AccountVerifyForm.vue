@@ -96,7 +96,6 @@
     }
 
     async function proceedValidation(isVerificationOK: boolean) {
-        console.warn('WAS VERIFICATION OK??? ', isVerificationOK);
         if(!isVerificationOK) {
             verifyForm['verificationCode'].inputElement?.value.classList.add('border-b-red-500');
             if(verifyForm['verificationCode'].errorMsgElement) {

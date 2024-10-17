@@ -12,19 +12,6 @@ import type { availablePhotoTypes, availableProviderNames } from '@/types/type_u
 import PhotoProvider from '@/providers/photoProvidersInitializer';
 import handleLikePhoto from '@/composables/handleLikePhoto';
 
-const { photoIdToUnlike_set } = usePhotoStore();
-const { currentUser_set, currentUser_get } = useAuthStore();
-
-function log() {
-    console.log(`TODO: Finish the method for the icon`);
-    console.log('USER DATTA: ', currentUser_get());
-}
-
-/* onBeforeMount(() => {
-    console.error('Img data is: ', props.imgData);
-    isPhotoLiked.value = findId(`${props.provider}=${props.imgData.id}`, likedPhotosOrdered_get());
-}) */
-
 const photoPanelEmit = defineEmits(['photoLikedToggle', 'modalOpen']);
 
 /* const isPhotoLiked = ref<boolean | null>(null); */
@@ -71,7 +58,6 @@ const photoTags = computed(() => providerObj?.retrievePhotoTags(utilizePhotoProv
             const routeName = currentRoute as string; 
             const routeParts =  routeName.split('-');
             const lastRoutePart = routeParts[routeParts.length - 1];
-            //console.log('MY LAST ROUTE PART IS: ', lastRoutePart);
 
             // likedPhotos_setEditMode(true);
 
@@ -107,8 +93,6 @@ const photoTags = computed(() => providerObj?.retrievePhotoTags(utilizePhotoProv
     }
 } */
 
-onUnmounted(() => { console.warn('UNMOUNTED !!!!!!!!!!!!!')})
-
 </script>
 
 <!-- backdrop-blur-sm -->
@@ -141,7 +125,7 @@ onUnmounted(() => { console.warn('UNMOUNTED !!!!!!!!!!!!!')})
             border-t-2 border-white shadow-[0rem_-.25rem_.5rem_0rem_#fffa]
         ">
             <FontAwesomeIcon :icon="faHeart" @click.stop="photoPanelEmit('photoLikedToggle')" class="text-3xl mx-[1.5rem] place-self-start" :class="isPhotoLiked && `text-red-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#ef4444]`"></FontAwesomeIcon>
-            <FontAwesomeIcon :icon="faDownload" @click.stop="log()" class="text-3xl mx-[1.5rem] place-self-start"></FontAwesomeIcon>
+            <FontAwesomeIcon :icon="faDownload" @click.stop="" class="text-3xl mx-[1.5rem] place-self-start"></FontAwesomeIcon>
             <FontAwesomeIcon :icon="faSave" @click.stop="$emit('modalOpen')" class="text-3xl mx-[1.5rem] place-self-start" :class="isNowAddedToCollection && `text-yellow-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#eab308]`"></FontAwesomeIcon>
         </div>
     </div>

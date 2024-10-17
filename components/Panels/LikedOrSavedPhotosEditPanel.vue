@@ -30,8 +30,6 @@ async function handlePhotosDeletion() {
     // If no photos are picked, then this button will work as close
     if(!photosToBeRemoved.length) { handleCloseEditMode(); return; }
 
-    console.warn('PHOTOSTOBEREMOVED: =111 , ', photosToBeRemoved);
-
     const currentUserData = currentUser_get();
     const viewedCollectionData = viewedCollection_get();
 

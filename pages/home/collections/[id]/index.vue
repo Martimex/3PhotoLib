@@ -6,8 +6,6 @@
     import type PhotoResponseModel from '~/types/responseModel_photo';
     import LikedOrSavedPhotosEditPanel from '~/components/Panels/LikedOrSavedPhotosEditPanel.vue';
     
-    onMounted(() => { console.warn('C---  : ', viewedCollection_get()) });
-
     definePageMeta({
         middleware: 'handle-single-collection-id'
     });
@@ -48,7 +46,6 @@
     }) */
 
     onBeforeMount(() => {
-        console.log('HI ! MY COLLECTION: ', viewedCollection_get());
         if(!viewedCollection.value) throw new Error('ERROR: Collection data is missing!');
     })
 
@@ -79,7 +76,7 @@
 
         <Transition> 
             <div v-if="isRequestPending"> <Loading /> </div>
-            <div v-else-if="!viewedCollection?.collectionPhotos.length"> <NoResults /> </div>
+            <div v-else-if="!viewedCollection?.collectionPhotos.length"></div>
             <div v-else-if="viewedCollection.collectionPhotos.length">
                 <div v-if="!isRequestPending" class="">
                     <!-- Slicing works well for providers API, which reqire minimal response photos, while this app does not  -->

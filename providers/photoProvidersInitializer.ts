@@ -111,10 +111,6 @@ class PixabayPhotoProvider extends PhotoProvider {
     getProviderWebsite = function(): string {
         return 'https://pixabay.com/';
     }
-
-    getProviderIntroduction = function() {
-        return console.log('HELLO ! I AM PIXABAY PROVIDER');
-    }
 }
 
 class PexelsPhotoProvider extends PhotoProvider {
@@ -194,10 +190,6 @@ class PexelsPhotoProvider extends PhotoProvider {
     getProviderWebsite = function(): string {
         return 'https://www.pexels.com/';
     }
-
-    getProviderIntroduction = function() {
-        return console.log('hi guys, its pexels there');
-    }
 }
 
 class UnsplashPhotoProvider extends PhotoProvider {
@@ -276,10 +268,6 @@ class UnsplashPhotoProvider extends PhotoProvider {
 
     getProviderWebsite = function(): string {
         return 'https://unsplash.com/';
-    }
-
-    getProviderIntroduction = function() {
-        return console.log(`here's unsplash provider`);
     }
 }
 

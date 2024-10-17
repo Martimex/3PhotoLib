@@ -42,8 +42,6 @@ async function getImagesByQuery(this: any, sText: string) {
 
     //this.$router.push('Results');
 
-    //console.log(this.$router);
-
     /* this.$router.push({
             path: '/pagename', 
             params: {
@@ -53,7 +51,6 @@ async function getImagesByQuery(this: any, sText: string) {
         }); 
     */
 
-    // console.warn('Currently looking inside provider: ', sqStore.currPhotoProviderName,  '  and the provider object is: ', sqStore.currPhotoProvider);
 }
 
 function closeAdvancedMenu(): void {
@@ -61,7 +58,6 @@ function closeAdvancedMenu(): void {
 }
 
 function toggleAdvancedMenu(): void {
-    console.log('isAdvancedMenuOpen: ', sStore.isAdvancedMenuOpen);
     sStore.$patch({
         isAdvancedMenuOpen: !sStore.isAdvancedMenuOpen
     });

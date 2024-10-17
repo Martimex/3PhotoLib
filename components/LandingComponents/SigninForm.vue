@@ -52,8 +52,6 @@
 
     async function handleUserRegistration() {
 
-        console.log('TESTING...');
-
         let validationsPassed = 0;
 
         Object.keys(registerForm).forEach((key: string) => { 

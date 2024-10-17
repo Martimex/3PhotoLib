@@ -23,20 +23,10 @@ const userLikedPhotos = ref(currentUser_get()?.likedPhotos);
 function handleCurrentPhotosUpdate(deletedPhotos: PhotoResponseModel[]) {
     likedPhotos_update('remove', deletedPhotos);
     userLikedPhotos.value = currentUser_get()?.likedPhotos;
-    console.log('My liked photos - UPDATED : ', userLikedPhotos.value);
 }
 
 watch(userLikedPhotos, () => {
     likedPhotos_set(userLikedPhotos.value);
-})
-
-onBeforeMount(() => {
-    console.log('TO UNLIKE:: ', photoIdToUnlike_get());
-})
-
-onMounted(() => {
-   // isRequestPending.value = false;
-    console.log('My liked photos: ', userLikedPhotos.value);
 })
 
 onUnmounted(() => {

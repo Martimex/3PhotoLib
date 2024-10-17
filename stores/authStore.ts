@@ -127,7 +127,6 @@ export const useAuthStore = defineStore('auth', () => {
         if(!currentUser.value) { return; }
         const outDatedCollectionIndex = currentUser.value.collections.findIndex((collection: CollectionResponseModel) => collection.releaseId === collectionEditData.releaseId)
         if(outDatedCollectionIndex < 0) { return; }
-        console.log('edited!', currentUser.value.collections[outDatedCollectionIndex]);
         currentUser.value.collections[outDatedCollectionIndex] = collectionEditData;
     }
 

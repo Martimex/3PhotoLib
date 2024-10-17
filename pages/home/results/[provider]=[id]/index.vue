@@ -30,8 +30,6 @@ const isAddCollectionModalOpen = ref<boolean>(false);
     const openAddCollectionModal = () => isAddCollectionModalOpen.value = true;
 
 onBeforeMount(() => {
-    console.error('ONBEFORE MOUNT TRIGGERED ! User is: ', currentUser_get());
-    console.warn(' MY VIEWED IMAGE?  ', `${sqStore.currPhotoProviderName}=${pStore.viewedPhoto?.id}`);
     isPhotoLiked.value = findId(`${sqStore.currPhotoProviderName}=${pStore.viewedPhoto?.id}`, likedPhotosOrdered_get());
 })
 
@@ -65,7 +63,7 @@ const requestImagePhoto = async function(ev: Event) {
 
     if(!data) { throw new Error('The photo data fetch has failed'); }
 
-    console.error(`🪲🪲🪲 THE URL FOR LARGE IMAGE HAS ELAPSED AND THEREFORE NEEDS TO BE UPDATED. NOTE ITS DEBUG MESSAGE ONLY. ⭐⭐⭐ The provider is: `, sqStore.currPhotoProviderName);
+    //console.error(`🪲🪲🪲 THE URL FOR LARGE IMAGE HAS ELAPSED AND THEREFORE NEEDS TO BE UPDATED. NOTE ITS DEBUG MESSAGE ONLY. ⭐⭐⭐ The provider is: `, sqStore.currPhotoProviderName);
 
     if(providerObj) {
         targetElement.src = providerObj?.getHighResImageURL(utilizePhotoProvider(data))

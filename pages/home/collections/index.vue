@@ -14,10 +14,7 @@
     const closeAddCollectionModal = () => isAddCollectionModalOpen.value = false;
     const openAddCollectionModal = () => isAddCollectionModalOpen.value = true;
 
-    onMounted(() =>  { console.error('USER COLL: ', userCollections.value)});
-
     function handleAddCollection(newCollection: CollectionResponseModel) {
-        console.warn('NEW COLLECTION IS: ', newCollection);
         collections_add(newCollection);
         userCollections.value = currentUser_get()?.collections;
     }

@@ -13,7 +13,7 @@ try {
         .then(data => featuredImages.value = (data.hits?.length)? data.hits : [])
         //.then(() => { return new Promise<void>((resolve, reject) => { setTimeout(() => { resolve(); }, 4500); }) });
 } catch(error) {
-    console.error('MY ERROR:: ', error);
+    throw new Error(`Some unexpected error has occured. The message: ${error}`);
 }
 
 

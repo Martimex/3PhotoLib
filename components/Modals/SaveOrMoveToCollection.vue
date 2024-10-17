@@ -55,7 +55,6 @@ function handleSimulateAddToCollection(collectionData: CollectionResponseModel, 
 async function handleSaveOrMoveToCollection() {
     asyncProcess_set(true);
 
-    console.warn('=> ', collectionsToAddPhoto.chosenCollections.length, ' || is clone option enabled: ', isCloneOptionActive.value);
     if(collectionsToAddPhoto.chosenCollections.length) {
         let thePhoto; 
 
@@ -119,7 +118,7 @@ const requestImagePhoto = async function(ev: Event) {
 
     if(!data) { throw new Error('The photo data fetch has failed'); }
 
-    console.error(`🪲🪲🪲 THE URL FOR LARGE IMAGE HAS ELAPSED AND THEREFORE NEEDS TO BE UPDATED. NOTE ITS DEBUG MESSAGE ONLY. ⭐⭐⭐ The provider is: `, props.provider);
+    //console.error(`🪲🪲🪲 THE URL FOR LARGE IMAGE HAS ELAPSED AND THEREFORE NEEDS TO BE UPDATED. NOTE ITS DEBUG MESSAGE ONLY. ⭐⭐⭐ The provider is: `, props.provider);
 
     if(providerObj) {
         targetElement.src = providerObj?.getHighResImageURL(utilizePhotoProvider(data))
@@ -141,10 +140,7 @@ watch(allCollections.value, () => {
     Object.assign(collectionStatesObj, setCollectionState(allCollections.value, props.isMoveToMode, stateCheckDependencies));
 })
 
-onMounted(() => console.error(/* currentUser_get()?.collections */ collectionStatesObj))
-
 /* watch(shouldAddToNewCollectionTextBeDisplayed, () => {
-    console.log('SOMETHING TEST 123');
     // Here make a new collection with number 1 of photos and make plus sign green (SOMEHOW ?)
 }) */
 

@@ -24,11 +24,10 @@ sqStore.$subscribe(async() => {
     const initialPageRequestData = await fetch(currPhotoProvider.value.getSearchRequestURL(queryText.value, outputPhotosNumber.value, 1), {headers: currPhotoProvider.value.getSearchRequestHeaders()})
         .then(res => res? res.json() : '')
         .then(data => data)
-        .catch(err => console.error(err))
+        .catch(err => { throw new Error('An error has occured: ', err) })
     
     if(searchPageCount.value === 1) {
         imageData.value = currPhotoProvider.value.getResponsePhotos(initialPageRequestData);
-        console.warn('MY RESPONSE IS: ', imageData.value);
     } else {
         // User picked page number is higher than 1 -> perform calculations if requested page number even exists. If so, provide
         // results for the page. Otherwise, return the latest page that contain photos + inform user about the behaviour
@@ -38,10 +37,9 @@ sqStore.$subscribe(async() => {
         const finalSearchPageRequestData = await fetch(currPhotoProvider.value.getSearchRequestURL(queryText.value, outputPhotosNumber.value, searchPageFinal), {headers: currPhotoProvider.value.getSearchRequestHeaders()})
             .then(res => res.json())
             .then(data => data)
-            .catch(err => console.error(err))
+            .catch(err => { throw new Error('An error has occured: ', err) })
         
             imageData.value = currPhotoProvider.value.getResponsePhotos(finalSearchPageRequestData);
-            console.error(finalSearchPageRequestData)
     }
 
     // Because we performed an above, initial data request, now we know how many photos are available, and thus what is the latest
@@ -56,10 +54,10 @@ async function getPhotos() {
     if(currPhotoProvider.value === undefined || !currPhotoProvider.value) return; // This line silences error where TS complies that x (Provider Name) can be possibly undefined
 
     await fetch(currPhotoProvider.value.getSearchRequestURL(queryText.value, outputPhotosNumber.value, searchPageCount.value), {headers: currPhotoProvider.value.getSearchRequestHeaders()})
-        .then(res => {console.warn(' res is: ', res); return res.json()})
+        .then(res => { return res.json(); })
         // Used " currPhotoProvider.value! " below, beause we checked above already that the  currPhotoProvider.value is NOT undefined
-        .then(data => { imageData.value =  currPhotoProvider.value!.getResponsePhotos(data); console.warn(`RES DATA: `, data) })
-        .catch(err => console.error(err));
+        .then(data => { imageData.value =  currPhotoProvider.value!.getResponsePhotos(data); })
+        .catch(err => { throw new Error('An error has occured: ', err) });
 
     // After fetching data, resolve status as non-pending
     isRequestPending.value = false;

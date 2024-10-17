@@ -20,7 +20,6 @@ const featuredPhotosResultsMax = ref(3);
 */
 
 //const x = new photoProviders('pexels').setCurrentProvider();
-//console.log(/* x,  */currPhotoProvider.value);
 
 /* type GeneralPhoto<T> =
     T extends PixabayPhoto? PixabayPhoto[] :
@@ -39,20 +38,6 @@ const imageData = ref<availablePhotoTypes[]>([]);
     if(typeof provider.getSearchRequestURL(querySearchText) !== 'string') return false;
     return true;
 } */
-
-/* sqStore.$subscribe(async() => {
-    //console.error(sqStore.currPhotoProviderName, sqStore.currPhotoProvider);
-    if(currPhotoProvider.value === undefined || !currPhotoProvider.value) return; // This line silences error where TS complies that x (Provider Name) can be possibly undefined
-    await fetch(currPhotoProvider.value.getSearchRequestURL(queryText.value), {headers: currPhotoProvider.value.getSearchRequestHeaders()})
-        .then(res => res.json())
-        // Used " currPhotoProvider.value! " below, beause we checked above already that the  currPhotoProvider.value is NOT undefined
-        .then(data => { imageData.value =  currPhotoProvider.value!.getResponsePhotos(data); console.warn(data) })
-        .catch(err => console.error(err));
-    
-    //console.error('WE ARE HERE');
-    // After fetching data, resolve status as non-pending
-    isRequestPending.value = false;
-}); */
 
 </script>
 

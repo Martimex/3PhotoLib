@@ -12,8 +12,6 @@ export default async function handleLikePhoto({isPhotoLiked, imgData, provider}:
     const isAsyncRunning = asyncProcess_get();
     if(!currentUser) { throw new Error('User not found! Photo cannot be further liked')}
 
-    console.log('ASYNC PROCESS GET123: ', isAsyncRunning);
-
     if(isAsyncRunning) { 
         // Here, beside returning we will have to add a dialog box to inform user that a process is currently running
         return; 
@@ -39,7 +37,7 @@ export default async function handleLikePhoto({isPhotoLiked, imgData, provider}:
                 const currentUser = await $fetch('/account/getData', { method: 'post'});
 
                 if(currentUser) {
-                    currentUser_set(currentUser.id, currentUser.name, currentUser.email, currentUser.profile_image, currentUser.member_since, currentUser.likedPhotos, currentUser.collections as any);
+                    currentUser_set(currentUser.id, currentUser.name, currentUser.email, currentUser.profile_image, currentUser.member_since, currentUser.likedPhotos as any, currentUser.collections as any);
                 }
 
                 await navigateTo('/home/liked');

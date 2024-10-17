@@ -88,7 +88,5 @@ export default defineNuxtRouteMiddleware(async(to, from) => {
         for(let j=0; j<variablesToUpdate.length; j++) { finalQuery += `&${variablesToUpdate[j].key}=${variablesToUpdate[j].value}` }
     }
 
-    console.log('NEW URL will be now: ', finalQuery, '   and the TO object is: ', to);
-
     await navigateTo(`/home/results=${finalQuery}`);
 });

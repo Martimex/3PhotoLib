@@ -51,7 +51,6 @@ const isAddCollectionModalOpen = ref<boolean>(false);
     const openAddCollectionModal = () => isAddCollectionModalOpen.value = true;
 
 function handleImgLoadded() {
-    console.log('Handled loading process !');
     isImgLoaded.value = true;
 }
 
@@ -65,7 +64,6 @@ onBeforeMount(() => {
 
 
 onMounted(() => {
-    console.log('MY IMAGE IS: ', props.imgData,   '           and provider is: ', props.provider);
     if(imgRef?.value?.complete) {
         handleImgLoadded();
     } else {
@@ -113,7 +111,7 @@ const requestImagePhoto = async function(ev: Event) {
 
     if(!data) { throw new Error('The photo data fetch has failed'); }
 
-    console.error(`🪲🪲🪲 THE URL FOR LARGE IMAGE HAS ELAPSED AND THEREFORE NEEDS TO BE UPDATED. NOTE ITS DEBUG MESSAGE ONLY. ⭐⭐⭐ The provider is: `, props.provider);
+    //console.error(`🪲🪲🪲 THE URL FOR LARGE IMAGE HAS ELAPSED AND THEREFORE NEEDS TO BE UPDATED. NOTE ITS DEBUG MESSAGE ONLY. ⭐⭐⭐ The provider is: `, props.provider);
 
     if(providerObj) {
         targetElement.src = providerObj?.getHighResImageURL(utilizePhotoProvider(data))
@@ -134,7 +132,6 @@ const handleFullScreenPhotoView = function(ev: Event) {
     if(!isImgLoaded.value) return;
     if(targetElement.dataset && targetElement.dataset['role'] === 'panel') return;
     isPhotoPanelOpen.value = !isPhotoPanelOpen.value;
-    console.error('ISPHOTOPANEL OPEN: ', isPhotoPanelOpen.value,  '   and el is:  ', targetElement.dataset);
 }
 
 const checkIfPhotoToRemove = function() {

@@ -14,8 +14,6 @@ export default defineEventHandler(async (event) => {
                 password: reqBody.form_password
             }
         });
-        
-        console.log('isAccountFound: ', isAccountFound);
 
         // Return the value for if we found anything based on provided credetials
         if(isAccountFound) {

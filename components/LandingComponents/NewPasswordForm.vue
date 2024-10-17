@@ -78,7 +78,6 @@
 
     function handleVerificationCodeCheck() {
         // First check if the verification code is not kept in temporal store (to reduce db queries)
-        console.log('tStore.verificationCodeKey : ', tStore.verificationCodeKey)
         if(tStore.verificationCodeKey) { vCodeLocalCompare(); }
         else vCodeServerCompare();
     }

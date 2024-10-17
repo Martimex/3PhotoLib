@@ -38,6 +38,4 @@ export default defineNuxtRouteMiddleware(async(to, from) => {
             statusMessage: info    
         });
     }
-
-    console.warn('etg :', currentUser_get());
 });

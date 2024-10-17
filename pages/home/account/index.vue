@@ -34,7 +34,7 @@ const requestImagePhoto = async function(ev: Event, provider: availableProviderN
 
     if(!data) { throw new Error('The photo data fetch has failed'); }
 
-    console.error(`🪲🪲🪲 THE URL FOR LARGE IMAGE HAS ELAPSED AND THEREFORE NEEDS TO BE UPDATED. NOTE ITS DEBUG MESSAGE ONLY. ⭐⭐⭐ The provider is: `, provider);
+   //console.error(`🪲🪲🪲 THE URL FOR LARGE IMAGE HAS ELAPSED AND THEREFORE NEEDS TO BE UPDATED. NOTE ITS DEBUG MESSAGE ONLY. ⭐⭐⭐ The provider is: `, provider);
 
     if(providerObj) {
         targetElement.src = providerObj?.getHighResImageURL(utilizePhotoProvider(data))
@@ -93,10 +93,12 @@ onBeforeMount(() => {
         </p>
         <section class="my-9">
             <div class="flex flex-col">
-                <div class="flex mb-3 w-fit">
-                    <FontAwesomeIcon :icon="faArrowRight" class="text-4xl mx-6"></FontAwesomeIcon>
-                    <p class="text-2xl w-fit mb-3"> Liked photos ({{ userLikedPhotos.length }}) </p>
-                </div>
+                <NuxtLink to="/home/liked">
+                    <div class="flex mb-3 w-fit">
+                        <FontAwesomeIcon :icon="faArrowRight" class="text-4xl mx-6"></FontAwesomeIcon>
+                        <p class="text-2xl w-fit mb-3"> Liked photos ({{ userLikedPhotos.length }}) </p>
+                    </div>
+                </NuxtLink>
                 <div class="grid grid-cols-2 grid-rows-auto gap-3">
                     <div v-for="(photo, index) in randomLikedPhotos" >
                         <img 

@@ -64,8 +64,6 @@ function handleLockIconClick() {
 }
 
 onBeforeMount(() => {
-    console.log('STATUS? ', props.status);
-    console.log(props.viewedImageID, '  => COLLECTIONDATA:: ', props.collectionData);
     if(!isAddToNewCollectionTextActive) { isCollectionChosen.value = true; }
 })
 
