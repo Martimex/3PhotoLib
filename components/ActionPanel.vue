@@ -19,9 +19,13 @@ function toggleSearchbar() {
 
 <template>
     <nav class="sticky bottom-0 left-0 right-0 text-black py-7 bg-gray-200 flex justify-around items-center">
-        <FontAwesomeIcon :icon="faFire" class="text-4xl"></FontAwesomeIcon>
+        <NuxtLink to="/home/liked" class="w-fit">
+            <FontAwesomeIcon :icon="faFire" class="text-4xl"></FontAwesomeIcon>
+        </NuxtLink>
         <FontAwesomeIcon :icon="isSearchbarOpen? faSquareMinus : faSquarePlus" class="text-6xl" @click="toggleSearchbar()"></FontAwesomeIcon>
-        <FontAwesomeIcon :icon="faFolder" class="text-4xl"></FontAwesomeIcon>
+        <NuxtLink to="/home/collections" class="w-fit">
+            <FontAwesomeIcon :icon="faFolder" class="text-4xl"></FontAwesomeIcon>
+        </NuxtLink>
     </nav>
 </template>
 

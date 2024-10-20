@@ -8,7 +8,7 @@ import type { availablePhotoTypes, availableProviderNames } from '../../../types
 
 const [sStore, sqStore] = [useStatusStore(), useSearchQueryStore()];
 const { queryText, currPhotoProvider, currPhotoProviderName, outputPhotosNumber, searchPageCount } = storeToRefs(sqStore);
-const { isRequestPending } = storeToRefs(sStore);
+const { isRequestPending, isSearchbarOpen} = storeToRefs(sStore);
 
 definePageMeta({
     middleware: 'handle-url-params'
@@ -64,6 +64,7 @@ async function getPhotos() {
 }
 
 onMounted(() => getPhotos());
+onUnmounted(() => isSearchbarOpen.value = false);
 
 </script>
 

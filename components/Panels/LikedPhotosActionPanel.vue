@@ -2,7 +2,9 @@
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faArrowLeft, faTools } from '@fortawesome/free-solid-svg-icons';
 
-const { collectionsOrlikedPhotos_setEditMode } = useStatusStore();
+const { collectionsOrlikedPhotos_setEditMode, recentlyVisitedRouteArr } = useStatusStore();
+
+const getRecentRoute = computed(() => (recentlyVisitedRouteArr.length > 1? recentlyVisitedRouteArr[recentlyVisitedRouteArr.length - 1] : '/home'));
 
 function handleSetEditMode() {
     collectionsOrlikedPhotos_setEditMode(true);
@@ -12,7 +14,9 @@ function handleSetEditMode() {
 
 <template>
     <nav class="sticky bottom-0 left-0 right-0 text-black py-7 bg-gray-200 flex justify-around items-center">
-        <FontAwesomeIcon :icon="faArrowLeft" class="text-4xl"></FontAwesomeIcon>
+        <NuxtLink :to="getRecentRoute" class="w-fit">
+            <FontAwesomeIcon :icon="faArrowLeft" class="text-4xl"></FontAwesomeIcon>
+        </NuxtLink>
         <FontAwesomeIcon :icon="faTools" class="text-4xl" @click="handleSetEditMode" ></FontAwesomeIcon>
     </nav>
 </template>

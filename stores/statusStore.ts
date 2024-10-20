@@ -12,6 +12,7 @@ export const useStatusStore = defineStore(`statusStore`, () => {
     const photosToRemoveArray = ref<PhotoResponseModel[]>([]);
     const collectionsOrlikedPhotos_isEditModeOn = ref<boolean>(false);
     const isAddToNewCollectionTextActive = ref<boolean>(true); // Determines if blue text (Add to new collection) should be present inside SaveOrMoveToCollection (mode: Save)
+    const recentlyVisitedRouteArr = ref<string[]>([]);
 
     function isAddToNewCollectionTextActive_set(newVal: boolean) {
         isAddToNewCollectionTextActive.value = newVal;
@@ -70,5 +71,5 @@ export const useStatusStore = defineStore(`statusStore`, () => {
         collections_isEditModeOn.value = newValue;
     }
  */
-    return { isAddToNewCollectionTextActive, isAddToNewCollectionTextActive_set, isSearchbarOpen, isAdvancedMenuOpen, isRequestPending, isFullScreenPhotoView, currentHomePageView, setCurrentHomePageView, homePageViewsHierarchy, addHomePageViewHierarchy, removeHomePageViewHierarchy, resetHomePageViewHierarchy, collectionsOrlikedPhotos_isEditModeOn, /* collections_isEditModeOn, */ collectionsOrlikedPhotos_setEditMode, /* collections_setEditMode, */ photosToRemoveArray_get, photosToRemoveArray_modify, photosToRemoveArray_reset, asyncProcess_get, asyncProcess_set }
+    return { isAddToNewCollectionTextActive, isAddToNewCollectionTextActive_set, isSearchbarOpen, isAdvancedMenuOpen, isRequestPending, isFullScreenPhotoView, currentHomePageView, setCurrentHomePageView, homePageViewsHierarchy, addHomePageViewHierarchy, removeHomePageViewHierarchy, resetHomePageViewHierarchy, collectionsOrlikedPhotos_isEditModeOn, recentlyVisitedRouteArr, /* collections_isEditModeOn, */ collectionsOrlikedPhotos_setEditMode, /* collections_setEditMode, */ photosToRemoveArray_get, photosToRemoveArray_modify, photosToRemoveArray_reset, asyncProcess_get, asyncProcess_set }
 });

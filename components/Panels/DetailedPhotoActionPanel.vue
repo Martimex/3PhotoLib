@@ -1,18 +1,10 @@
 <script setup lang="ts">
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faArrowLeft, faTools, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
-const { collectionsOrlikedPhotos_setEditMode, recentlyVisitedRouteArr } = useStatusStore();
+const { recentlyVisitedRouteArr } = useStatusStore();
 
 const getRecentRoute = computed(() => (recentlyVisitedRouteArr.length > 1? recentlyVisitedRouteArr[recentlyVisitedRouteArr.length - 1] : '/home'));
-
-
-const collectionsEmits = defineEmits(['openEditCollection']);
-
-
-function handleSetEditMode() {
-    collectionsOrlikedPhotos_setEditMode(true);
-}
 
 </script>
 
@@ -21,8 +13,6 @@ function handleSetEditMode() {
         <NuxtLink :to="getRecentRoute" class="w-fit">
             <FontAwesomeIcon :icon="faArrowLeft" class="text-4xl"></FontAwesomeIcon>
         </NuxtLink>
-        <FontAwesomeIcon :icon="faPenToSquare" class="text-4xl" @click="collectionsEmits('openEditCollection')" ></FontAwesomeIcon>
-        <FontAwesomeIcon :icon="faTools" class="text-4xl" @click="handleSetEditMode" ></FontAwesomeIcon>
     </nav>
 </template>
 

@@ -3,6 +3,14 @@ export default defineNuxtRouteMiddleware(async(to, from) => {
     const { isAuthenticated_get, isAuthenticated_set, currentUser_set } = useAuthStore();
     const sStore = useStatusStore();
 
+    // Update recently visited route
+    if(sStore.recentlyVisitedRouteArr[sStore.recentlyVisitedRouteArr.length - 1] === to.fullPath) {
+        
+        sStore.recentlyVisitedRouteArr.pop();
+    } else {
+        sStore.recentlyVisitedRouteArr.push(from.fullPath);
+    }
+
     // First, let's check if session is active 
 
     const isSession = isAuthenticated_get();
@@ -16,6 +24,7 @@ export default defineNuxtRouteMiddleware(async(to, from) => {
 
     // if token doesn't exist redirect to log in
     if(!isSession && to?.path !== '/') {
+        sStore.recentlyVisitedRouteArr = ['/'];
         abortNavigation();
         sStore.currentHomePageView = 'login';
         return navigateTo('/');

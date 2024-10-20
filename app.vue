@@ -6,9 +6,7 @@ if(process.server) {
 }
 
 async function checkSessionStatus() {
-  const { currentUser_get, currentUser_set, isAuthenticated_get, isAuthenticated_set } = useAuthStore();
-
-  console.log('SERVER STATUS::: ON');
+  const { currentUser_set, isAuthenticated_get, isAuthenticated_set } = useAuthStore();
 
   const isSession = isAuthenticated_get();
 
@@ -17,7 +15,7 @@ async function checkSessionStatus() {
     // In case session is active we should get back some data
     if(data) {
       isAuthenticated_set(true);
-      currentUser_set(data.id, data.name, data.email, data.profile_image, data.member_since, data.likedPhotos, data.collections);
+      currentUser_set(data.id, data.name, data.email, data.profile_image, data.member_since, data.likedPhotos as any, data.collections as any);
     }
   }
 }

@@ -154,7 +154,7 @@ const requestImagePhoto = async function(ev: Event) {
         />
 
     </section>
-    <ActionPanel />
+    <PanelsDetailedPhotoActionPanel />
 </template>
 
 
