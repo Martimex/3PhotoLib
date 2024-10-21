@@ -20,7 +20,7 @@ const { isAddToNewCollectionTextActive_set, asyncProcess_get, asyncProcess_set }
 const { viewedCollection_get } = useCollectionStore();
 const sStore = useStatusStore();
 
-const currentCollection = ref<CollectionResponseModel | undefined>(viewedCollection_get());
+const currentCollection = ref<CollectionResponseModel | null>(viewedCollection_get());
 const providerObj = new PhotoProvider(props.provider).setCurrentProvider();
 const isCloneOptionActive = ref<boolean>(false);
 

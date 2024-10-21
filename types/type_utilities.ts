@@ -53,7 +53,7 @@ export type collectionStatesKeys = keyof collectionStates;
 
 // Also used for determining collection folders statuses (full, hasThePhoto, etc.)
 export type collectionStateCheckObject = {
-    collection_viewed: CollectionResponseModel | undefined,
+    collection_viewed: CollectionResponseModel | null,
     image_targetID: string,
     limit_photosInCollection: number
 }

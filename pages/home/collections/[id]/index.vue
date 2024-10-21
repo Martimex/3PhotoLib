@@ -50,6 +50,7 @@
     })
 
     onUnmounted(() => {
+        viewedCollection_set(null);
         collectionsOrlikedPhotos_setEditMode(false);
     })
 
