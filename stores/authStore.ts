@@ -52,7 +52,7 @@ export const useAuthStore = defineStore('auth', () => {
             const photosArr_onlyPhotoIDs = photosArr.map(el => el.photoId);
             const likedPhotosUpdated = [...currentUser.value.likedPhotos].filter(el => 
                 {    
-                    return Boolean(!findId(el.photoId, photosArr_onlyPhotoIDs));
+                    return Boolean(!findId(el.photoId, sortById(photosArr_onlyPhotoIDs)));
                 }
             );
             currentUser.value.likedPhotos = likedPhotosUpdated;
