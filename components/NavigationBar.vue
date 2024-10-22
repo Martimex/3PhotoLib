@@ -12,9 +12,9 @@ const sStore = useStatusStore();
 
 
 <template>
-    <nav class="sticky z-10 top-0 left-0 right-0 text-black py-7 bg-gray-200">
+    <nav class="sticky z-10 top-0 left-0 right-0 text-black py-5 bg-gray-200">
         <div v-if="!sStore.isSearchbarOpen" class="px-6 flex self-start justify-between items-center w-full">
-            <NuxtLink to="/home"> <span class="text-4xl font-bold align-middle"> 3PhotoLib </span> </NuxtLink>
+            <NuxtLink to="/home"> <span class="text-4xl font-light align-middle "> 3PhotoLib </span> </NuxtLink>
             <NuxtLink to="/home/account" class="w-fit">
                 <FontAwesomeIcon :icon="faCircleUser" class="text-4xl text-gray-400" @click=""></FontAwesomeIcon>
             </NuxtLink>

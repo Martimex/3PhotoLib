@@ -68,11 +68,11 @@ onMounted(() => { searchbar?.value?.focus() })
 </script>
 
 <template>
-    <FontAwesomeIcon :icon="faGear" @click="toggleAdvancedMenu()" class="text-4xl text-gray-400 place-self-start"></FontAwesomeIcon>
-            <input v-model="searchText" placeholder="Looking for..." class="p-2 min-w-[50vw]z" ref="searchbar" />
+    <FontAwesomeIcon :icon="faGear" @click="toggleAdvancedMenu()" class="text-3xl text-gray-400 justify-self-start"></FontAwesomeIcon>
+            <input v-model="searchText" placeholder="Looking for..." class="p-2 min-w-[50vw]" ref="searchbar" />
             <!-- Another cool  input alternative - check this one out ! -->
             <!-- <input v-model="searchText" placeholder="Looking for..." class="min-w-[50vw] text-base font-semibold text-center py-1 px-2 outline-gray-500 bg-neutral-200 appearance-none cursor-pointer rounded-lg shadow-[0.1rem_0.1rem_0.5rem_black]" ref="searchbar" /> -->
-    <FontAwesomeIcon :icon="faMagnifyingGlass" @click="{ closeAdvancedMenu(); getImagesByQuery(searchText); }" class="text-4xl text-gray-400 place-self-end"></FontAwesomeIcon>
+    <FontAwesomeIcon :icon="faMagnifyingGlass" @click="{ closeAdvancedMenu(); getImagesByQuery(searchText); }" class="text-3xl text-gray-400 justify-self-end"></FontAwesomeIcon>
 </template>
 
 <style scoped>

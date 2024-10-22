@@ -10,7 +10,7 @@ import type { availablePhotoTypes } from '@/types/type_utilities';
 const { currentUser_get } = useAuthStore();
 const [sStore, sqStore] = [useStatusStore(), useSearchQueryStore()];
 const { queryText, currPhotoProvider } = storeToRefs(sqStore);
-const { isRequestPending } = storeToRefs(sStore);
+const { isRequestPending, isSearchbarOpen } = storeToRefs(sStore);
 
 //const token = useCookie('token');
 const featuredPhotosResultsMax = ref(3);
@@ -38,6 +38,8 @@ const imageData = ref<availablePhotoTypes[]>([]);
     if(typeof provider.getSearchRequestURL(querySearchText) !== 'string') return false;
     return true;
 } */
+
+onUnmounted(() => isSearchbarOpen.value = false);
 
 </script>
 
