@@ -100,16 +100,16 @@ const photoTags = computed(() => providerObj?.retrievePhotoTags(utilizePhotoProv
 <template>
     <div class="absolute inset-0 grid grid-rows-[1fr_auto] text-white bg-black/[.25]">
         <div class="p-[1.5rem] backdrop-blur-lg overflow-auto">
-            <figure class="flex items-center justify-start pb-4">
+            <figure class="flex items-center justify-start mb-5">
                 <img class="w-16 h-16 rounded-xl text-xs border-2" :src="providerObj?.getPhotoAuthorImage(utilizePhotoProvider(props.imgData))" alt="Author profile picture" />
                 <figcaption class="mx-4">
                     <p class="text-sm bold"> Photo by: </p>
-                    <p class="text-xl bold break-all mr-12"> {{ providerObj?.getPhotoAuthorName(utilizePhotoProvider(props.imgData)) }} </p>
+                    <p class="text-base bold break-all mr-12"> {{ providerObj?.getPhotoAuthorName(utilizePhotoProvider(props.imgData)) }} </p>
                 </figcaption>
             </figure>
 
-            <ul class="flex flex-wrap mt-3" >
-                <li class="text-base bold py-1 px-4 m-2 border-2 rounded-full"
+            <ul class="flex flex-wrap" >
+                <li class="text-xs bold py-1 px-4 m-2 border-2 rounded-r-full"
                     v-for="tag in photoTags" :key="imgData.id + '__tag=' + tag"
                 > 
                     {{ '#' + tag.trim() }} 
@@ -124,9 +124,9 @@ const photoTags = computed(() => providerObj?.retrievePhotoTags(utilizePhotoProv
         <div data-role="panel" class="py-[1rem] px-[1rem] flex w-full items-end justify-between backdrop-blur-md
             border-t-2 border-white shadow-[0rem_-.25rem_.5rem_0rem_#fffa]
         ">
-            <FontAwesomeIcon :icon="faHeart" @click.stop="photoPanelEmit('photoLikedToggle')" class="text-3xl mx-[1.5rem] place-self-start" :class="isPhotoLiked && `text-red-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#ef4444]`"></FontAwesomeIcon>
-            <FontAwesomeIcon :icon="faDownload" @click.stop="" class="text-3xl mx-[1.5rem] place-self-start"></FontAwesomeIcon>
-            <FontAwesomeIcon :icon="faSave" @click.stop="$emit('modalOpen')" class="text-3xl mx-[1.5rem] place-self-start" :class="isNowAddedToCollection && `text-yellow-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#eab308]`"></FontAwesomeIcon>
+            <FontAwesomeIcon :icon="faHeart" @click.stop="photoPanelEmit('photoLikedToggle')" class="text-xl mx-[1.5rem] place-self-start" :class="isPhotoLiked && `text-red-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#ef4444]`"></FontAwesomeIcon>
+            <FontAwesomeIcon :icon="faDownload" @click.stop="" class="text-xl mx-[1.5rem] place-self-start"></FontAwesomeIcon>
+            <FontAwesomeIcon :icon="faSave" @click.stop="$emit('modalOpen')" class="text-xl mx-[1.5rem] place-self-start" :class="isNowAddedToCollection && `text-yellow-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#eab308]`"></FontAwesomeIcon>
         </div>
     </div>
 

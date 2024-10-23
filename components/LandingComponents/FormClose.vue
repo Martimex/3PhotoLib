@@ -14,11 +14,11 @@
 </script>
 
 <template>
-    <div class="p-5 absolute top-0 right-0 rounded-es-full border-[#dddd] border-t-transparent border-r-transparent border-double border-4"
+    <div class="p-3 absolute top-0 right-0 rounded-es-full border-[#dddd] border-t-transparent border-r-transparent border-double border-4"
         @click="handleComponentClose"
     >
         <div class="relative">
-            <FontAwesomeIcon :icon="faTimes" class="relative -top-2 -right-2 font-bold text-4xl text-[#eee] pointer-events-none"></FontAwesomeIcon>
+            <FontAwesomeIcon :icon="faTimes" class="relative -top-2 -right-2 font-bold text-3xl text-[#eee] pointer-events-none"></FontAwesomeIcon>
         </div>
     </div>
 </template>

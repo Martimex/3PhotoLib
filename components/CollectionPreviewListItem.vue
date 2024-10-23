@@ -16,7 +16,7 @@
 </script>
 
 <template>
-    <div class="mt-6 mb-16" >
+    <div class="mt-6 mb-14" >
         <div class="grid grid-rows-1 grid-cols-[1fr_auto_1fr] items-center">
             <div class="bg-black h-[0.15rem] mr-3 shadow-xl shadow-black"></div>
             <h2 class="text-2xl font-semibold text-wrap break-all my-2 text-center border-black rounded-full border-2 py-2 px-4 shadow-[0.25rem_0.25rem_0.3rem_#222d]"> {{ props.collectionData.name }}</h2>
@@ -30,9 +30,9 @@
                 </FontAwesomeIcon>
             </NuxtLink>
             <div class="flex flex-col align-start justify-center">
-                <span class="text-lg block"> Author: <p class="text-lg font-semibold inline"> {{ collectionOwnerName }} </p> </span>
-                <span class="text-lg block"> Created at: <p class="text-lg font-semibold inline"> {{ props.collectionData.collectionDetails.createdAt }} </p> </span>
-                <span class="text-lg block"> Collection size: <p class="text-lg font-semibold inline"> {{ props.collectionData.collectionPhotos.length }} / 50 </p> </span>
+                <span class="text-base block"> Author: <p class="text-base font-semibold inline"> {{ collectionOwnerName }} </p> </span>
+                <span class="text-base block"> Created at: <p class="text-base font-semibold inline"> {{ props.collectionData.collectionDetails.createdAt }} </p> </span>
+                <span class="text-base block"> Collection size: <p class="text-base font-semibold inline"> {{ props.collectionData.collectionPhotos.length }} / 50 </p> </span>
             </div>
             <p class="text-4xl font-light text-center text-[#444]  _custom-text-shadow"> #{{ props.collectionData.releaseId }} </p>
             <div class="grid grid-rows-1 grid-cols-[1fr_1fr] items-center">

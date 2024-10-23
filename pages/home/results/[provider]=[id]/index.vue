@@ -90,21 +90,21 @@ const requestImagePhoto = async function(ev: Event) {
                 <div class="p-3 py-5 flex flex-col justify-between align-top shadow-md shadow-red-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0"
                     @click="handlePhotoLikedToggle"
                 >
-                    <FontAwesomeIcon :icon="faHeart" class="text-3xl text-[#333]" :class="isPhotoLiked && `text-red-400 drop-shadow-[0.15rem_0.15rem_0.125rem_#ef4444]`" />
+                    <FontAwesomeIcon :icon="faHeart" class="text-2xl text-[#333]" :class="isPhotoLiked && `text-red-400 drop-shadow-[0.15rem_0.15rem_0.125rem_#ef4444]`" />
                     <span class="text-center hidden">Like</span>
                 </div>
                 <div class="px-3 py-5 flex flex-col justify-center align-top shadow-md shadow-green-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0">
-                    <FontAwesomeIcon :icon="faDownload" class="text-3xl text-[#333]" />
+                    <FontAwesomeIcon :icon="faDownload" class="text-2xl text-[#333]" />
                     <span class="text-center hidden">Download</span>
                 </div>
                 <div class="p-3 flex flex-col justify-center align-top shadow-md shadow-blue-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0">
-                    <FontAwesomeIcon :icon="faLink" class="text-3xl text-[#333]" />
+                    <FontAwesomeIcon :icon="faLink" class="text-2xl text-[#333]" />
                     <span class="text-center hidden">Website</span>
                 </div>
                 <div class="p-3 flex flex-col justify-center align-top shadow-md shadow-yellow-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0"
                     @click="openSaveToCollectionModal"
                 >
-                    <FontAwesomeIcon :icon="faSave" class="text-3xl text-[#333]" :class="isPhotoRecentlyAddedToCollection && `text-yellow-400 drop-shadow-[0.15rem_0.15rem_0.125rem_#eab308]`" />
+                    <FontAwesomeIcon :icon="faSave" class="text-2xl text-[#333]" :class="isPhotoRecentlyAddedToCollection && `text-yellow-400 drop-shadow-[0.15rem_0.15rem_0.125rem_#eab308]`" />
                     <span class="text-center hidden">Add</span>
                 </div>
             </div>

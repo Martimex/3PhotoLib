@@ -175,15 +175,15 @@
 
 <template>
     <LandingComponentsFormClose />
-    <h1 class="main-title text-6xl font-semibold font-mono text-center mb-8 pointer-events-none"> Confirm reset </h1>
-    <h2 class="main-title-alt text-xl font-mono text-center mt-4 mb-6"> {{ headingFirstSentence }}. Please use it to set a new password for your account.  </h2>
+    <h1 class="main-title text-5xl font-semibold font-mono text-center mb-7 pointer-events-none"> Reset </h1>
+    <h2 class="main-title-alt text-base font-mono text-center mt-4 mb-6"> {{ headingFirstSentence }}. Please use it to set a new password for your account.  </h2>
     <form id="newpassword" name="newpassword" method="post" action="" class="mx-3" @submit.prevent="handleFormValidation">
         <div class="my-4">
             <div :ref="newPasswordForm.verificationCode.inputElement" class="flex my-3 w-full outline-gray-500 bg-neutral-200 rounded-md shadow-[0.1rem_0.1rem_0.5rem_black] border-y-4 box-border">
-                <FontAwesomeIcon :icon="faSquareCheck" class="text-5xl text-[#222c] drop-icon mx-3 my-auto px-2"></FontAwesomeIcon>
+                <FontAwesomeIcon :icon="faSquareCheck" class="text-4xl text-[#222c] drop-icon mx-3 my-auto px-2"></FontAwesomeIcon>
                 <div class="relative w-full">
                     <input type="number" min="0" max="999999" aria-label="Write your verification code here" id="verify" name="verify" value="" v-model="newPasswordForm.verificationCode.text.value" placeholder="Verification code"
-                        class="text-black text-lg font-semibold text-center w-full py-5 px-2 outline-[#222c] bg-neutral-200 appearance-none cursor-pointer rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed" 
+                        class="text-black text-base font-semibold text-center w-full py-4 px-2 outline-[#222c] bg-neutral-200 appearance-none cursor-pointer rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed" 
                     />
                     <span :ref="newPasswordForm.verificationCode.errorMsgElement" class="absolute bottom-0 left-0 text-red-500 font-bold text-xs w-full inline-block text-center" :class="newPasswordForm.verificationCode.isTextCorrect? 'hidden' : 'inline-block'"> Error: Some error occured </span>
                 </div>
@@ -192,10 +192,10 @@
         
         <div class="my-4">
             <div :ref="newPasswordForm.password.inputElement" class="flex my-3 w-full outline-gray-500 bg-neutral-200 rounded-md shadow-[0.1rem_0.1rem_0.5rem_black] border-y-4 box-border">
-                <FontAwesomeIcon :icon="faRectangleXmark" class="text-5xl text-[#222c] drop-icon mx-3 my-auto px-1"></FontAwesomeIcon>
+                <FontAwesomeIcon :icon="faRectangleXmark" class="text-4xl text-[#222c] drop-icon mx-3 my-auto px-1"></FontAwesomeIcon>
                 <div class="relative w-full">
                     <input type="password" aria-label="Set a password" id="password" name="password" value="" v-model="newPasswordForm.password.text.value" placeholder="Password..." 
-                        class="text-black text-lg font-semibold text-center w-full py-5 px-2 outline-[#222c] bg-neutral-200 appearance-none cursor-pointer rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed" 
+                        class="text-black text-base font-semibold text-center w-full py-4 px-2 outline-[#222c] bg-neutral-200 appearance-none cursor-pointer rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed" 
                     />
                     <span :ref="newPasswordForm.password.errorMsgElement" class="absolute bottom-0 left-0 text-red-500 text-xs font-bold w-full inline-block text-center" :class="newPasswordForm.password.isTextCorrect.value? 'hidden' : 'inline-block'"> Error: Some error occured </span>
                 </div>
@@ -204,25 +204,25 @@
 
         <div class="my-4">
             <div :ref="newPasswordForm.confirmpassword.inputElement" class="flex my-3 w-full outline-gray-500 bg-neutral-200 rounded-md shadow-[0.1rem_0.1rem_0.5rem_black] border-y-4 box-border">
-                <FontAwesomeIcon :icon="faRectangleXmark_solid" class="text-5xl text-[#222c] drop-icon mx-3 my-auto px-1"></FontAwesomeIcon>
+                <FontAwesomeIcon :icon="faRectangleXmark_solid" class="text-4xl text-[#222c] drop-icon mx-3 my-auto px-1"></FontAwesomeIcon>
                 <div class="relative w-full">
                     <input type="password" aria-label="Set a password" id="confirmpassword" name="confirmpassword" value="" v-model="newPasswordForm.confirmpassword.text.value" placeholder="Confirm password..." 
-                        class="text-black text-lg font-semibold text-center w-full py-5 px-2 outline-[#222c] bg-neutral-200 appearance-none cursor-pointer rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed" 
+                        class="text-black text-base font-semibold text-center w-full py-4 px-2 outline-[#222c] bg-neutral-200 appearance-none cursor-pointer rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed" 
                     />
                     <span :ref="newPasswordForm.confirmpassword.errorMsgElement" class="absolute bottom-0 left-0 text-red-500 text-xs font-bold w-full inline-block text-center" :class="newPasswordForm.confirmpassword.isTextCorrect.value? 'hidden' : 'inline-block'"> Error: Some error occured </span>
                 </div>
             </div>
         </div>
 
-        <span class="main-title-alt text-md underline font-semibold cursor-pointer mx-3"
+        <span class="main-title-alt text-sm underline font-semibold cursor-pointer mx-3"
             @click="handleRetryPasswordResetEmail()"
         > 
             Send the code again
         </span>
 
-        <span :ref="newPasswordForm.resendCodeLink.errorMsgElement" class="main-title-alt text-red-500 font-bold text-sm w-full inline-block my-3 mx-3">  </span>
+        <span :ref="newPasswordForm.resendCodeLink.errorMsgElement" class=" text-red-500 font-bold text-xs w-full inline-block my-3 mx-3">  </span>
 
-        <div class="mt-8 mb-4  py-5 px-8 min-w-24 max-w-[40vw] min-h-10 bg-[#111a] rounded-full mx-auto flex justify-center"> 
+        <div class="mt-4 mb-4 py-5 px-10 w-fit max-w-[50vw] min-h-10 bg-[#111a] rounded-md mx-auto flex justify-center"> 
             <button class="main-title-alt text-xl text-center font-bold text-nowrap" type="submit" > Confirm </button> 
         </div>
     </form>
@@ -231,7 +231,7 @@
 <style scoped>
     .main-title {
         font-family: Montserrat, 'Arial Narrow Bold', sans-serif, Haettenschweiler;
-        text-shadow: -.25rem -.25rem .33rem #111;
+        text-shadow: -.2rem -.2rem .33rem #222;
         filter: drop-shadow(0rem 0rem .25rem #000);
     }
 

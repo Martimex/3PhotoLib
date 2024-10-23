@@ -133,10 +133,10 @@ const handleAddNewCollection = async function() {
 
                 <div class="mt-3 mb-6">
                     <div :ref="addCollectionForm.collectionName.inputElement" class="flex my-3 w-full outline-gray-500 bg-neutral-100 rounded-md shadow-[0.1rem_0.1rem_0.5rem_black] border-y-4 box-border">
-                        <FontAwesomeIcon :icon="faFolder" class="text-5xl drop-icon mx-3 my-auto px-1 drop-shadow-[0rem_0rem_0.20rem_#222d]" :class="isFolderColor" ></FontAwesomeIcon>
+                        <FontAwesomeIcon :icon="faFolder" class="text-4xl drop-icon mx-3 my-auto px-1 drop-shadow-[0rem_0rem_0.20rem_#222d]" :class="isFolderColor" ></FontAwesomeIcon>
                         <div class="relative w-full">
                             <input type="text" aria-label="Add a collection name" id="cname" name="cname" value="" v-model="addCollectionForm.collectionName.text.value" placeholder="Colleciton name..."
-                            class="text-black text-lg font-semibold text-center w-full py-5 px-2 outline-[#222c] bg-neutral-100 appearance-none cursor-pointer rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed" 
+                            class="text-black text-base font-semibold text-center w-full py-4 px-2 outline-[#222c] bg-neutral-100 appearance-none cursor-pointer rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed" 
                             />
                             <span :ref="addCollectionForm.collectionName.errorMsgElement" class="absolute bottom-0 left-0 text-red-500 font-bold text-xs w-full inline-block text-center" :class="addCollectionForm.collectionName.isTextCorrect.value? 'hidden' : 'inline-block'"> Error: Some error occured </span>
                         </div>

@@ -61,15 +61,15 @@
 
     <section class="min-h-screen my-12 mx-4">
         <section class="mx-[10vw] mb-3 text-center">
-            <h1 class="text-5xl font-bold mb-8 break-words leading-12 max-w-screen"> {{ viewedCollection?.name }} </h1>
-            <p class="text-lg py-3"> {{ viewedCollection?.description }}  </p>
+            <h1 class="text-4xl font-bold mb-8 break-words leading-12 max-w-screen"> {{ viewedCollection?.name }} </h1>
+            <p class="text-base py-3"> {{ viewedCollection?.description }}  </p>
         </section>
         
         <section class="grid grid-rows-1 grid-cols-[1fr_auto_1fr] items-center">
             <div class="bg-black h-[0.15rem] mr-3 shadow-xl shadow-black"></div>
             <div class="flex items-center justify-start w-fit py-6 px-4 mt-6 mb-8 mx-auto border-black rounded-md border-2">
-                <FontAwesomeIcon :icon="faFolder" class="text-5xl mr-4 drop-shadow-[0rem_0rem_0.20rem_#222d]" :class="`text-[${viewedCollection?.folderColor}]`"></FontAwesomeIcon>
-                <h2 class="text-4xl font-semibold ml-3"> {{ viewedCollection?.collectionPhotos.length }} / {{ getPhotosInCollectionLimit() }} </h2>
+                <FontAwesomeIcon :icon="faFolder" class="text-4xl mr-4 drop-shadow-[0rem_0rem_0.20rem_#222d]" :class="`text-[${viewedCollection?.folderColor}]`"></FontAwesomeIcon>
+                <h2 class="text-3xl font-semibold ml-3"> {{ viewedCollection?.collectionPhotos.length }} / {{ getPhotosInCollectionLimit() }} </h2>
             </div>
             <div class="bg-black h-[0.15rem] ml-3 shadow-xl shadow-black"></div>
         </section>

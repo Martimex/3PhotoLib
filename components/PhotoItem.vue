@@ -174,7 +174,7 @@ function handleConfirmMoveToAnotherCollection(collectionWithoutMovedPhoto: Colle
 
 <template>
     <div @click="[handleFullScreenPhotoView($event), checkIfPhotoToRemove()]" :class="{ loaded: isImgLoaded }"  class="blur-bg relative flex justify-center bg-cover bg-center mx-2 my-4 min-w-[80vw] max-w-[90vw] min-h-[20vh] rounded-md shadow-md shadow-black transition-opacity">
-        <img ref="imgRef" @error="requestImagePhoto($event)" :src="providerObj?.getHighResImageURL(utilizePhotoProvider(props.imgData))" loading="lazy" class="min-h-[40vh] object-cover object-center transition-opacity rounded-md" />    
+        <img ref="imgRef" @error="requestImagePhoto($event)" :src="providerObj?.getHighResImageURL(utilizePhotoProvider(props.imgData))" loading="lazy" class="min-h-[44vh] object-cover object-center transition-opacity rounded-md" />    
         <PhotoPanel v-if="Boolean(isPhotoPanelOpen && !collectionsOrlikedPhotos_isEditModeOn)"  
             :imgData="props.imgData" :provider="props.provider" :isPhotoLiked="isPhotoLiked" :isNowAddedToCollection="isPhotoRecentlyAddedToCollection"
             @photoLikedToggle="handlePhotoLikedToggle"

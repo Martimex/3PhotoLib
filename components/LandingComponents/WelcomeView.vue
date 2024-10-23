@@ -21,10 +21,10 @@ async function handleButtonClick() {
 </script>
 
 <template>
-    <h1 class="main-title text-6xl font-semibold font-mono text-center mt-8 mb-12"> 3PhotoLib </h1>
-    <h2 class="main-title-alt text-xl font-mono text-center my-4"> The royalty-free photo delivery platform for free-forever use! </h2>
-    <div class="mt-8 mb-4 min-w-24 max-w-[40vw] min-h-10 bg-[#111a] rounded-full mx-auto" @click="handleButtonClick"> 
-        <p class="main-title-alt text-xl text-center py-5 px-8 font-bold text-nowrap"> Sign In </p> 
+    <h1 class="main-title text-5xl font-semibold font-mono text-center my-6"> 3PhotoLib </h1>
+    <h2 class="main-title-alt text-lg font-mono text-center mt-9 mb-3 mx-[8%]"> The royalty-free photo delivery platform for free-forever use! </h2>
+    <div class="mt-8 mb-4 py-5 px-10 w-fit max-w-[50vw] min-h-10 bg-[#111a] rounded-md mx-auto" @click="handleButtonClick"> 
+        <p class="main-title-alt text-lg text-center font-bold text-nowrap"> Sign In </p> 
     </div>
 </template>
 
@@ -32,7 +32,7 @@ async function handleButtonClick() {
 
 .main-title {
     font-family: Montserrat, 'Arial Narrow Bold', sans-serif, Haettenschweiler;
-    text-shadow: -.25rem -.25rem .33rem #111;
+    text-shadow: -.2rem -.2rem .33rem #222;
     filter: drop-shadow(0rem 0rem .25rem #000);
 }
 

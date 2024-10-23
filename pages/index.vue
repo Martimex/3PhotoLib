@@ -39,7 +39,7 @@ const { currentHomePageView } = storeToRefs(sStore);
         </section>
 
         <section class="">
-            <div class="shadow-inner-[0_0_0.5rem_0.12rem_#222] shadow-[0_0_0.5rem_0.2rem_#111] relative min-w-[80vw] text-white bg-[#ccc1] py-8 px-4 my-0 mx-auto border-solid border-y-[0.75rem] border-[#eee4]   backdrop-blur-lg backdrop-contrast-75">
+            <div class="shadow-inner-[0_0_0.5rem_0.12rem_#222] shadow-[0_0_0.5rem_0.2rem_#111] relative min-w-[80vw] text-white bg-[#ccc1] py-8 px-6 my-0 mx-auto border-solid border-y-[0.75rem] border-y-[#eee9]   backdrop-blur-lg backdrop-contrast-75">
                 <LandingComponentsWelcomeView v-if="currentHomePageView === 'welcome'" />
                 <LandingComponentsSigninForm v-if="currentHomePageView === 'signin'" />
                 <LandingComponentsLoginForm v-if="currentHomePageView === 'login'" />
