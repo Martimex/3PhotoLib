@@ -20,6 +20,9 @@ const { collectionsToAddPhoto } = useTemporalStore();
 
 const isPhotoLiked = ref<boolean>(false);
 const isPhotoRecentlyAddedToCollection = ref<boolean>(false);
+const isPhotoDownloaded = ref<boolean>(false);
+
+const anchorRef = ref<HTMLAnchorElement>();
 
 const isSaveToCollectionModalOpen = ref<boolean>(false);
     const closeSaveToCollectionModal = () => { collectionsToAddPhoto.reset(); isSaveToCollectionModalOpen.value = false; }
@@ -52,6 +55,18 @@ function handleAddCollection(newCollection: CollectionResponseModel) {
     isAddToNewCollectionTextActive_set(false);
 }
 
+async function handlePhotoDownload() {
+    if(!providerObj || !anchorRef.value) throw new Error('Failed to download the image. Please try again later');
+    const res = await fetch(providerObj.getHighResImageURL(utilizePhotoProvider(viewedPhoto)))
+    const blob = await res.blob();
+    const href = URL.createObjectURL(blob);
+    anchorRef.value.href = href;
+    anchorRef.value.click();
+    window.URL.revokeObjectURL(href);
+    // Trigger UI update for Photo Panel
+    isPhotoDownloaded.value = true;
+}
+
 const requestImagePhoto = async function(ev: Event) {
     // Pixabay is probably constantly changing IMG URL's, in which case the specific photo URL has to be reassigned with photo ID search,
     // and also appropiate DB data needs to be updated.
@@ -82,7 +97,8 @@ const requestImagePhoto = async function(ev: Event) {
     <NavigationBar />
     <section class="min-h-screen text-lg">
         <section>
-            <div class="flex justify-center">
+            <div class="relative flex justify-center">
+                <a ref="anchorRef" href="" :download="`${sqStore.currPhotoProviderName}=${providerObj?.getPhotoId(viewedPhoto)}.png`" class="absolute"></a>
                 <img :src="currPhotoProvider?.getHighResImageURL(utilizePhotoProvider(viewedPhoto))" @error="requestImagePhoto($event)" loading="lazy" class="my-1 w-full object-cover object-center transition-opacity rounded-md shadow-md shadow-black" />
             </div>
             <div class="grid grid-cols-4 grid-rows-1 justify-between">
@@ -93,8 +109,10 @@ const requestImagePhoto = async function(ev: Event) {
                     <FontAwesomeIcon :icon="faHeart" class="text-2xl text-[#333]" :class="isPhotoLiked && `text-red-400 drop-shadow-[0.15rem_0.15rem_0.125rem_#ef4444]`" />
                     <span class="text-center hidden">Like</span>
                 </div>
-                <div class="px-3 py-5 flex flex-col justify-center align-top shadow-md shadow-green-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0">
-                    <FontAwesomeIcon :icon="faDownload" class="text-2xl text-[#333]" />
+                <div class="px-3 py-5 flex flex-col justify-center align-top shadow-md shadow-green-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0"
+                    @click="handlePhotoDownload"
+                >
+                    <FontAwesomeIcon :icon="faDownload" class="text-2xl text-[#333]" :class="isPhotoDownloaded && `text-green-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#4ade80]`" />
                     <span class="text-center hidden">Download</span>
                 </div>
                 <div class="p-3 flex flex-col justify-center align-top shadow-md shadow-blue-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0">

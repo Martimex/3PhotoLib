@@ -31,11 +31,14 @@ const props = defineProps<{
 
 const isPhotoLiked = ref<boolean>(false);
 const isPhotoRecentlyAddedToCollection = ref<boolean>(false);
+const isPhotoDownloaded = ref<boolean>(false);
+
 const isPhotoToRemove = ref<boolean>(false);
 const imgRef = ref<HTMLImageElement>();
 const isImgLoaded = ref<boolean>(false);
 const isPhotoPanelOpen = ref<boolean>(false);
 const providerObj = new PhotoProvider(props.provider).setCurrentProvider();
+const anchorRef = ref<HTMLAnchorElement>();
 
 const testIfInsideCollection = computed(() => {
     // By checking if viewed collection is present, we may know if the photo Item is clicked from /collections/[id] endpoint or not
@@ -155,6 +158,18 @@ function handlePhotoLikedToggle() {
     handleLikePhoto({isPhotoLiked: isPhotoLiked.value, imgData: props.imgData, provider: props.provider}, isPhotoLiked);
 }
 
+async function handlePhotoDownload() {
+    if(!providerObj || !anchorRef.value) throw new Error('Failed to download the image. Please try again later');
+    const res = await fetch(providerObj.getHighResImageURL(utilizePhotoProvider(props.imgData)))
+    const blob = await res.blob();
+    const href = URL.createObjectURL(blob);
+    anchorRef.value.href = href;
+    anchorRef.value.click();
+    window.URL.revokeObjectURL(href);
+    // Trigger UI update for Photo Panel
+    isPhotoDownloaded.value = true;
+}
+
 function handleAddCollection(newCollection: CollectionResponseModel) {
     // This function only happens when user adds a collection by a blue text "Add to new collection" (inside SaveOrMoveToCollection)
     collections_add(newCollection);
@@ -175,9 +190,11 @@ function handleConfirmMoveToAnotherCollection(collectionWithoutMovedPhoto: Colle
 <template>
     <div @click="[handleFullScreenPhotoView($event), checkIfPhotoToRemove()]" :class="{ loaded: isImgLoaded }"  class="blur-bg relative flex justify-center bg-cover bg-center mx-2 my-4 min-w-[80vw] max-w-[90vw] min-h-[20vh] rounded-md shadow-md shadow-black transition-opacity">
         <img ref="imgRef" @error="requestImagePhoto($event)" :src="providerObj?.getHighResImageURL(utilizePhotoProvider(props.imgData))" loading="lazy" class="min-h-[44vh] object-cover object-center transition-opacity rounded-md" />    
+        <a ref="anchorRef" href="" :download="`${props.provider}=${props.imgData.id}.png`" class="absolute"></a>
         <PhotoPanel v-if="Boolean(isPhotoPanelOpen && !collectionsOrlikedPhotos_isEditModeOn)"  
-            :imgData="props.imgData" :provider="props.provider" :isPhotoLiked="isPhotoLiked" :isNowAddedToCollection="isPhotoRecentlyAddedToCollection"
+            :imgData="props.imgData" :provider="props.provider" :isPhotoLiked="isPhotoLiked" :isNowAddedToCollection="isPhotoRecentlyAddedToCollection" :isPhotoDownloaded="isPhotoDownloaded"
             @photoLikedToggle="handlePhotoLikedToggle"
+            @photoDownload="handlePhotoDownload"
             @modalOpen="openSaveToCollectionModal"
         />
         <PhotoRemoveLayer v-if="Boolean((collectionsOrlikedPhotos_isEditModeOn) && isPhotoToRemove)" />

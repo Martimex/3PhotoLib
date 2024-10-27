@@ -12,7 +12,7 @@ import type { availablePhotoTypes, availableProviderNames } from '@/types/type_u
 import PhotoProvider from '@/providers/photoProvidersInitializer';
 import handleLikePhoto from '@/composables/handleLikePhoto';
 
-const photoPanelEmit = defineEmits(['photoLikedToggle', 'modalOpen']);
+const photoPanelEmit = defineEmits(['photoLikedToggle', 'photoDownload', 'modalOpen']);
 
 /* const isPhotoLiked = ref<boolean | null>(null); */
 
@@ -20,7 +20,8 @@ const props = defineProps<{
     imgData: availablePhotoTypes,
     provider: availableProviderNames,
     isPhotoLiked: boolean,
-    isNowAddedToCollection: boolean
+    isNowAddedToCollection: boolean,
+    isPhotoDownloaded: boolean
 }>();
 
 const [sqStore, psStore, aStore] = [useSearchQueryStore(), usePhotoStore(), useAuthStore()];
@@ -125,7 +126,7 @@ const photoTags = computed(() => providerObj?.retrievePhotoTags(utilizePhotoProv
             border-t-2 border-white shadow-[0rem_-.25rem_.5rem_0rem_#fffa]
         ">
             <FontAwesomeIcon :icon="faHeart" @click.stop="photoPanelEmit('photoLikedToggle')" class="text-xl mx-[1.5rem] place-self-start" :class="isPhotoLiked && `text-red-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#ef4444]`"></FontAwesomeIcon>
-            <FontAwesomeIcon :icon="faDownload" @click.stop="" class="text-xl mx-[1.5rem] place-self-start"></FontAwesomeIcon>
+            <FontAwesomeIcon :icon="faDownload" @click.stop="photoPanelEmit('photoDownload')" class="text-xl mx-[1.5rem] place-self-start" :class="isPhotoDownloaded && `text-green-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#22c55e]`" ></FontAwesomeIcon>
             <FontAwesomeIcon :icon="faSave" @click.stop="$emit('modalOpen')" class="text-xl mx-[1.5rem] place-self-start" :class="isNowAddedToCollection && `text-yellow-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#eab308]`"></FontAwesomeIcon>
         </div>
     </div>
