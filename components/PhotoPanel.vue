@@ -102,7 +102,9 @@ const photoTags = computed(() => providerObj?.retrievePhotoTags(utilizePhotoProv
     <div class="absolute inset-0 grid grid-rows-[1fr_auto] text-white bg-black/[.25]">
         <div class="p-[1.5rem] backdrop-blur-lg overflow-auto">
             <figure class="flex items-center justify-start mb-5">
-                <img class="w-16 h-16 rounded-xl text-xs border-2" :src="providerObj?.getPhotoAuthorImage(utilizePhotoProvider(props.imgData))" alt="Author profile picture" />
+                <a :href="currPhotoProvider?.getAuthorProfileURL(utilizePhotoProvider(props.imgData))" target="_blank">
+                    <img class="w-16 h-16 rounded-xl text-xs border-2" :src="providerObj?.getPhotoAuthorImage(utilizePhotoProvider(props.imgData))" alt="Author profile picture" />
+                </a>                
                 <figcaption class="mx-4">
                     <p class="text-sm bold"> Photo by: </p>
                     <p class="text-base bold break-all mr-12"> {{ providerObj?.getPhotoAuthorName(utilizePhotoProvider(props.imgData)) }} </p>

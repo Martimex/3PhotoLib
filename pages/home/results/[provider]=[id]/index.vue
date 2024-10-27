@@ -21,6 +21,7 @@ const { collectionsToAddPhoto } = useTemporalStore();
 const isPhotoLiked = ref<boolean>(false);
 const isPhotoRecentlyAddedToCollection = ref<boolean>(false);
 const isPhotoDownloaded = ref<boolean>(false);
+const isAuthorPageVisited = ref<boolean>(false);
 
 const anchorRef = ref<HTMLAnchorElement>();
 
@@ -39,6 +40,10 @@ onBeforeMount(() => {
 definePageMeta({
     middleware: 'handle-single-photo-id'
 })
+
+function handleVisitAuthorPage() {
+    isAuthorPageVisited.value = true;
+}
 
 function handlePhotoLikedToggle() {
     handleLikePhoto({isPhotoLiked: isPhotoLiked.value, imgData: viewedPhoto, provider: sqStore.currPhotoProviderName }, isPhotoLiked);
@@ -106,7 +111,7 @@ const requestImagePhoto = async function(ev: Event) {
                 <div class="p-3 py-5 flex flex-col justify-between align-top shadow-md shadow-red-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0"
                     @click="handlePhotoLikedToggle"
                 >
-                    <FontAwesomeIcon :icon="faHeart" class="text-2xl text-[#333]" :class="isPhotoLiked && `text-red-400 drop-shadow-[0.15rem_0.15rem_0.125rem_#ef4444]`" />
+                    <FontAwesomeIcon :icon="faHeart" class="text-2xl text-[#333]" :class="isPhotoLiked && `text-red-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#f87171]`" />
                     <span class="text-center hidden">Like</span>
                 </div>
                 <div class="px-3 py-5 flex flex-col justify-center align-top shadow-md shadow-green-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0"
@@ -115,14 +120,18 @@ const requestImagePhoto = async function(ev: Event) {
                     <FontAwesomeIcon :icon="faDownload" class="text-2xl text-[#333]" :class="isPhotoDownloaded && `text-green-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#4ade80]`" />
                     <span class="text-center hidden">Download</span>
                 </div>
-                <div class="p-3 flex flex-col justify-center align-top shadow-md shadow-blue-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0">
-                    <FontAwesomeIcon :icon="faLink" class="text-2xl text-[#333]" />
-                    <span class="text-center hidden">Website</span>
+                <div class="p-3 flex flex-col justify-center items-center shadow-md shadow-blue-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0">
+                    <a :href="currPhotoProvider?.getAuthorProfileURL(utilizePhotoProvider(viewedPhoto))" target="_blank" class="absolute flex items-center"
+                        @click="handleVisitAuthorPage"
+                    >
+                        <FontAwesomeIcon :icon="faLink" class="text-2xl text-[#333]" :class="isAuthorPageVisited && `text-blue-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#60a5fa]`" />
+                        <!-- <span class="text-center hidden">Website</span> -->
+                    </a>
                 </div>
                 <div class="p-3 flex flex-col justify-center align-top shadow-md shadow-yellow-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0"
                     @click="openSaveToCollectionModal"
                 >
-                    <FontAwesomeIcon :icon="faSave" class="text-2xl text-[#333]" :class="isPhotoRecentlyAddedToCollection && `text-yellow-400 drop-shadow-[0.15rem_0.15rem_0.125rem_#eab308]`" />
+                    <FontAwesomeIcon :icon="faSave" class="text-2xl text-[#333]" :class="isPhotoRecentlyAddedToCollection && `text-yellow-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#facc15]`" />
                     <span class="text-center hidden">Add</span>
                 </div>
             </div>

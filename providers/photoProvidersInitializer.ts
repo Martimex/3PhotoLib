@@ -101,7 +101,7 @@ class PixabayPhotoProvider extends PhotoProvider {
 
     getAuthorProfileURL = function(imgData: PixabayPhoto): string | undefined {
         // Pixabay unfortunately does not provide an API to the user profile, so instead we do provide a profile image overview
-        return imgData.userImageURL || undefined;
+        return `https://pixabay.com/users/${imgData.user}-${imgData.user_id}`
     }
 
     getPhotoOriginalSource = function(imgData: PixabayPhoto): string {
