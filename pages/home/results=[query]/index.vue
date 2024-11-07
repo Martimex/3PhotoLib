@@ -4,10 +4,11 @@ import { ref, onMounted } from 'vue';
 import { useSearchQueryStore } from '../../../stores/searchQueryStore';
 import { useStatusStore } from '../../../stores/statusStore';
 import { storeToRefs } from 'pinia';
-import type { availablePhotoTypes, availableProviderNames } from '../../../types/type_utilities';
+import searchPhotosByQuery from '../../../composables/searchPhotosByQuery';
+import type { availablePhotoTypes, availableProviderNames, requestParamsObject } from '../../../types/type_utilities';
 
 const [sStore, sqStore] = [useStatusStore(), useSearchQueryStore()];
-const { queryText, currPhotoProvider, currPhotoProviderName, outputPhotosNumber, searchPageCount } = storeToRefs(sqStore);
+const { queryText, currPhotoProvider, currPhotoProviderName, outputPhotosNumber, searchPageCount, searchPageObj } = storeToRefs(sqStore);
 const { isRequestPending, isSearchbarOpen} = storeToRefs(sStore);
 
 definePageMeta({
@@ -16,54 +17,36 @@ definePageMeta({
 
 const imageData = ref<availablePhotoTypes[]>([]);
 const providerName = ref<availableProviderNames>(currPhotoProviderName.value);
+const isNextPageAvailable = ref<boolean>(true);
 
-// For Pexels only, the search "red" causes no result being displayed and result in weird errors. Investigate this issue further !
+async function handleSwitchPage(pageModifier: number) {
+    searchPageObj.value.current = pageModifier;
+    await navigateTo(`/home/results=${sqStore.queryText}&page=${sqStore.searchPageObj.current}&photos=${sqStore.outputPhotosObj.current}&provider=${sqStore.currPhotoProviderName}`)
+    searchPageCount.value = pageModifier;
+}
 
-sqStore.$subscribe(async() => {
-    if(currPhotoProvider.value === undefined || !currPhotoProvider.value) return; // This line silences error where TS complies that x (Provider Name) can be possibly undefined
-    const initialPageRequestData = await fetch(currPhotoProvider.value.getSearchRequestURL(queryText.value, outputPhotosNumber.value, 1), {headers: currPhotoProvider.value.getSearchRequestHeaders()})
-        .then(res => res? res.json() : '')
-        .then(data => data)
-        .catch(err => { throw new Error('An error has occured: ', err) })
-    
-    if(searchPageCount.value === 1) {
-        imageData.value = currPhotoProvider.value.getResponsePhotos(initialPageRequestData);
-    } else {
-        // User picked page number is higher than 1 -> perform calculations if requested page number even exists. If so, provide
-        // results for the page. Otherwise, return the latest page that contain photos + inform user about the behaviour
-        const maxPageForRequest = currPhotoProvider.value.getMaxPageNumber(initialPageRequestData, outputPhotosNumber.value);
-        const searchPageFinal = (maxPageForRequest < searchPageCount.value)? maxPageForRequest : searchPageCount.value;
-
-        const finalSearchPageRequestData = await fetch(currPhotoProvider.value.getSearchRequestURL(queryText.value, outputPhotosNumber.value, searchPageFinal), {headers: currPhotoProvider.value.getSearchRequestHeaders()})
-            .then(res => res.json())
-            .then(data => data)
-            .catch(err => { throw new Error('An error has occured: ', err) })
+async function applyPhotos() {
+    isRequestPending.value = true;
+    const responsePhotos = await searchPhotosByQuery(
+        {queryText: queryText.value, currPhotoProvider: currPhotoProvider.value, outputPhotosNumber: outputPhotosNumber.value, searchPageCount: searchPageCount.value},
+        {isRequestPending: isRequestPending.value, pageModifier: 0}
+    );
+    if(responsePhotos) {
         
-            imageData.value = currPhotoProvider.value.getResponsePhotos(finalSearchPageRequestData);
+        if(responsePhotos.length > outputPhotosNumber.value) {
+            responsePhotos.splice(outputPhotosNumber.value);
+        }
+        isNextPageAvailable.value = responsePhotos.length >= outputPhotosNumber.value;
+        imageData.value = responsePhotos;
     }
-
-    // Because we performed an above, initial data request, now we know how many photos are available, and thus what is the latest
-    // possible page that contains at least 1 photo - useful in cases where user selects too big "page number" option that would not
-    // return any results. In such situation, user will be shown the very last page that contains any images
-
-    // After fetching data, resolve status as non-pending
-    isRequestPending.value = false;
-});
-
-async function getPhotos() {
-    if(currPhotoProvider.value === undefined || !currPhotoProvider.value) return; // This line silences error where TS complies that x (Provider Name) can be possibly undefined
-
-    await fetch(currPhotoProvider.value.getSearchRequestURL(queryText.value, outputPhotosNumber.value, searchPageCount.value), {headers: currPhotoProvider.value.getSearchRequestHeaders()})
-        .then(res => { return res.json(); })
-        // Used " currPhotoProvider.value! " below, beause we checked above already that the  currPhotoProvider.value is NOT undefined
-        .then(data => { imageData.value =  currPhotoProvider.value!.getResponsePhotos(data); })
-        .catch(err => { throw new Error('An error has occured: ', err) });
-
-    // After fetching data, resolve status as non-pending
+    /* imageData.value = responsePhotos? responsePhotos : imageData.value; */
     isRequestPending.value = false;
 }
 
-onMounted(() => getPhotos());
+onBeforeMount(async() => {
+    // Executed every time we perform a search that has at least one param modified compared to the most recent search
+    await applyPhotos();
+});
 onUnmounted(() => isSearchbarOpen.value = false);
 
 </script>
@@ -76,10 +59,19 @@ onUnmounted(() => isSearchbarOpen.value = false);
             <div v-if="isRequestPending"> <Loading /> </div>
             <div v-else-if="!imageData.length"> <NoResults /> </div>
             <div v-else-if="imageData" class="py-[10vh]">
-                <p class="text-4xl mb-8 bold"> Results for: "{{ queryText }}" </p>
+                <p class="text-3xl font-bold text-center underline"> {{ queryText }} </p>
+                <p class="text-base mt-12 mb-6 text-center"> Searching for <b>{{ outputPhotosNumber === 1? `${outputPhotosNumber} photo` : `${outputPhotosNumber} photos` }} </b> per each page. You can alter search options at any time by using the top-left gear button. </p>
                 <div v-if="!isRequestPending" class="">
                     <!-- Slicing works well for providers API, which reqire minimal response photos, while this app does not  -->
+                    <section class="grid grid-rows-1 grid-cols-[1fr_auto_1fr] items-center">
+                        <div class="bg-black h-[0.15rem] mr-3 shadow-xl shadow-black"></div>
+                        <div class="flex items-center justify-start w-fit py-3 px-6 my-8 mx-auto border-black rounded-md border-2">
+                            <p class="text-xl font-semibold"> Page: {{ searchPageCount }} </p>
+                        </div>
+                        <div class="bg-black h-[0.15rem] ml-3 shadow-xl shadow-black"></div>
+                    </section>
                     <PhotoItem v-for="image in imageData.slice(0, outputPhotosNumber)" :key="image.id" :imgData="image" :provider="providerName"/>
+                    <PageNavigation @switchPage="handleSwitchPage" :isNextPageAvailable="isNextPageAvailable" />
                 </div>
                 <div v-if="isRequestPending" class="">
                     <p class="text-2xl bold text-yellow-400"> Pending... Please wait 🥰</p>

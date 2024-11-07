@@ -33,6 +33,12 @@ export type userData = { id: string, name: string, email: string, profileImage: 
 // Used to safe type account limitation variables and values
 export type accountLimitationsData = { COLLECTIONS_LIMIT: number, PHOTOS_IN_COLLECTION_LIMIT: number, LIKED_PHOTOS_LIMIT: number, USERACCOUNT_RANDOMLIKEDPHOTOSVIEWED_LIMIT: number, USERACCOUNT_RANDOMCOLLECTIONSVIEWED_LIMIT: number, }
 
+export type requestParamsObject = {queryText: string, currPhotoProviderName: availableProviderNames, outputPhotosNumber: number, searchPageCount: number }
+
+export type requestDependenciesObject = {queryText: string, currPhotoProvider: any, outputPhotosNumber: number, searchPageCount: number }
+
+export type requestOptionsObject = {isRequestPending: boolean,  pageModifier: number }
+
 // Used for SaveOrMoveToCollection to set fetched collections to their respective statuses (states)
 export type collectionStates = {
 	base: CollectionResponseModel[],
