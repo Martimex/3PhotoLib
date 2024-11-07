@@ -118,9 +118,11 @@ onBeforeMount(() => {
                     </div>
                 </NuxtLink>
                 <div class="grid grid-cols-3 grid-rows-auto gap-3 place-content-center">
-                    <div v-for="collection in randomCollections" class="flex flex-col justify-center items-center truncate" >
-                        <FontAwesomeIcon :icon="faFolder" :class="`text-[${collection.folderColor}]`" class="text-7xl drop-shadow-[0rem_0rem_0.2rem_#000]" />
-                        <p class="text-lg font-semibold truncate w-max-[10%] mt-2 mb-4"> {{ collection.name }} </p>
+                    <div v-for="collection in randomCollections">
+                        <NuxtLink :to="`/home/collections/${collection.releaseId}`" class="flex flex-col justify-center items-center truncate">
+                            <FontAwesomeIcon :icon="faFolder" :class="`text-[${collection.folderColor}]`" class="text-7xl drop-shadow-[0rem_0rem_0.2rem_#000]" />
+                            <p class="text-lg font-semibold truncate w-max-[10%] mt-2 mb-4"> {{ collection.name }} </p>
+                        </NuxtLink>
                     </div>
                 </div>
             </div>
