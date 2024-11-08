@@ -1,6 +1,5 @@
 import PhotoProvider from '@/providers/photoProvidersInitializer';
-import type { availableProviderNames, optionalURLParamsIdentifiers } from '@/types/type_utilities';
-import type { numberInputKeys } from '@/types/type_utilities';
+import type { availableProviderNames, optionalURLParamsIdentifiers, numberInputKeys } from '@/types/type_utilities';
 
 export const useSearchQueryStore = defineStore(`searchQueryStore`, () => {
     const DEFAULT_PROVIDER: availableProviderNames = 'pixabay';

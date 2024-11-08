@@ -8,6 +8,8 @@ import setCollectionState from '~/composables/setCollectionState';
 import type { availablePhotoTypes, availableProviderNames, collectionStates, collectionStateCheckObject } from '~/types/type_utilities';
 import type PhotoResponseModel from '~/types/responseModel_photo';
 import type CollectionResponseModel from '~/types/responseModel_collection';
+import requestImagePhoto from '~/composables/requestImagePhoto';
+
 
 const props = defineProps<{
     isMoveToMode: boolean,
@@ -107,30 +109,6 @@ function handleChangeCloneOrMoveOption() {
     isCloneOptionActive.value = !isCloneOptionActive.value;
 }
 
-const requestImagePhoto = async function(ev: Event) {
-    // Pixabay is probably constantly changing IMG URL's, in which case the specific photo URL has to be reassigned with photo ID search,
-    // and also appropiate DB data needs to be updated.
-    const targetElement = ev.target as HTMLImageElement;
-
-    const requestedPhoto =  providerObj?.getSinglePhotoById(utilizePhotoProvider(props.imgData.id as any));
-    const data = await $fetch(`${requestedPhoto}`, { headers: providerObj?.getSearchRequestHeaders() })
-        .then(res => providerObj?.getSinglePhoto(utilizePhotoProvider(res as availablePhotoTypes )));
-
-    if(!data) { throw new Error('The photo data fetch has failed'); }
-
-    //console.error(`🪲🪲🪲 THE URL FOR LARGE IMAGE HAS ELAPSED AND THEREFORE NEEDS TO BE UPDATED. NOTE ITS DEBUG MESSAGE ONLY. ⭐⭐⭐ The provider is: `, props.provider);
-
-    if(providerObj) {
-        targetElement.src = providerObj?.getHighResImageURL(utilizePhotoProvider(data))
-    }
-
-    // Last of all lets update the photoDetails object (database photo record)
-    await $fetch(`/photo/updateData`, { method: 'post', body: {
-        photoData: data,
-        photoID: `${props.provider}=${data.id}`
-    }});
-}
-
 onBeforeMount(() => {
 	if(!allCollections.value) throw new Error('FAILED TO FETCH USER COLLECTIONS');
 	Object.assign(collectionStatesObj, setCollectionState(allCollections.value, props.isMoveToMode, stateCheckDependencies));
@@ -160,7 +138,7 @@ onUnmounted(() => {
         <section class="bg-[#eee] m-auto w-full h-fit px-3 py-6 rounded-md shadow-[0.3rem_0.3rem_0.5rem_#222] border-2 border-[#222] border-solid">
             <h2 class="max-w-[80%] align-middle mx-auto text-5xl font-bold text-center py-6 mb-9 border-[#222] border-solid border-b-4"> {{ props.isMoveToMode? `Move To` : `Save To` }} </h2>
             <div class="flex justify-center">
-                <img ref="imgRef" :src="providerObj?.getHighResImageURL(utilizePhotoProvider(props.imgData))" @error="requestImagePhoto" class="min-h-[40vh] max-h-[75vh] mb-12 object-cover object-center transition-opacity rounded-md shadow-lg shadow-[#222]" />    
+                <img ref="imgRef" :src="providerObj?.getHighResImageURL(utilizePhotoProvider(props.imgData))" @error="requestImagePhoto($event, props.provider, `${props.imgData.id}`)" class="min-h-[40vh] max-h-[75vh] mb-12 object-cover object-center transition-opacity rounded-md shadow-lg shadow-[#222]" />    
             </div>
             <div v-if="props.isMoveToMode && collectionStatesObj.moveFrom.length" class="mb-6 py-3 border-b-2 border-dashed border-[#222]">
                 <h3 class="text-3xl font-semibold mx-6 mb-4"> {{ applyHeadingText }} </h3>

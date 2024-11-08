@@ -1,22 +1,28 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { searchPhotosByQuery } from '#imports';
+import { availableProviderNames_Array, featuredCategories } from '../types/type_utilities';
+import type { availableProviderNames, availablePhotoTypes } from '../types/type_utilities';
 import PhotoItem from './PhotoItem.vue';
-import type PixabayPhoto from '@/types/photoItem_pixabay';
-import type { availableProviderNames } from '../types/type_utilities';
+import PhotoProvider from '~/providers/photoProvidersInitializer';
 
-const featuredImages = ref<PixabayPhoto[]>([]);
+const { featuredPhotosCategory, featuredPhotosProviderName } = storeToRefs(usePhotoStore());
+
+const featuredImages = ref<availablePhotoTypes[]>([]);
 const providerName = ref<availableProviderNames>('pixabay');
 
-try {
-    await fetch(`https://pixabay.com/api/?key=${import.meta.env.VITE_PIXABAY_API}&q=garden&image_type=photo&page=1&per_page=10`)
-        .then(res => res.json())
-        .then(data => featuredImages.value = (data.hits?.length)? data.hits : [])
-        //.then(() => { return new Promise<void>((resolve, reject) => { setTimeout(() => { resolve(); }, 4500); }) });
-} catch(error) {
-    throw new Error(`Some unexpected error has occured. The message: ${error}`);
-}
+onBeforeMount(async() => {
+    if(!featuredPhotosCategory.value) { featuredPhotosCategory.value = featuredCategories[Math.floor(Math.random() * featuredCategories.length)]};
+    if(!featuredPhotosProviderName.value) { featuredPhotosProviderName.value = availableProviderNames_Array[Math.floor(Math.random() * availableProviderNames_Array.length)]};
 
-
+    const featuredPhotosArr = await searchPhotosByQuery(
+        {queryText: featuredPhotosCategory.value, currPhotoProvider: new PhotoProvider(featuredPhotosProviderName.value).setCurrentProvider(), outputPhotosNumber: 10, searchPageCount: 1},
+        {isRequestPending: true, pageModifier: 0}
+    );
+    
+    providerName.value = featuredPhotosProviderName.value;
+    if(featuredPhotosArr) { featuredImages.value = featuredPhotosArr }
+})
 
 </script>
 

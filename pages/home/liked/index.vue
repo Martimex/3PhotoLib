@@ -7,10 +7,6 @@ import { getLikedPhotosLimit } from '#imports';
 import type PhotoResponseModel from '@/types/responseModel_photo';
 import type { availablePhotoStorages } from '~/types/type_utilities';
 
-/* definePageMeta({
-    middleware: 'fetch-liked-photos'
-}) */
-
 const sStore = useStatusStore();
 
 const { currentUser_get, likedPhotos_set, likedPhotos_update } = useAuthStore();

@@ -7,6 +7,7 @@ import type PhotoResponseModel from '~/types/responseModel_photo';
 import type CollectionResponseModel from '~/types/responseModel_collection';
 import type { availablePhotoTypes, availableProviderNames, randomlyPickedObj } from '~/types/type_utilities';
 import { utilizePhotoProvider } from '~/types/type_utilities';
+import requestImagePhoto from '~/composables/requestImagePhoto';
 
 const { currentUser_get } = useAuthStore();
 
@@ -20,31 +21,6 @@ const isLogoutMenuOpen = ref<boolean>(false);
 
 const getPhotoURL = function(photo: PhotoResponseModel) {
     return new PhotoProvider(photo.provider).setCurrentProvider()?.getHighResImageURL(utilizePhotoProvider(photo.photoDetails));
-}
-
-const requestImagePhoto = async function(ev: Event, provider: availableProviderNames, photoDetails: availablePhotoTypes) {
-    // Pixabay is probably constantly changing IMG URL's, in which case the specific photo URL has to be reassigned with photo ID search,
-    // and also appropiate DB data needs to be updated.
-    const targetElement = ev.target as HTMLImageElement;
-    const providerObj = new PhotoProvider(provider).setCurrentProvider()
-
-    const requestedPhoto =  providerObj?.getSinglePhotoById(utilizePhotoProvider(photoDetails.id as any));
-    const data = await $fetch(`${requestedPhoto}`, { headers: providerObj?.getSearchRequestHeaders() })
-        .then(res => providerObj?.getSinglePhoto(utilizePhotoProvider(res as availablePhotoTypes )));
-
-    if(!data) { throw new Error('The photo data fetch has failed'); }
-
-   //console.error(`🪲🪲🪲 THE URL FOR LARGE IMAGE HAS ELAPSED AND THEREFORE NEEDS TO BE UPDATED. NOTE ITS DEBUG MESSAGE ONLY. ⭐⭐⭐ The provider is: `, provider);
-
-    if(providerObj) {
-        targetElement.src = providerObj?.getHighResImageURL(utilizePhotoProvider(data))
-    }
-
-    // Last of all lets update the photoDetails object (database photo record)
-    await $fetch(`/photo/updateData`, { method: 'post', body: {
-        photoData: data,
-        photoID: `${provider}=${data.id}`
-    }});
 }
 
 function handleTryToLogout() {
@@ -102,7 +78,7 @@ onBeforeMount(() => {
                 <div class="grid grid-cols-2 grid-rows-auto gap-3">
                     <div v-for="(photo, index) in randomLikedPhotos" >
                         <img 
-                            :src="getPhotoURL(photo)" loading="lazy" @error="requestImagePhoto($event, photo.provider, photo.photoDetails)"
+                            :src="getPhotoURL(photo)" loading="lazy" @error="requestImagePhoto($event, photo.provider, `${photo.photoDetails.id}`)"
                             class="p-2 w-full h-36 object-cover object-center transition-opacity rounded-md shadow-md shadow-black border-2 border-[#2227]"
                         />
                     </div>

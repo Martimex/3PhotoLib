@@ -39,6 +39,10 @@ export type requestDependenciesObject = {queryText: string, currPhotoProvider: a
 
 export type requestOptionsObject = {isRequestPending: boolean,  pageModifier: number }
 
+// Used for randomizing viewable category inside /home
+export const featuredCategories = ['garden', 'landscape', 'girl', 'moon', 'dog', 'boy', 'sunset', 'nebula', 'cars', 'city', 'neon', 'people', 'winter', 'summer', 'cat'] as const;
+export type AllFeaturedCategories = typeof featuredCategories[number];
+
 // Used for SaveOrMoveToCollection to set fetched collections to their respective statuses (states)
 export type collectionStates = {
 	base: CollectionResponseModel[],

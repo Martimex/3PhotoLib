@@ -5,9 +5,11 @@ import { utilizePhotoProvider } from '~/types/type_utilities';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faHeart, faDownload, faSave, faLink, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import handleLikePhoto from '@/composables/handleLikePhoto';
+import requestImagePhoto from '~/composables/requestImagePhoto';
 import PhotoProvider from '~/providers/photoProvidersInitializer';
 import type { availablePhotoTypes } from '~/types/type_utilities';
 import type CollectionResponseModel from '~/types/responseModel_collection';
+import handlePhotoDownload from '~/composables/handlePhotoDownload';
 
 const [sqStore, pStore] = [useSearchQueryStore(), usePhotoStore()];
 const { likedPhotosOrdered_get, currentUser_get, collections_add } = useAuthStore();
@@ -60,42 +62,6 @@ function handleAddCollection(newCollection: CollectionResponseModel) {
     isAddToNewCollectionTextActive_set(false);
 }
 
-async function handlePhotoDownload() {
-    if(!providerObj || !anchorRef.value) throw new Error('Failed to download the image. Please try again later');
-    const res = await fetch(providerObj.getHighResImageURL(utilizePhotoProvider(viewedPhoto)))
-    const blob = await res.blob();
-    const href = URL.createObjectURL(blob);
-    anchorRef.value.href = href;
-    anchorRef.value.click();
-    window.URL.revokeObjectURL(href);
-    // Trigger UI update for Photo Panel
-    isPhotoDownloaded.value = true;
-}
-
-const requestImagePhoto = async function(ev: Event) {
-    // Pixabay is probably constantly changing IMG URL's, in which case the specific photo URL has to be reassigned with photo ID search,
-    // and also appropiate DB data needs to be updated.
-    const targetElement = ev.target as HTMLImageElement;
-
-    const requestedPhoto =  providerObj?.getSinglePhotoById(utilizePhotoProvider(pStore.viewedPhoto?.id as any));
-    const data = await $fetch(`${requestedPhoto}`, { headers: providerObj?.getSearchRequestHeaders() })
-        .then(res => providerObj?.getSinglePhoto(utilizePhotoProvider(res as availablePhotoTypes )));
-
-    if(!data) { throw new Error('The photo data fetch has failed'); }
-
-    //console.error(`🪲🪲🪲 THE URL FOR LARGE IMAGE HAS ELAPSED AND THEREFORE NEEDS TO BE UPDATED. NOTE ITS DEBUG MESSAGE ONLY. ⭐⭐⭐ The provider is: `, sqStore.currPhotoProviderName);
-
-    if(providerObj) {
-        targetElement.src = providerObj?.getHighResImageURL(utilizePhotoProvider(data))
-    }
-
-    // Last of all lets update the photoDetails object (database photo record)
-    await $fetch(`/photo/updateData`, { method: 'post', body: {
-        photoData: data,
-        photoID: `${sqStore.currPhotoProviderName}=${data.id}`
-    }});
-}
-
 </script>
 
 <template>
@@ -104,7 +70,7 @@ const requestImagePhoto = async function(ev: Event) {
         <section>
             <div class="relative flex justify-center">
                 <a ref="anchorRef" href="" :download="`${sqStore.currPhotoProviderName}=${providerObj?.getPhotoId(viewedPhoto)}.png`" class="absolute"></a>
-                <img :src="currPhotoProvider?.getHighResImageURL(utilizePhotoProvider(viewedPhoto))" @error="requestImagePhoto($event)" loading="lazy" class="my-1 w-full object-cover object-center transition-opacity rounded-md shadow-md shadow-black" />
+                <img :src="currPhotoProvider?.getHighResImageURL(utilizePhotoProvider(viewedPhoto))" @error="requestImagePhoto($event, sqStore.currPhotoProviderName, `${viewedPhoto.id}`)" loading="lazy" class="my-1 w-full object-cover object-center transition-opacity rounded-md shadow-md shadow-black" />
             </div>
             <div class="grid grid-cols-4 grid-rows-1 justify-between">
                 <!-- BUTTONS FUNCTIONALITY TO BE IMPLEMENTED SOON -->
@@ -115,7 +81,7 @@ const requestImagePhoto = async function(ev: Event) {
                     <span class="text-center hidden">Like</span>
                 </div>
                 <div class="px-3 py-5 flex flex-col justify-center align-top shadow-md shadow-green-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0"
-                    @click="handlePhotoDownload"
+                    @click="async() => isPhotoDownloaded = await handlePhotoDownload(anchorRef, sqStore.currPhotoProviderName, viewedPhoto)"
                 >
                     <FontAwesomeIcon :icon="faDownload" class="text-2xl text-[#333]" :class="isPhotoDownloaded && `text-green-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#4ade80]`" />
                     <span class="text-center hidden">Download</span>

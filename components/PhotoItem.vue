@@ -10,8 +10,10 @@ import { storeToRefs } from 'pinia';
 import type { availablePhotoTypes, availableProviderNames } from '../types/type_utilities';
 import type CollectionResponseModel from '~/types/responseModel_collection';
 import PhotoProvider from '@/providers/photoProvidersInitializer';
+import requestImagePhoto from '~/composables/requestImagePhoto';
 import likeThePhoto from '@/composables/likeThePhoto';
 import keepPhotoAsUnliked from '@/composables/keepPhotoAsUnliked';
+import handlePhotoDownload from '~/composables/handlePhotoDownload';
 
 const sqStore = useSearchQueryStore();
 const sStore = useStatusStore();
@@ -103,30 +105,6 @@ const getBgImg = function() {
     //return `url(${photoData.value.previewURL})`
 }
 
-const requestImagePhoto = async function(ev: Event) {
-    // Pixabay is probably constantly changing IMG URL's, in which case the specific photo URL has to be reassigned with photo ID search,
-    // and also appropiate DB data needs to be updated.
-    const targetElement = ev.target as HTMLImageElement;
-
-    const requestedPhoto =  providerObj?.getSinglePhotoById(utilizePhotoProvider(props.imgData.id as any));
-    const data = await $fetch(`${requestedPhoto}`, { headers: providerObj?.getSearchRequestHeaders() })
-        .then(res => providerObj?.getSinglePhoto(utilizePhotoProvider(res as availablePhotoTypes )));
-
-    if(!data) { throw new Error('The photo data fetch has failed'); }
-
-    //console.error(`🪲🪲🪲 THE URL FOR LARGE IMAGE HAS ELAPSED AND THEREFORE NEEDS TO BE UPDATED. NOTE ITS DEBUG MESSAGE ONLY. ⭐⭐⭐ The provider is: `, props.provider);
-
-    if(providerObj) {
-        targetElement.src = providerObj?.getHighResImageURL(utilizePhotoProvider(data))
-    }
-
-    // Last of all lets update the photoDetails object (database photo record)
-    await $fetch(`/photo/updateData`, { method: 'post', body: {
-        photoData: data,
-        photoID: `${props.provider}=${data.id}`
-    }});
-}
-
 const handleFullScreenPhotoView = function(ev: Event) {
 
     //ev.stopPropagation();
@@ -158,18 +136,6 @@ function handlePhotoLikedToggle() {
     handleLikePhoto({isPhotoLiked: isPhotoLiked.value, imgData: props.imgData, provider: props.provider}, isPhotoLiked);
 }
 
-async function handlePhotoDownload() {
-    if(!providerObj || !anchorRef.value) throw new Error('Failed to download the image. Please try again later');
-    const res = await fetch(providerObj.getHighResImageURL(utilizePhotoProvider(props.imgData)))
-    const blob = await res.blob();
-    const href = URL.createObjectURL(blob);
-    anchorRef.value.href = href;
-    anchorRef.value.click();
-    window.URL.revokeObjectURL(href);
-    // Trigger UI update for Photo Panel
-    isPhotoDownloaded.value = true;
-}
-
 function handleAddCollection(newCollection: CollectionResponseModel) {
     // This function only happens when user adds a collection by a blue text "Add to new collection" (inside SaveOrMoveToCollection)
     collections_add(newCollection);
@@ -189,12 +155,12 @@ function handleConfirmMoveToAnotherCollection(collectionWithoutMovedPhoto: Colle
 
 <template>
     <div @click="[handleFullScreenPhotoView($event), checkIfPhotoToRemove()]" :class="{ loaded: isImgLoaded }"  class="blur-bg relative flex justify-center bg-cover bg-center mx-2 my-4 min-w-[80vw] max-w-[90vw] min-h-[20vh] rounded-md shadow-md shadow-black transition-opacity">
-        <img ref="imgRef" @error="requestImagePhoto($event)" :src="providerObj?.getHighResImageURL(utilizePhotoProvider(props.imgData))" loading="lazy" class="min-h-[44vh] object-cover object-center transition-opacity rounded-md" />    
+        <img ref="imgRef" @error="requestImagePhoto($event, props.provider, `${props.imgData.id}`)" :src="providerObj?.getHighResImageURL(utilizePhotoProvider(props.imgData))" loading="lazy" class="min-h-[44vh] object-cover object-center transition-opacity rounded-md" />    
         <a ref="anchorRef" href="" :download="`${props.provider}=${props.imgData.id}.png`" class="absolute"></a>
         <PhotoPanel v-if="Boolean(isPhotoPanelOpen && !collectionsOrlikedPhotos_isEditModeOn)"  
             :imgData="props.imgData" :provider="props.provider" :isPhotoLiked="isPhotoLiked" :isNowAddedToCollection="isPhotoRecentlyAddedToCollection" :isPhotoDownloaded="isPhotoDownloaded"
             @photoLikedToggle="handlePhotoLikedToggle"
-            @photoDownload="handlePhotoDownload"
+            @photoDownload="async() => isPhotoDownloaded = await handlePhotoDownload(anchorRef, props.provider, props.imgData)"
             @modalOpen="openSaveToCollectionModal"
         />
         <PhotoRemoveLayer v-if="Boolean((collectionsOrlikedPhotos_isEditModeOn) && isPhotoToRemove)" />
