@@ -8,6 +8,7 @@ import type CollectionResponseModel from '~/types/responseModel_collection';
 import type { availablePhotoTypes, availableProviderNames, randomlyPickedObj } from '~/types/type_utilities';
 import { utilizePhotoProvider } from '~/types/type_utilities';
 import requestImagePhoto from '~/composables/requestImagePhoto';
+import UserLikedImage from '~/components/Account/UserLikedImage.vue';
 
 const { currentUser_get } = useAuthStore();
 
@@ -18,10 +19,6 @@ if(!userData) { throw new Error('ERROR: User data not found'); }
 const [userLikedPhotos, userCollections] = [ref<PhotoResponseModel[]>(userData.likedPhotos), ref<CollectionResponseModel[]>(userData.collections)];
 const [randomLikedPhotos, randomCollections] = [ref<PhotoResponseModel[]>([]), ref<CollectionResponseModel[]>([])];
 const isLogoutMenuOpen = ref<boolean>(false);
-
-const getPhotoURL = function(photo: PhotoResponseModel) {
-    return new PhotoProvider(photo.provider).setCurrentProvider()?.getHighResImageURL(utilizePhotoProvider(photo.photoDetails));
-}
 
 function handleTryToLogout() {
     isLogoutMenuOpen.value = true;
@@ -77,10 +74,7 @@ onBeforeMount(() => {
                 </NuxtLink>
                 <div class="grid grid-cols-2 grid-rows-auto gap-3">
                     <div v-for="(photo, index) in randomLikedPhotos" >
-                        <img 
-                            :src="getPhotoURL(photo)" loading="lazy" @error="requestImagePhoto($event, photo.provider, `${photo.photoDetails.id}`)"
-                            class="p-2 w-full h-36 object-cover object-center transition-opacity rounded-md shadow-md shadow-black border-2 border-[#2227]"
-                        />
+                        <UserLikedImage :photoData="photo" />
                     </div>
                 </div>
             </div>
@@ -95,7 +89,7 @@ onBeforeMount(() => {
                 </NuxtLink>
                 <div class="grid grid-cols-3 grid-rows-auto gap-3 place-content-center">
                     <div v-for="collection in randomCollections">
-                        <NuxtLink :to="`/home/collections/${collection.releaseId}`" class="flex flex-col justify-center items-center truncate">
+                        <NuxtLink :to="`/home/collections/${collection.releaseId}`" class="blur-bg flex flex-col justify-center items-center truncate">
                             <FontAwesomeIcon :icon="faFolder" :class="`text-[${collection.folderColor}]`" class="text-7xl drop-shadow-[0rem_0rem_0.2rem_#000]" />
                             <p class="text-lg font-semibold truncate w-max-[10%] mt-2 mb-4"> {{ collection.name }} </p>
                         </NuxtLink>

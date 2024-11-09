@@ -70,7 +70,7 @@ function handleAddCollection(newCollection: CollectionResponseModel) {
         <section>
             <div class="relative flex justify-center">
                 <a ref="anchorRef" href="" :download="`${sqStore.currPhotoProviderName}=${providerObj?.getPhotoId(viewedPhoto)}.png`" class="absolute"></a>
-                <img :src="currPhotoProvider?.getHighResImageURL(utilizePhotoProvider(viewedPhoto))" @error="requestImagePhoto($event, sqStore.currPhotoProviderName, `${viewedPhoto.id}`)" loading="lazy" class="my-1 w-full object-cover object-center transition-opacity rounded-md shadow-md shadow-black" />
+                <img :src="currPhotoProvider?.getHighResImageURL(utilizePhotoProvider(viewedPhoto))" alt="Detailed photo" @error="requestImagePhoto($event, sqStore.currPhotoProviderName, `${viewedPhoto.id}`)" :width="providerObj?.getPhotoWidth(viewedPhoto)" :height="providerObj?.getPhotoHeight(viewedPhoto)" class="my-1 max-w-full h-auto object-cover object-center transition-opacity rounded-md shadow-md shadow-black" />
             </div>
             <div class="grid grid-cols-4 grid-rows-1 justify-between">
                 <!-- BUTTONS FUNCTIONALITY TO BE IMPLEMENTED SOON -->

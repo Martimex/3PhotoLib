@@ -108,6 +108,14 @@ class PixabayPhotoProvider extends PhotoProvider {
         return imgData.webformatURL;
     }
 
+    getPhotoHeight = function(imgData: PixabayPhoto): string {
+        return `${imgData.imageHeight}`;
+    }
+
+    getPhotoWidth = function(imgData: PixabayPhoto): string {
+        return `${imgData.imageWidth}`;
+    }
+
     getProviderWebsite = function(): string {
         return 'https://pixabay.com/';
     }
@@ -187,6 +195,14 @@ class PexelsPhotoProvider extends PhotoProvider {
         return imgData.src?.large || '';
     }
 
+    getPhotoHeight = function(imgData: PexelsPhoto): string {
+        return `${imgData.height}`;
+    }
+
+    getPhotoWidth = function(imgData: PexelsPhoto): string {
+        return `${imgData.width}`;
+    }
+
     getProviderWebsite = function(): string {
         return 'https://www.pexels.com/';
     }
@@ -264,6 +280,14 @@ class UnsplashPhotoProvider extends PhotoProvider {
 
     getPhotoOriginalSource = function(imgData: UnsplashPhoto): string {
         return imgData.urls?.full || '';
+    }
+
+    getPhotoHeight = function(imgData: UnsplashPhoto): string {
+        return `${imgData.height}`;
+    }
+
+    getPhotoWidth = function(imgData: UnsplashPhoto): string {
+        return `${imgData.width}`;
     }
 
     getProviderWebsite = function(): string {
