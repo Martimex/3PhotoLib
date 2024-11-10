@@ -26,6 +26,11 @@ const isPhotoDownloaded = ref<boolean>(false);
 const isAuthorPageVisited = ref<boolean>(false);
 
 const anchorRef = ref<HTMLAnchorElement>();
+const isImgLoaded = ref<boolean>(false);
+const imgRef = ref<HTMLImageElement>();
+
+const w = ref('0');
+const h = ref('0');
 
 const isSaveToCollectionModalOpen = ref<boolean>(false);
     const closeSaveToCollectionModal = () => { collectionsToAddPhoto.reset(); isSaveToCollectionModalOpen.value = false; }
@@ -62,6 +67,28 @@ function handleAddCollection(newCollection: CollectionResponseModel) {
     isAddToNewCollectionTextActive_set(false);
 }
 
+const getBgImg = function() {
+    return `url(${providerObj?.getLowResImageURL(utilizePhotoProvider(viewedPhoto))})`
+}
+
+function handleImgLoadded() {
+    isImgLoaded.value = true;
+}
+
+onMounted(() => {
+    if(imgRef?.value?.complete) {
+        handleImgLoadded();
+    } else {
+        imgRef?.value?.addEventListener('load', handleImgLoadded);
+    }
+});
+
+onBeforeMount(() => {
+    if(!providerObj) return;
+    w.value = providerObj?.getPhotoWidth(viewedPhoto);
+    h.value = providerObj?.getPhotoHeight(viewedPhoto);
+})
+
 </script>
 
 <template>
@@ -70,7 +97,13 @@ function handleAddCollection(newCollection: CollectionResponseModel) {
         <section>
             <div class="relative flex justify-center">
                 <a ref="anchorRef" href="" :download="`${sqStore.currPhotoProviderName}=${providerObj?.getPhotoId(viewedPhoto)}.png`" class="absolute"></a>
-                <img :src="currPhotoProvider?.getHighResImageURL(utilizePhotoProvider(viewedPhoto))" alt="Detailed photo" @error="requestImagePhoto($event, sqStore.currPhotoProviderName, `${viewedPhoto.id}`)" :width="providerObj?.getPhotoWidth(viewedPhoto)" :height="providerObj?.getPhotoHeight(viewedPhoto)" class="my-1 max-w-full h-auto object-cover object-center transition-opacity rounded-md shadow-md shadow-black" />
+                <img 
+                    ref="imgRef"
+                    :src="currPhotoProvider?.getHighResImageURL(utilizePhotoProvider(viewedPhoto))" alt="Detailed photo"  @error="requestImagePhoto($event, sqStore.currPhotoProviderName, `${viewedPhoto.id}`)" 
+                    :width="w" :height="h" 
+                    class="custom-photo my-1 max-w-full h-auto object-cover object-center transition-opacity rounded-md shadow-md shadow-black"
+                    :class="{ loaded: isImgLoaded }"
+                />
             </div>
             <div class="grid grid-cols-4 grid-rows-1 justify-between">
                 <!-- BUTTONS FUNCTIONALITY TO BE IMPLEMENTED SOON -->
@@ -152,5 +185,41 @@ function handleAddCollection(newCollection: CollectionResponseModel) {
 
 
 <style scoped>
+
+@keyframes loadPulse {
+        0% {
+            background-color: #fff2;
+        }
+
+        100% {
+            background-color: #fff4;
+        }
+    }
+
+    .blur-bg {
+        background-image: v-bind(getBgImg());
+    }
+
+    .blur-bg::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        animation: loadPulse 1.25s linear infinite alternate;
+    }
+
+    .blur-bg.loaded::before {
+        content: none;
+    }
+
+    img.custom-photo {
+        opacity: 0;
+        transition: opacity 300ms ease-in-out;
+        background-color: #eee;
+    }
+
+    img.custom-photo.loaded  {
+        opacity: 1;
+
+    }
 
 </style>
