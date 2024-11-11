@@ -42,9 +42,12 @@
     <NavigationBar />
 
     <section class="min-h-screen my-12 mx-4">
-        <h1 class="text-4xl font-bold mb-6"> Your collections </h1>
-        <p class="py-3 text-base"> Here you can find the list of all collections you have created. Optionally, you can also add an empty collection.   </p>
-        <p class="py-3 text-base"> You may also click on the specific collection to view its photos, edit the collection and more! </p>
+
+        <section class="mx-[5vw] mb-6 text-center">
+            <h1 class="text-4xl font-bold mb-8 break-words leading-12 max-w-screen"> Your collections </h1>
+            <p class="py-3 text-base"> Here you can find the list of all collections you have created. Optionally, you can also add an empty collection.   </p>
+            <p class="py-3 text-base"> You may also click on the specific collection to view its photos, edit the collection and more! </p>
+        </section>
 
         <CollectionPreviewListItem v-for="collection in userCollections" :key="collection.id"  :collectionData="collection" 
             @set-collection-as-viewed="handleSetCollectionAsViewed(collection)"

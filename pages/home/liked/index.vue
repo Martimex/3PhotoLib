@@ -37,13 +37,20 @@ onUnmounted(() => {
     <NavigationBar />
 
     <section class="min-h-screen my-12 mx-4">
-        <h1 class="text-4xl font-bold mb-6"> Liked photos </h1>
-        <p class="py-3 text-base"> This page contains all the photos liked by you. It is a supercollection, meaning you can store up to 100 of your favourite photos. </p>
-        <p class="py-3 text-base"> You are able to manage your liked photo collection at any time inside this panel. </p>
-        <div class="flex items-center w-fit py-6 px-4 my-9 border-black rounded-md border-2">
-            <FontAwesomeIcon :icon="faHeart" class="text-4xl text-red-500 mr-4"></FontAwesomeIcon>
-            <h2 class="text-3xl font-semibold"> {{ userLikedPhotos.length }} / {{ getLikedPhotosLimit() }} </h2>
-        </div>
+        <section class="mx-[5vw] mb-3 text-center">
+            <h1 class="text-4xl font-bold mb-8 break-words leading-12 max-w-screen"> Liked photos </h1>
+            <p class="py-3 text-base"> This page contains all the photos liked by you. It is a supercollection, meaning you can store up to 100 of your favourite photos. </p>
+            <p class="py-3 text-base"> You are able to manage your liked photo collection at any time inside this panel. </p>
+        </section>
+
+        <section class="grid grid-rows-1 grid-cols-[1fr_auto_1fr] items-center">
+            <div class="bg-black h-[0.15rem] mr-3 shadow-xl shadow-black"></div>
+            <div class="flex items-center justify-start w-fit py-6 px-4 mt-6 mb-8 mx-auto border-black rounded-md border-2">
+                <FontAwesomeIcon :icon="faHeart" class="text-4xl text-red-500 mr-4 drop-shadow-[0rem_0rem_0.20rem_#ef4444]"></FontAwesomeIcon>
+                <h2 class="text-3xl font-semibold ml-3"> {{ userLikedPhotos.length }} / {{ getLikedPhotosLimit() }} </h2>
+            </div>
+            <div class="bg-black h-[0.15rem] ml-3 shadow-xl shadow-black"></div>
+        </section>
 
         <Transition> 
             <div v-if="isRequestPending"> <Loading /> </div>

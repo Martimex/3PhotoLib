@@ -60,7 +60,7 @@
     <NavigationBar />
 
     <section class="min-h-screen my-12 mx-4">
-        <section class="mx-[10vw] mb-3 text-center">
+        <section class="mx-[5vw] mb-3 text-center">
             <h1 class="text-4xl font-bold mb-8 break-words leading-12 max-w-screen"> {{ viewedCollection?.name }} </h1>
             <p class="text-base py-3"> {{ viewedCollection?.description }}  </p>
         </section>

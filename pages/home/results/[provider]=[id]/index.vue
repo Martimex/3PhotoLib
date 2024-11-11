@@ -29,8 +29,7 @@ const anchorRef = ref<HTMLAnchorElement>();
 const isImgLoaded = ref<boolean>(false);
 const imgRef = ref<HTMLImageElement>();
 
-const w = ref('0');
-const h = ref('0');
+const [img_width, img_height] = [ref('0'), ref('0')];
 
 const isSaveToCollectionModalOpen = ref<boolean>(false);
     const closeSaveToCollectionModal = () => { collectionsToAddPhoto.reset(); isSaveToCollectionModalOpen.value = false; }
@@ -85,8 +84,8 @@ onMounted(() => {
 
 onBeforeMount(() => {
     if(!providerObj) return;
-    w.value = providerObj?.getPhotoWidth(viewedPhoto);
-    h.value = providerObj?.getPhotoHeight(viewedPhoto);
+    img_width.value = providerObj?.getPhotoWidth(viewedPhoto);
+    img_height.value = providerObj?.getPhotoHeight(viewedPhoto);
 })
 
 </script>
@@ -100,7 +99,7 @@ onBeforeMount(() => {
                 <img 
                     ref="imgRef"
                     :src="currPhotoProvider?.getHighResImageURL(utilizePhotoProvider(viewedPhoto))" alt="Detailed photo"  @error="requestImagePhoto($event, sqStore.currPhotoProviderName, `${viewedPhoto.id}`)" 
-                    :width="w" :height="h" 
+                    :width="img_width" :height="img_height" 
                     class="custom-photo my-1 max-w-full h-auto object-cover object-center transition-opacity rounded-md shadow-md shadow-black"
                     :class="{ loaded: isImgLoaded }"
                 />
