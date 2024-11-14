@@ -9,6 +9,11 @@
     const isAddCollectionModalOpen = ref<boolean>(false);
     const collectionToDeleteData = ref<false | CollectionResponseModel>(false);
 
+    const allCollectionsContainerElement = ref();
+
+    // Used to determine if page content requires a Y-scrollbar to be used 
+    const isContentOverflow = ref<boolean>(false);
+
     const userCollections = ref(currentUser_get()?.collections);
 
     const closeAddCollectionModal = () => isAddCollectionModalOpen.value = false;
@@ -36,12 +41,28 @@
         userCollections.value = currentUser_get()?.collections;
     }
 
+    function testContentOverflow(): boolean {
+        const allCollectionsContainerHeight = allCollectionsContainerElement?.value?.scrollHeight || 0;
+        if(document.body.scrollHeight < window.screen.height) return false;
+        if((document.body.scrollHeight - allCollectionsContainerHeight) > window.screen.height) return true;
+        if(userCollections.value.length) return true;
+        return false;
+    }
+
+    onUpdated(() => {
+        isContentOverflow.value = testContentOverflow();
+    })
+
+    onMounted(() => {
+        isContentOverflow.value = testContentOverflow();
+    })
+
 </script>
 
 <template>
     <NavigationBar />
 
-    <section class="min-h-screen my-12 mx-4">
+    <section class="my-12 mx-4 min-h-fit" :class="isContentOverflow && `min-h-screen`">
 
         <section class="mx-[5vw] mb-6 text-center">
             <h1 class="text-4xl font-bold mb-8 break-words leading-12 max-w-screen"> Your collections </h1>
@@ -49,10 +70,14 @@
             <p class="py-3 text-base"> You may also click on the specific collection to view its photos, edit the collection and more! </p>
         </section>
 
-        <CollectionPreviewListItem v-for="collection in userCollections" :key="collection.id"  :collectionData="collection" 
-            @set-collection-as-viewed="handleSetCollectionAsViewed(collection)"
-            @try-to-delete-collection="handleTryToDeleteCollection(collection)"
-        /> 
+        <div v-if="!userCollections.length"> <EmptyResponsesNoCollections /> </div>
+        <div v-else ref="allCollectionsContainerElement" class="">
+            <CollectionPreviewListItem v-for="collection in userCollections" :key="collection.id"  :collectionData="collection" 
+                @set-collection-as-viewed="handleSetCollectionAsViewed(collection)"
+                @try-to-delete-collection="handleTryToDeleteCollection(collection)"
+            />
+        </div>
+
 
 <!--         <div class="flex flex-col my-12">
             <div v-for="collection in userCollections" :key="collection.id" class="grid grid-cols-[auto_1fr] place-items-start my-4 gap-x-9">
@@ -85,7 +110,7 @@
         @confirm-delete="handleConfirmDeleteCollection"
     />
     
-    <PanelsCollectionsMainPanel @openAddCollection="openAddCollectionModal" />
+    <PanelsCollectionsMainPanel @openAddCollection="openAddCollectionModal" :isContentOverflow="isContentOverflow" />
 </template>
 
 <style scoped>

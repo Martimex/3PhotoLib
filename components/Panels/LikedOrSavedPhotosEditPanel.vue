@@ -12,6 +12,7 @@ const collectionsOrlikedPhotosEmits = defineEmits(['photosRemove']);
 
 const props = defineProps<{
     storageType: availablePhotoStorages,
+    isContentOverflow: boolean
 }>();
 
 const userLikedPhotos = ref(currentUser_get()?.likedPhotos);
@@ -75,7 +76,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <nav class="sticky bottom-0 left-0 right-0 text-black py-5 bg-gray-200 flex justify-around items-center">
+    <nav class="bottom-0 left-0 right-0 text-black py-5 bg-gray-200 flex justify-around items-center" :class="props.isContentOverflow? `sticky` : `fixed`" >
         <FontAwesomeIcon :icon="faXmark" class="text-3xl text-red-500 font-bold" @click="handleCloseEditMode"></FontAwesomeIcon>
         <p class="text-black text-center px-6 min-w-20 text-2xl font-bold"> {{ photosToRemoveArray_get().length }} </p>
         <FontAwesomeIcon :icon="faCheck" class="text-3xl text-green-500 font-bold" @click="handlePhotosDeletion"></FontAwesomeIcon>

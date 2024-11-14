@@ -120,7 +120,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     function collections_add(newCollection: CollectionResponseModel) {
         if(!currentUser.value) { return; }
-        currentUser.value.collections.push(newCollection);
+        currentUser.value.collections = [...currentUser.value.collections, newCollection];
     }
 
     function collections_edit(collectionEditData: CollectionResponseModel) {

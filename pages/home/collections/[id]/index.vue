@@ -18,6 +18,9 @@
     const { viewedCollection } = storeToRefs(useCollectionStore());
 
     const isEditCollectionModalOpen = ref<boolean>(false);
+
+    // Used to determine if page content requires a Y-scrollbar to be used 
+    const isContentOverflow = ref<boolean>(false);
     
     const userCollections = ref(currentUser_get()?.collections);
 
@@ -38,12 +41,18 @@
         collections_updatePhotos(viewedCollection.value.releaseId, deletedPhotos);
         viewedCollection_set(userCollections.value.find((collection: CollectionResponseModel) => collection.releaseId === viewedCollection.value!.releaseId));
         viewedCollection.value = viewedCollection_get();
+        /* viewedCollectionPhotos.value = viewedCollection?.value?.collectionPhotos || []; */
     }
 
-/*     watch(viewedCollection, () => {
-        if(!viewedCollection.value) return;
-        viewedCollection_set(viewedCollection.value);
-    }) */
+    function testContentOverflow(): boolean {
+        if(document.body.scrollHeight < window.screen.height) return false;
+        if(viewedCollection?.value?.collectionPhotos.length) return true;
+        return false;
+    }
+
+    onUpdated(() => {
+        isContentOverflow.value = testContentOverflow();
+    })
 
     onBeforeMount(() => {
         if(!viewedCollection.value) throw new Error('ERROR: Collection data is missing!');
@@ -59,7 +68,7 @@
 <template>
     <NavigationBar />
 
-    <section class="min-h-screen my-12 mx-4">
+    <section class="my-12 mx-4 min-h-fit" :class="isContentOverflow && `min-h-screen`">
         <section class="mx-[5vw] mb-3 text-center">
             <h1 class="text-4xl font-bold mb-8 break-words leading-12 max-w-screen"> {{ viewedCollection?.name }} </h1>
             <p class="text-base py-3"> {{ viewedCollection?.description }}  </p>
@@ -67,9 +76,11 @@
         
         <section class="grid grid-rows-1 grid-cols-[1fr_auto_1fr] items-center">
             <div class="bg-black h-[0.15rem] mr-3 shadow-xl shadow-black"></div>
-            <div class="flex items-center justify-start w-fit py-6 px-4 mt-6 mb-8 mx-auto border-black rounded-md border-2">
-                <FontAwesomeIcon :icon="faFolder" class="text-4xl mr-4 drop-shadow-[0rem_0rem_0.20rem_#222d]" :class="`text-[${viewedCollection?.folderColor}]`"></FontAwesomeIcon>
-                <h2 class="text-3xl font-semibold ml-3"> {{ viewedCollection?.collectionPhotos.length }} / {{ getPhotosInCollectionLimit() }} </h2>
+            <div class="w-fit mt-6 mb-8 mx-auto border-black rounded-md border-2">
+                <div v-if="viewedCollection?.collectionPhotos.length" class="flex items-center justify-start py-6 px-4">
+                    <FontAwesomeIcon :icon="faFolder" class="text-4xl mr-4 drop-shadow-[0rem_0rem_0.20rem_#222d]" :class="`text-[${viewedCollection?.folderColor}]`"></FontAwesomeIcon>
+                    <h2 class="text-3xl font-semibold ml-3"> {{ viewedCollection?.collectionPhotos.length }} / {{ getPhotosInCollectionLimit() }} </h2>
+                </div>
             </div>
             <div class="bg-black h-[0.15rem] ml-3 shadow-xl shadow-black"></div>
         </section>
@@ -77,11 +88,11 @@
 
         <Transition> 
             <div v-if="isRequestPending"> <Loading /> </div>
-            <div v-else-if="!viewedCollection?.collectionPhotos.length"></div>
-            <div v-else-if="viewedCollection.collectionPhotos.length">
+            <div v-else-if="!viewedCollection?.collectionPhotos.length"> <EmptyResponsesNoPhotosInCollection/> </div>
+            <div v-else-if="viewedCollection?.collectionPhotos.length">
                 <div v-if="!isRequestPending" class="">
                     <!-- Slicing works well for providers API, which reqire minimal response photos, while this app does not  -->
-                    <PhotoItem v-for="(image, index) in viewedCollection.collectionPhotos" :key="image.id" :imgData="image.photoDetails" :provider="image.provider" />
+                    <PhotoItem v-for="(image, index) in viewedCollection?.collectionPhotos" :key="image.id" :imgData="image.photoDetails" :provider="image.provider" />
                 </div>
                 <div v-if="isRequestPending" class="">
                     <p class="text-2xl bold text-yellow-400"> Pending... Please wait 🥰</p>
@@ -99,8 +110,8 @@
         @modalClose="closeEditCollectionModal" 
     />
 
-    <LikedOrSavedPhotosEditPanel v-if="collectionsOrlikedPhotos_isEditModeOn" storageType="collection" @photosRemove="handleCurrentPhotosUpdate"  />
-    <PanelsCollectionActionPanel v-else @openEditCollection="openEditCollectionModal" />
+    <LikedOrSavedPhotosEditPanel v-if="collectionsOrlikedPhotos_isEditModeOn" :isContentOverflow="isContentOverflow" storageType="collection" @photosRemove="handleCurrentPhotosUpdate"  />
+    <PanelsCollectionActionPanel v-else @openEditCollection="openEditCollectionModal" :isContentOverflow="isContentOverflow" />
 
 </template>
 

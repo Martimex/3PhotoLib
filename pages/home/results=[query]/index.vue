@@ -57,7 +57,7 @@ onUnmounted(() => isSearchbarOpen.value = false);
     <section class="min-h-screen text-xl mx-4">
         <Transition> 
             <div v-if="isRequestPending"> <Loading /> </div>
-            <div v-else-if="!imageData.length"> <NoResults /> </div>
+            <div v-else-if="!imageData.length"> <EmptyResponsesNoResults /> </div>
             <div v-else-if="imageData" class="py-[10vh]">
                 <p class="text-3xl font-bold text-center underline"> {{ queryText }} </p>
                 <p class="text-base mt-12 mb-6 text-center"> Searching for <b>{{ outputPhotosNumber === 1? `${outputPhotosNumber} photo` : `${outputPhotosNumber} photos` }} </b> per each page. You can alter search options at any time by using the top-left gear button. </p>

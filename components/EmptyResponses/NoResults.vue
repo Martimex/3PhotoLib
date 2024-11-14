@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { faXmark, faFaceFrownOpen } from '@fortawesome/free-solid-svg-icons';
+import { faXmarkCircle } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { useSearchQueryStore } from '@/stores/searchQueryStore';
 import { storeToRefs } from 'pinia';
@@ -22,12 +23,13 @@ function provideTip(): string {
 
 <template>
     <section ref="rootElement" class="transition-opacity duration-500 delay-200 flex flex-col items-center justify-center h-screen fixed top-[45%] left-[50%] mr-[-50%] -translate-x-2/4 -translate-y-2/4">
-        <FontAwesomeIcon :icon="faFaceFrownOpen" class="text-9xl text-gray-300 my-10"/>
-        <div class="mx-6">
-            <p class="text-lg text-gray-400 text-center"> No results found for the query: </p> 
-            <p class="text-xl text-gray-400 text-center font-semibold py-2" > {{ queryText.slice(0, maxQueryDisplayLength) + (Boolean(queryText.length > maxQueryDisplayLength)? '...' : '')}} </p> <!-- If query text length is longer than 20 chars, we will trim it specifically for NoResults -->
-            <!-- <p class="text-xl text-gray-400 text-center font-semibold py-2"> on page: {{ searchPageCount }}</p> -->
-            <p class="text-lg text-gray-400 text-center"> {{ provideTip() }} </p>
+        <FontAwesomeIcon :icon="faXmarkCircle" class="text-9xl text-gray-300 my-10"/>
+        <div class="mx-6 text-gray-400 flex flex-col items-center gap-y-4">
+            <p class="text-lg text-center"> No results found for:  </p>
+                
+            <p class="text-lg text-center font-bold">  {{ queryText.slice(0, maxQueryDisplayLength) + (Boolean(queryText.length > maxQueryDisplayLength)? '...' : '')}}  </p>  <!-- If query text length is longer than 20 chars, we will trim it specifically for NoResults -->
+            
+            <p class="text-lg text-center"> {{ provideTip() }} </p>
         </div>
     </section>
 </template>
