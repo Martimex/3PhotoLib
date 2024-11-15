@@ -20,6 +20,9 @@ const [userLikedPhotos, userCollections] = [ref<PhotoResponseModel[]>(userData.l
 const [randomLikedPhotos, randomCollections] = [ref<PhotoResponseModel[]>([]), ref<CollectionResponseModel[]>([])];
 const isLogoutMenuOpen = ref<boolean>(false);
 
+// Used to determine if page content requires a Y-scrollbar to be used 
+const isContentOverflow = ref<boolean>(false);
+
 function handleTryToLogout() {
     isLogoutMenuOpen.value = true;
 }
@@ -27,6 +30,16 @@ function handleTryToLogout() {
 function handleModalClose() {
     isLogoutMenuOpen.value = false;
 }
+
+function testContentOverflow(): boolean {
+    if(document.body.scrollHeight > window.screen.height) return true;
+    return false;
+}
+
+onMounted(() => {
+    isContentOverflow.value = testContentOverflow();
+})
+
 
 onBeforeMount(() => {
     const itemsToPickAtRandom: randomlyPickedObj = { 
@@ -55,7 +68,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-    <section class="min-h-screen my-12 mx-4">
+    <section class="my-12 mx-4 min-h-fit" :class="isContentOverflow && `min-h-screen`">
         <div class="grid grid-cols-[auto_1fr] grid-rows-1 items-center gap-x-9 mb-6">
             <img class="w-28 h-28 rounded-[50%] bg-contain border-4 border-solid border-black" alt="Profile picture" src="/public/icon-default.png" />
             <h2 class="text-4xl font-semibold break-all"> {{ userData.name }} </h2>
@@ -104,6 +117,7 @@ onBeforeMount(() => {
     />
 
     <PanelsAccountActionPanel
+        :isContentOverflow="isContentOverflow"
         @tryToLogOut="handleTryToLogout"
     />
 </template>

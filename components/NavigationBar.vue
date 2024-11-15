@@ -8,11 +8,21 @@ import AdvancedMenu from './AdvancedMenu.vue';
 
 const sStore = useStatusStore();
 
+const navBarContainerRef = ref();
+
+onMounted(() => {
+    
+})
+
+defineExpose({
+    navBarContainerRef: navBarContainerRef
+})
+
 </script>
 
 
 <template>
-    <nav class="sticky z-10 top-0 left-0 right-0 text-black py-5 bg-gray-200">
+    <nav ref="navBarContainerRef" class="sticky z-10 top-0 left-0 right-0 text-black py-5 bg-gray-200">
         <div v-if="!sStore.isSearchbarOpen" class="px-6 flex self-start justify-between items-center w-full">
             <NuxtLink to="/home"> <span class="text-4xl font-light align-middle "> 3PhotoLib </span> </NuxtLink>
             <NuxtLink to="/home/account" class="w-fit">

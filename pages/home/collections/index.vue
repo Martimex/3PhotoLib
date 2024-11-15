@@ -10,6 +10,7 @@
     const collectionToDeleteData = ref<false | CollectionResponseModel>(false);
 
     const allCollectionsContainerElement = ref();
+    const navBarElement = ref();
 
     // Used to determine if page content requires a Y-scrollbar to be used 
     const isContentOverflow = ref<boolean>(false);
@@ -42,14 +43,17 @@
     }
 
     function testContentOverflow(): boolean {
-        const allCollectionsContainerHeight = allCollectionsContainerElement?.value?.scrollHeight || 0;
-        if(document.body.scrollHeight < window.screen.height) return false;
-        if((document.body.scrollHeight - allCollectionsContainerHeight) > window.screen.height) return true;
+        const [allCollectionsContainerHeight, navbarHeight] = [
+            allCollectionsContainerElement?.value?.scrollHeight || 0,
+            navBarElement?.value.navBarContainerRef.offsetHeight || 0
+        ];
+        if((document.body.scrollHeight + allCollectionsContainerHeight + navbarHeight) > window.screen.height) return true;
+        if(document.body.scrollHeight + navbarHeight < window.screen.height) return false;
         if(userCollections.value.length) return true;
         return false;
     }
 
-    onUpdated(() => {
+    watch(userCollections, () => {
         isContentOverflow.value = testContentOverflow();
     })
 
@@ -57,10 +61,14 @@
         isContentOverflow.value = testContentOverflow();
     })
 
+    onUpdated(() => {
+        isContentOverflow.value = testContentOverflow();
+    })
+
 </script>
 
 <template>
-    <NavigationBar />
+    <NavigationBar ref="navBarElement" />
 
     <section class="my-12 mx-4 min-h-fit" :class="isContentOverflow && `min-h-screen`">
 

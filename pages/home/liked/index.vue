@@ -16,6 +16,9 @@ const { photoIdToUnlike_set, photoIdToUnlike_get } = usePhotoStore();
 
 const userLikedPhotos = ref(currentUser_get()?.likedPhotos);
 
+const likedPhotosContainerElement = ref();
+const navBarElement = ref();
+
 // Used to determine if page content requires a Y-scrollbar to be used 
 const isContentOverflow = ref<boolean>(false);
 
@@ -25,10 +28,21 @@ function handleCurrentPhotosUpdate(deletedPhotos: PhotoResponseModel[]) {
 }
 
 function testContentOverflow(): boolean {
-    if(document.body.scrollHeight < window.screen.height) return false;
+    const [likedPhotosContainerHeight, navbarHeight] = [
+        likedPhotosContainerElement?.value?.scrollHeight || 0,
+        navBarElement?.value.navBarContainerRef.offsetHeight || 0
+    ];
+    if((document.body.scrollHeight + likedPhotosContainerHeight + navbarHeight) > window.screen.height) return true;
+    if(document.body.scrollHeight + navbarHeight < window.screen.height) return false;
     if(userLikedPhotos.value.length) return true;
     return false;
 }
+
+watch(userLikedPhotos, () => {
+    isContentOverflow.value = testContentOverflow();
+})
+
+onMounted(() => { isContentOverflow.value = testContentOverflow(); })
 
 onUpdated(() => {
     isContentOverflow.value = testContentOverflow();
@@ -43,7 +57,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <NavigationBar />
+    <NavigationBar ref="navBarElement" />
 
     <section class="my-12 mx-4 min-h-fit" :class="isContentOverflow && `min-h-screen`">
         <section class="mx-[5vw] mb-3 text-center">
@@ -67,7 +81,7 @@ onUnmounted(() => {
             <div v-if="isRequestPending"> <Loading /> </div>
             <div v-else-if="!userLikedPhotos.length"> <EmptyResponsesNoLikedPhotos /> </div>
             <div v-else-if="userLikedPhotos">
-                <div v-if="!isRequestPending" class="">
+                <div v-if="!isRequestPending" ref="likedPhotosContainerElement" class="">
                     <!-- Slicing works well for providers API, which reqire minimal response photos, while this app does not  -->
                     <PhotoItem v-for="(image, index) in userLikedPhotos" :key="image.id" :imgData="image.photoDetails" :provider="image.provider" />
                 </div>

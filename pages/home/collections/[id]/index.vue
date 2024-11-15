@@ -19,6 +19,9 @@
 
     const isEditCollectionModalOpen = ref<boolean>(false);
 
+    const collectionPhotosContainerElement = ref();
+    const navBarElement = ref();
+
     // Used to determine if page content requires a Y-scrollbar to be used 
     const isContentOverflow = ref<boolean>(false);
     
@@ -41,14 +44,22 @@
         collections_updatePhotos(viewedCollection.value.releaseId, deletedPhotos);
         viewedCollection_set(userCollections.value.find((collection: CollectionResponseModel) => collection.releaseId === viewedCollection.value!.releaseId));
         viewedCollection.value = viewedCollection_get();
-        /* viewedCollectionPhotos.value = viewedCollection?.value?.collectionPhotos || []; */
     }
 
     function testContentOverflow(): boolean {
-        if(document.body.scrollHeight < window.screen.height) return false;
-        if(viewedCollection?.value?.collectionPhotos.length) return true;
+        const [collectionPhotosContainerHeight, navbarHeight] = [
+            collectionPhotosContainerElement?.value?.scrollHeight || 0,
+            navBarElement?.value.navBarContainerRef.offsetHeight || 0
+        ];
+        if((document.body.scrollHeight + collectionPhotosContainerHeight + navbarHeight) > window.screen.height) return true;
+        if(document.body.scrollHeight + navbarHeight < window.screen.height) return false;
+        if(viewedCollection?.value?.collectionPhotos?.length) return true;
         return false;
     }
+
+    onMounted(() => {
+        isContentOverflow.value = testContentOverflow();
+    })
 
     onUpdated(() => {
         isContentOverflow.value = testContentOverflow();
@@ -66,12 +77,12 @@
 </script>
 
 <template>
-    <NavigationBar />
+    <NavigationBar ref="navBarElement" />
 
     <section class="my-12 mx-4 min-h-fit" :class="isContentOverflow && `min-h-screen`">
         <section class="mx-[5vw] mb-3 text-center">
-            <h1 class="text-4xl font-bold mb-8 break-words leading-12 max-w-screen"> {{ viewedCollection?.name }} </h1>
-            <p class="text-base py-3"> {{ viewedCollection?.description }}  </p>
+            <h1 class="text-4xl font-bold mb-8 break-words leading-12 max-w-screen break-all"> {{ viewedCollection?.name }} </h1>
+            <p class="text-base py-3 break-all"> {{ viewedCollection?.description }}  </p>
         </section>
         
         <section class="grid grid-rows-1 grid-cols-[1fr_auto_1fr] items-center">
@@ -90,7 +101,7 @@
             <div v-if="isRequestPending"> <Loading /> </div>
             <div v-else-if="!viewedCollection?.collectionPhotos.length"> <EmptyResponsesNoPhotosInCollection/> </div>
             <div v-else-if="viewedCollection?.collectionPhotos.length">
-                <div v-if="!isRequestPending" class="">
+                <div v-if="!isRequestPending" ref="collectionPhotosContainerElement" class="">
                     <!-- Slicing works well for providers API, which reqire minimal response photos, while this app does not  -->
                     <PhotoItem v-for="(image, index) in viewedCollection?.collectionPhotos" :key="image.id" :imgData="image.photoDetails" :provider="image.provider" />
                 </div>
