@@ -68,7 +68,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-    <section class="my-12 mx-4 min-h-fit" :class="isContentOverflow && `min-h-screen`">
+    <section class="my-12 mx-4 min-h-fit pb-20" :class="isContentOverflow && `min-h-screen`">
         <div class="grid grid-cols-[auto_1fr] grid-rows-1 items-center gap-x-9 mb-6">
             <img class="w-28 h-28 rounded-[50%] bg-contain border-4 border-solid border-black" alt="Profile picture" src="/public/icon-default.png" />
             <h2 class="text-4xl font-semibold break-all"> {{ userData.name }} </h2>
