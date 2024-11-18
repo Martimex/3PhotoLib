@@ -4,7 +4,7 @@ export default async function searchPhotosByQuery(rdObject: requestDependenciesO
     if(rdObject.currPhotoProvider === undefined || !rdObject.currPhotoProvider) return null; // This line silences error where TS complies that x (Provider Name) can be possibly undefined
     if(roObject.isRequestPending === false) { return null; }
 
-    const requestData = await fetch(rdObject.currPhotoProvider.getSearchRequestURL(rdObject.queryText, rdObject.outputPhotosNumber, rdObject.searchPageCount + roObject.pageModifier), {headers: rdObject.currPhotoProvider.getSearchRequestHeaders()})
+    const requestData = await fetch(rdObject.currPhotoProvider.getSearchRequestURL(rdObject.queryText, rdObject.outputPhotosNumber, rdObject.searchPageCount), {headers: rdObject.currPhotoProvider.getSearchRequestHeaders()})
         .then(res => res? res.json() : '')
         .then(data => data)
         .catch(err => { roObject.isRequestPending = false })

@@ -8,7 +8,7 @@ import searchPhotosByQuery from '../../../composables/searchPhotosByQuery';
 import type { availablePhotoTypes, availableProviderNames, requestParamsObject } from '../../../types/type_utilities';
 
 const [sStore, sqStore] = [useStatusStore(), useSearchQueryStore()];
-const { queryText, currPhotoProvider, currPhotoProviderName, outputPhotosNumber, searchPageCount, searchPageObj } = storeToRefs(sqStore);
+const { queryText, currPhotoProvider, currPhotoProviderName, outputPhotosNumber, searchPageCount, searchPageObj, cachedResults } = storeToRefs(sqStore);
 const { isRequestPending, isSearchbarOpen} = storeToRefs(sStore);
 
 definePageMeta({
@@ -27,20 +27,71 @@ async function handleSwitchPage(pageModifier: number) {
 
 async function applyPhotos() {
     isRequestPending.value = true;
+
+    // Check our cache variable if we do not have this photos found already (all has to be present for caching to be successful)
+    const [cachePhotos, isNextPagePossible] = takeCachedPhotos();
+
+    if(cachePhotos.length) { 
+        // Caching is possible! Lets continue
+        imageData.value = cachePhotos;
+        isNextPageAvailable.value = isNextPagePossible;
+        isRequestPending.value = false;
+        return;
+    }
+
     const responsePhotos = await searchPhotosByQuery(
         {queryText: queryText.value, currPhotoProvider: currPhotoProvider.value, outputPhotosNumber: outputPhotosNumber.value, searchPageCount: searchPageCount.value},
-        {isRequestPending: isRequestPending.value, pageModifier: 0}
+        {isRequestPending: isRequestPending.value}
     );
-    if(responsePhotos) {
-        
-        if(responsePhotos.length > outputPhotosNumber.value) {
-            responsePhotos.splice(outputPhotosNumber.value);
-        }
-        isNextPageAvailable.value = responsePhotos.length >= outputPhotosNumber.value;
-        imageData.value = responsePhotos;
+
+    if(!responsePhotos) return;
+    
+    if(responsePhotos.length) { 
+        setCache(responsePhotos);
     }
-    /* imageData.value = responsePhotos? responsePhotos : imageData.value; */
+
+    isNextPageAvailable.value = responsePhotos.length >= outputPhotosNumber.value;
+    imageData.value = responsePhotos;
     isRequestPending.value = false;
+}
+
+function setCache(responsePhotos: availablePhotoTypes[]): void {
+    // Save new photos to a cache  - SET CACHE
+    const queryText_lowerCased = queryText.value.toLowerCase();
+
+    if(!Object.keys(cachedResults.value[currPhotoProviderName.value]).includes(queryText_lowerCased)) {
+        cachedResults.value[currPhotoProviderName.value][queryText_lowerCased] = [];
+    }
+    for(let i=0; i<outputPhotosNumber.value; i++) {
+        // Since outputPhotosNumber.value is not always equal to responsePhotos.length, we need to do this check
+        if(!responsePhotos[i]) {
+            cachedResults.value[currPhotoProviderName.value][queryText_lowerCased][((searchPageCount.value - 1) * outputPhotosNumber.value) + i] = null;
+            break;
+        }
+        cachedResults.value[currPhotoProviderName.value][queryText_lowerCased][((searchPageCount.value - 1) * outputPhotosNumber.value) + i] = responsePhotos[i];
+    }
+}
+
+function takeCachedPhotos(): [availablePhotoTypes[], boolean] {
+    const queryText_lowerCased = queryText.value.toLowerCase();
+    const cacheItems: availablePhotoTypes[] = [];
+
+    if(!Object.keys(cachedResults.value[currPhotoProviderName.value]).includes(queryText_lowerCased)) { return [[], false]; }
+    
+    const cacheEntryAfterTheLastRequested = cachedResults.value[currPhotoProviderName.value][queryText_lowerCased][((searchPageCount.value - 1) * outputPhotosNumber.value) + outputPhotosNumber.value];
+
+    for(let i=0; i<outputPhotosNumber.value; i++) {
+        const currentCacheEntry = cachedResults.value[currPhotoProviderName.value][queryText_lowerCased][((searchPageCount.value - 1) * outputPhotosNumber.value) + i];
+        if(currentCacheEntry === undefined) {
+            return [[], false];
+        }
+        if(currentCacheEntry === null) {
+            return [cacheItems, false];
+        }
+        cacheItems.push(currentCacheEntry);
+    }
+
+    return (cacheEntryAfterTheLastRequested === null)?  [cacheItems, false] : [cacheItems, true];
 }
 
 onBeforeMount(async() => {

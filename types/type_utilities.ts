@@ -4,7 +4,7 @@ import type PixabayPhoto from "./photoItem_pixabay";
 import type UnsplashPhoto from "./photoItem_unsplash";
 
 export type availablePhotoTypes = PixabayPhoto | PexelsPhoto | UnsplashPhoto;
-export type availableProviderNames = 'pixabay' | 'pexels' | 'unsplash';
+export type availableProviderNames = typeof availableProviderNames_Array[number];
 export type availablePhotoStorages = 'liked' | 'collection';
 export type numberInputKeys = {current: number, default: number, min: number, max: number};
 
@@ -14,7 +14,7 @@ export type optionalURLParamsIdentifiers = { key: string, refersTo: string, cont
 
 // We use this to iteratively check if a user-provided URL value is associated with one of provider names, that is why
 // it is mandatory to keep the correct values in array aswell
-export const availableProviderNames_Array = <availableProviderNames[]>['pixabay', 'pexels', 'unsplash']; 
+export const availableProviderNames_Array = ['pixabay', 'pexels', 'unsplash'] as const; 
 
 // This utility function helps dealing with TS errors regarding various PhotoProviders having different type fields, which
 // are fully determined by the end API response (that obviously we do not have any control over)
@@ -37,7 +37,11 @@ export type requestParamsObject = {queryText: string, currPhotoProviderName: ava
 
 export type requestDependenciesObject = {queryText: string, currPhotoProvider: any, outputPhotosNumber: number, searchPageCount: number }
 
-export type requestOptionsObject = {isRequestPending: boolean,  pageModifier: number }
+export type requestOptionsObject = {isRequestPending: boolean }
+
+// Cached photos type
+export type cachedQueryResponsePhotos =  { [Key in typeof availableProviderNames_Array[number]]: cachedQueryTextResults };
+	type cachedQueryTextResults = { [Key: string]: (availablePhotoTypes | null | undefined)[]};
 
 // Used for randomizing viewable category inside /home
 export const featuredCategories = ['garden', 'landscape', 'girl', 'moon', 'dog', 'boy', 'sunset', 'nebula', 'cars', 'city', 'neon', 'people', 'winter', 'summer', 'cat'] as const;

@@ -7,6 +7,7 @@ import { storeToRefs } from 'pinia';
 
 const sqStore = useSearchQueryStore();
 const { queryText, searchPageCount, outputPhotosNumber } = storeToRefs(sqStore);
+const { isSearchbarOpen } = storeToRefs(useStatusStore());
 
 const maxQueryDisplayLength = ref<number>(16);
 const rootElement = ref<HTMLDivElement | null>(null);
@@ -17,7 +18,8 @@ function provideTip(): string {
     return `Try to change the search phrase to a different value`;
 }
 
-//onMounted(() => rootElement?.value?.classList.remove('opacity-0'))
+onMounted(() => isSearchbarOpen.value = true );
+onUnmounted(() => isSearchbarOpen.value = false );
 
 </script>
 

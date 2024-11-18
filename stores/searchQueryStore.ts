@@ -1,5 +1,5 @@
 import PhotoProvider from '@/providers/photoProvidersInitializer';
-import type { availableProviderNames, optionalURLParamsIdentifiers, numberInputKeys } from '@/types/type_utilities';
+import type { availableProviderNames, optionalURLParamsIdentifiers, numberInputKeys, cachedQueryResponsePhotos } from '@/types/type_utilities';
 
 export const useSearchQueryStore = defineStore(`searchQueryStore`, () => {
     const DEFAULT_PROVIDER: availableProviderNames = 'pixabay';
@@ -11,6 +11,13 @@ export const useSearchQueryStore = defineStore(`searchQueryStore`, () => {
     const outputPhotosNumber = ref<number>(10);
     const searchPageObj = ref<numberInputKeys>({current: 1, default: 1, min: 1, max: 999});
     const searchPageCount = ref<number>(1);
+
+    // Not a ref, since we just save some photos data based on query parameters and its results
+    const cachedResults = ref<cachedQueryResponsePhotos>({
+        "pixabay": { },
+        "pexels": { },
+        "unsplash": { }
+    });
     
     // Not a ref, because that is a static key, which is not meant to be modified
     const availableOptionalParams: optionalURLParamsIdentifiers[] = [
@@ -29,5 +36,5 @@ export const useSearchQueryStore = defineStore(`searchQueryStore`, () => {
         searchPageCount.value = 1;
     }
 
-    return { queryText, currPhotoProviderName, currPhotoProvider, outputPhotosObj, outputPhotosNumber, searchPageObj, searchPageCount, availableOptionalParams, $reset }
+    return { queryText, currPhotoProviderName, currPhotoProvider, outputPhotosObj, outputPhotosNumber, searchPageObj, searchPageCount, availableOptionalParams, cachedResults, $reset }
 });
