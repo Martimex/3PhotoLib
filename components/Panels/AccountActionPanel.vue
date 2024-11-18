@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faArrowLeft, faSignOut, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faSignOut } from '@fortawesome/free-solid-svg-icons';
+import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 
 const props = defineProps<{
     isContentOverflow: boolean
@@ -18,7 +19,9 @@ const getRecentRoute = computed(() => (recentlyVisitedRouteArr.length > 1? recen
         <NuxtLink :to="getRecentRoute" class="w-fit">
             <FontAwesomeIcon :icon="faArrowLeft" class="text-3xl"></FontAwesomeIcon>
         </NuxtLink>
-        <FontAwesomeIcon :icon="faPenToSquare" class="text-3xl"></FontAwesomeIcon>
+        <NuxtLink :to="`https://github.com/Martimex/3PhotoLib#the-purpose-of-an-app`" target="_blank" class="w-fit">
+            <FontAwesomeIcon :icon="faQuestionCircle" class="text-3xl"></FontAwesomeIcon>
+        </NuxtLink>
         <FontAwesomeIcon :icon="faSignOut" @click="emits('tryToLogOut')" class="text-3xl"></FontAwesomeIcon>
     </nav>
 </template>

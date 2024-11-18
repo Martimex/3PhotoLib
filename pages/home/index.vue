@@ -47,7 +47,7 @@ onUnmounted(() => isSearchbarOpen.value = false);
 <template>
     <NavigationBar />
     <section class="min-h-screen text-xl mx-4 py-[10vh]">
-        <p class="text-3xl mb-24 bold text-center underline"> Hello, {{ currentUser_get()?.name }}</p>
+        <p class="text-3xl mb-24 bold text-center underline break-all"> Hello, {{ currentUser_get()?.name }}</p>
         <p class="text-2xl font-semibold my-8 text-center"> [ Featured photos ] </p>
         <Suspense>
             <template #default>
