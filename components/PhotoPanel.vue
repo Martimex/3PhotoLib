@@ -100,14 +100,14 @@ const photoTags = computed(() => providerObj?.retrievePhotoTags(utilizePhotoProv
 
 <template>
     <div class="absolute inset-0 grid grid-rows-[1fr_auto] text-white bg-black/[.25]">
-        <div class="p-[1.5rem] backdrop-blur-lg overflow-auto grid grid-rows-[auto_1fr]">
-            <figure class="flex items-center justify-start mb-5">
-                <a :href="currPhotoProvider?.getAuthorProfileURL(utilizePhotoProvider(props.imgData))" target="_blank">
-                    <img class="w-16 h-16 rounded-xl text-xs border-2" :src="providerObj?.getPhotoAuthorImage(utilizePhotoProvider(props.imgData))" alt="Author profile picture" />
+        <div class="p-[1.5rem] backdrop-blur-lg overflow-y-auto grid grid-rows-[auto_1fr]">
+            <figure class="grid grid-cols-[auto_1fr] mb-5">
+                <a :href="currPhotoProvider?.getAuthorProfileURL(utilizePhotoProvider(props.imgData))" class="w-max" target="_blank">
+                    <img class="w-20 h-20 rounded-xl text-xs border-2" :src="providerObj?.getPhotoAuthorImage(utilizePhotoProvider(props.imgData))" alt="Author profile picture" />
                 </a>                
-                <figcaption class="mx-4">
-                    <p class="text-base bold"> Photo by: </p>
-                    <p class="text-lg bold break-all mr-12"> {{ providerObj?.getPhotoAuthorName(utilizePhotoProvider(props.imgData)) }} </p>
+                <figcaption class="ml-4 mr-14 flex flex-col justify-center">
+                    <p class="text-base leading-relaxed"> Photo by: </p>
+                    <p class="text-lg font-normal leading-snug break-all"> {{ providerObj?.getPhotoAuthorName(utilizePhotoProvider(props.imgData)) }} </p>
                 </figcaption>
             </figure>
 
