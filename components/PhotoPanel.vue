@@ -107,7 +107,7 @@ const photoTags = computed(() => providerObj?.retrievePhotoTags(utilizePhotoProv
                 </a>                
                 <figcaption class="ml-4 mr-14 flex flex-col justify-center">
                     <p class="text-base leading-relaxed"> Photo by: </p>
-                    <p class="text-lg font-normal leading-snug break-all"> {{ providerObj?.getPhotoAuthorName(utilizePhotoProvider(props.imgData)) }} </p>
+                    <p class="text-lg font-medium leading-snug break-all"> {{ providerObj?.getPhotoAuthorName(utilizePhotoProvider(props.imgData)) }} </p>
                 </figcaption>
             </figure>
 

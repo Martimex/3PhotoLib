@@ -17,7 +17,7 @@ onBeforeMount(async() => {
 
     const featuredPhotosArr = await searchPhotosByQuery(
         {queryText: featuredPhotosCategory.value, currPhotoProvider: new PhotoProvider(featuredPhotosProviderName.value).setCurrentProvider(), outputPhotosNumber: 10, searchPageCount: 1},
-        {isRequestPending: true, pageModifier: 0}
+        {isRequestPending: true }
     );
     
     providerName.value = featuredPhotosProviderName.value;

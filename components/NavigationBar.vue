@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
+import { faCircleUser } from '@fortawesome/free-regular-svg-icons';
 import { useStatusStore } from '@/stores/statusStore';
 
 import SearchBar from './SearchBar.vue';
 import AdvancedMenu from './AdvancedMenu.vue';
 
 const sStore = useStatusStore();
+const { isAdvancedMenuOpen } = storeToRefs(useStatusStore());
 
 const navBarContainerRef = ref();
+
+const applyBackgroundColor = computed(() => isAdvancedMenuOpen.value? `bg-gray-200` : `bg-[#fff5]`)
 
 onMounted(() => {
     
@@ -22,11 +25,11 @@ defineExpose({
 
 
 <template>
-    <nav ref="navBarContainerRef" class="sticky z-10 top-0 left-0 right-0 text-black py-5 bg-gray-200">
+    <nav ref="navBarContainerRef" class="sticky z-10 top-0 left-0 right-0 backdrop-blur text-[#555] py-5" :class="applyBackgroundColor">
         <div v-if="!sStore.isSearchbarOpen" class="px-6 flex self-start justify-between items-center w-full">
-            <NuxtLink to="/home"> <span class="text-4xl font-light align-middle "> 3PhotoLib </span> </NuxtLink>
+            <NuxtLink to="/home"> <span class="text-4xl text-[#111] font-light align-middle "> 3PhotoLib </span> </NuxtLink>
             <NuxtLink to="/home/account" class="w-fit">
-                <FontAwesomeIcon :icon="faCircleUser" class="text-4xl text-gray-400" @click=""></FontAwesomeIcon>
+                <FontAwesomeIcon :icon="faCircleUser" class="text-4xl text-[#555c]" @click=""></FontAwesomeIcon>
             </NuxtLink>
         </div>
 

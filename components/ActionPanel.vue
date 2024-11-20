@@ -18,7 +18,7 @@ function toggleSearchbar() {
 
 
 <template>
-    <nav class="sticky bottom-0 left-0 right-0 text-black py-5 bg-gray-200 flex justify-around items-center">
+    <nav class="sticky bottom-0 left-0 right-0 py-5 backdrop-blur bg-[#fff5] text-[#444] flex justify-around items-center">
         <NuxtLink to="/home/liked" class="w-fit">
             <FontAwesomeIcon :icon="faFire" class="text-3xl"></FontAwesomeIcon>
         </NuxtLink>

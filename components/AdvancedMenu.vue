@@ -100,7 +100,7 @@ import { storeToRefs } from 'pinia';
 
 
 <template>
-    <div class="h-screen left-0 mt-4 px-6 w-full absolute bg-gray-200 overflow-auto">
+    <div class="h-screen left-0 mt-4 px-6 w-full absolute bg-gray-200 text-[#111] overflow-auto">
         <div class="my-6">
             <section>
                 <div class="relative flex items-center mb-6 mt-9">
