@@ -267,7 +267,7 @@ class UnsplashPhotoProvider extends PhotoProvider {
     }
 
     getPhotoDescription = function(imgData: UnsplashPhoto): string {
-        return imgData.description? imgData.alt_description : `*Not provided*`;
+        return imgData.alt_description ? imgData.alt_description.charAt(0).toUpperCase() + imgData.alt_description.slice(1) : `*Not provided*`;
     }
 
     getAuthorID = function(imgData: UnsplashPhoto): string {

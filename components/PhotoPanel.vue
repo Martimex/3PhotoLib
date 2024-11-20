@@ -100,24 +100,20 @@ const photoTags = computed(() => providerObj?.retrievePhotoTags(utilizePhotoProv
 
 <template>
     <div class="absolute inset-0 grid grid-rows-[1fr_auto] text-white bg-black/[.25]">
-        <div class="p-[1.5rem] backdrop-blur-lg overflow-auto">
+        <div class="p-[1.5rem] backdrop-blur-lg overflow-auto grid grid-rows-[auto_1fr]">
             <figure class="flex items-center justify-start mb-5">
                 <a :href="currPhotoProvider?.getAuthorProfileURL(utilizePhotoProvider(props.imgData))" target="_blank">
                     <img class="w-16 h-16 rounded-xl text-xs border-2" :src="providerObj?.getPhotoAuthorImage(utilizePhotoProvider(props.imgData))" alt="Author profile picture" />
                 </a>                
                 <figcaption class="mx-4">
-                    <p class="text-sm bold"> Photo by: </p>
-                    <p class="text-base bold break-all mr-12"> {{ providerObj?.getPhotoAuthorName(utilizePhotoProvider(props.imgData)) }} </p>
+                    <p class="text-base bold"> Photo by: </p>
+                    <p class="text-lg bold break-all mr-12"> {{ providerObj?.getPhotoAuthorName(utilizePhotoProvider(props.imgData)) }} </p>
                 </figcaption>
             </figure>
 
-            <ul class="flex flex-wrap" >
-                <li class="text-xs bold py-1 px-4 m-2 border-2 rounded-r-full"
-                    v-for="tag in photoTags" :key="imgData.id + '__tag=' + tag"
-                > 
-                    {{ '#' + tag.trim() }} 
-                </li>
-            </ul>
+            <section class="my-5">
+                <p class="text-base italic"> {{ providerObj?.getPhotoDescription(utilizePhotoProvider(props.imgData)) }} </p>
+            </section>
 
             <NuxtLink :to="{ name: 'home-results-provider=id', params: {id: providerObj?.getPhotoId(utilizePhotoProvider(props.imgData)), provider: providerObj?.name} }"> 
                 <FontAwesomeIcon :icon="faInfo" @click="setPhotoAsViewed()" class="text-2xl absolute top-0 right-0 m-[1.5rem] border-2 px-3 py-1 rounded-full"></FontAwesomeIcon>

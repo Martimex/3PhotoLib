@@ -19,7 +19,7 @@
     <div class="mt-6 mb-14" >
         <div class="grid grid-rows-1 grid-cols-[1fr_auto_1fr] items-center">
             <div class="bg-black h-[0.15rem] mr-3 shadow-xl shadow-black"></div>
-            <h2 class="text-2xl font-semibold text-wrap break-all my-2 text-center border-black rounded-full border-2 py-2 px-4 shadow-[0.25rem_0.25rem_0.3rem_#222d]"> {{ props.collectionData.name }}</h2>
+            <h2 class="text-lg font-semibold text-wrap break-all my-2 text-center border-black rounded-full border-2 py-2 px-4 shadow-[0.25rem_0.25rem_0.3rem_#222d]"> {{ props.collectionData.name }}</h2>
             <div class="bg-black h-[0.15rem] ml-3 shadow-xl shadow-black"></div>
         </div>
         <div class="grid grid-rows-[auto_auto] grid-cols-[auto_1fr] my-4 gap-x-9 gap-y-6">
