@@ -15,11 +15,11 @@ const collectionsEmits = defineEmits(['openAddCollection']);
 </script>
 
 <template>
-    <nav class="bottom-0 left-0 right-0 backdrop-blur bg-[#fff5] text-[#444] py-5 flex justify-around items-center" :class="props.isContentOverflow? `sticky` : `fixed`">
+    <nav class="bottom-0 left-0 right-0 backdrop-blur bg-[#fff5] text-[#333] py-5 flex justify-around items-center" :class="props.isContentOverflow? `sticky` : `fixed`">
         <NuxtLink :to="getRecentRoute" class="w-fit">
-            <FontAwesomeIcon :icon="faArrowLeft" class="text-3xl"></FontAwesomeIcon>
+            <FontAwesomeIcon :icon="faArrowLeft" class="text-3xl drop-shadow-[0rem_0rem_0.05rem_#eee]"></FontAwesomeIcon>
         </NuxtLink>
-        <FontAwesomeIcon :icon="faPlus" class="text-3xl" @click="collectionsEmits('openAddCollection')"></FontAwesomeIcon>
+        <FontAwesomeIcon :icon="faPlus" class="text-3xl drop-shadow-[0rem_0rem_0.05rem_#eee]" @click="collectionsEmits('openAddCollection')"></FontAwesomeIcon>
     </nav>
 </template>
 

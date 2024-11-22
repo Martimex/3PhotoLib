@@ -15,14 +15,14 @@ const getRecentRoute = computed(() => (recentlyVisitedRouteArr.length > 1? recen
 </script>
 
 <template>
-    <nav class="bottom-0 left-0 right-0 backdrop-blur bg-[#fff5] text-[#444] py-5 flex justify-around items-center" :class="props.isContentOverflow? `sticky` : `fixed`">
+    <nav class="bottom-0 left-0 right-0 backdrop-blur bg-[#fff5] text-[#333] py-5 flex justify-around items-center" :class="props.isContentOverflow? `sticky` : `fixed`">
         <NuxtLink :to="getRecentRoute" class="w-fit">
-            <FontAwesomeIcon :icon="faArrowLeft" class="text-3xl"></FontAwesomeIcon>
+            <FontAwesomeIcon :icon="faArrowLeft" class="text-3xl drop-shadow-[0rem_0rem_0.05rem_#eee]"></FontAwesomeIcon>
         </NuxtLink>
         <NuxtLink :to="`https://github.com/Martimex/3PhotoLib#the-purpose-of-an-app`" target="_blank" class="w-fit">
-            <FontAwesomeIcon :icon="faQuestionCircle" class="text-3xl"></FontAwesomeIcon>
+            <FontAwesomeIcon :icon="faQuestionCircle" class="text-3xl drop-shadow-[0rem_0rem_0.05rem_#eee]"></FontAwesomeIcon>
         </NuxtLink>
-        <FontAwesomeIcon :icon="faSignOut" @click="emits('tryToLogOut')" class="text-3xl"></FontAwesomeIcon>
+        <FontAwesomeIcon :icon="faSignOut" @click="emits('tryToLogOut')" class="text-3xl drop-shadow-[0rem_0rem_0.05rem_#eee]"></FontAwesomeIcon>
     </nav>
 </template>
 

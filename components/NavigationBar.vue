@@ -25,11 +25,11 @@ defineExpose({
 
 
 <template>
-    <nav ref="navBarContainerRef" class="sticky z-10 top-0 left-0 right-0 backdrop-blur text-[#555] py-5" :class="applyBackgroundColor">
+    <nav ref="navBarContainerRef" class="sticky z-10 top-0 left-0 right-0 backdrop-blur text-[#333] py-5" :class="applyBackgroundColor">
         <div v-if="!sStore.isSearchbarOpen" class="px-6 flex self-start justify-between items-center w-full">
-            <NuxtLink to="/home"> <span class="text-4xl text-[#111] font-light align-middle "> 3PhotoLib </span> </NuxtLink>
+            <NuxtLink to="/home"> <span class="text-4xl text-[#111] drop-shadow-[0rem_0rem_0.05rem_#eee] font-light align-middle "> 3PhotoLib </span> </NuxtLink>
             <NuxtLink to="/home/account" class="w-fit">
-                <FontAwesomeIcon :icon="faCircleUser" class="text-4xl text-[#555c]" @click=""></FontAwesomeIcon>
+                <FontAwesomeIcon :icon="faCircleUser" class="text-4xl text-[#333] drop-shadow-[0rem_0rem_0.05rem_#eee]" @click=""></FontAwesomeIcon>
             </NuxtLink>
         </div>
 

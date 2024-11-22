@@ -9,9 +9,9 @@ const getRecentRoute = computed(() => (recentlyVisitedRouteArr.length > 1? recen
 </script>
 
 <template>
-    <nav class="sticky bottom-0 left-0 right-0 backdrop-blur bg-[#fff5] text-[#444] py-5 flex justify-around items-center">
+    <nav class="sticky bottom-0 left-0 right-0 backdrop-blur bg-[#fff5] text-[#333] py-5 flex justify-around items-center">
         <NuxtLink :to="getRecentRoute" class="w-fit">
-            <FontAwesomeIcon :icon="faArrowLeft" class="text-3xl"></FontAwesomeIcon>
+            <FontAwesomeIcon :icon="faArrowLeft" class="text-3xl drop-shadow-[0rem_0rem_0.05rem_#eee]"></FontAwesomeIcon>
         </NuxtLink>
     </nav>
 </template>

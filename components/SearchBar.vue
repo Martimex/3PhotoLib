@@ -94,13 +94,17 @@ onMounted(() => { searchbar?.value?.focus() })
 </script>
 
 <template>
-    <FontAwesomeIcon :icon="faGear" @click="toggleAdvancedMenu()" class="mt-1 text-3xl justify-self-start"></FontAwesomeIcon>
+    <FontAwesomeIcon :icon="faGear" @click="toggleAdvancedMenu()" class="mt-1 text-3xl justify-self-start drop-shadow-[0rem_0rem_0.05rem_#eee]"></FontAwesomeIcon>
             <!-- <input v-model="searchText" placeholder="Looking for..." class="p-2 min-w-[50vw]" ref="searchbar" /> -->
             <!-- Another cool  input alternative - check this one out ! -->
-            <input v-model="searchText" placeholder="Looking for..." class="mt-1 min-w-[50vw] text-sm font-semibold text-center py-2 px-2 text-[#222] bg-inherit outline-[#444]  appearance-none cursor-pointer rounded-lg shadow-[0rem_0rem_0.3rem_black]" ref="searchbar" />
-    <FontAwesomeIcon :icon="faMagnifyingGlass" @click="{ closeAdvancedMenu(); getImagesByQuery(searchText); }" class="mt-1 text-3xl justify-self-end"></FontAwesomeIcon>
+            <input v-model="searchText" placeholder="Looking for..." class="custom-text-shadow mt-1 min-w-[50vw] text-sm font-semibold text-center py-2 px-2 text-[#222] bg-inherit outline-[#222]  appearance-none cursor-pointer rounded-lg shadow-[0rem_0rem_0.3rem_black]" ref="searchbar" />
+    <FontAwesomeIcon :icon="faMagnifyingGlass" @click="{ closeAdvancedMenu(); getImagesByQuery(searchText); }" class="mt-1 text-3xl justify-self-end drop-shadow-[0rem_0rem_0.05rem_#eee]"></FontAwesomeIcon>
 </template>
 
 <style scoped>
+
+.custom-text-shadow {
+    text-shadow: 0 0 0.1rem #eee;
+}
 
 </style>

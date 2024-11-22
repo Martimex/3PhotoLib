@@ -76,10 +76,10 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <nav class="bottom-0 left-0 right-0 backdrop-blur bg-[#fff5] text-[#444] py-5 flex justify-around items-center" :class="props.isContentOverflow? `sticky` : `fixed`" >
-        <FontAwesomeIcon :icon="faXmark" class="text-3xl text-red-500 font-bold" @click="handleCloseEditMode"></FontAwesomeIcon>
-        <p class="text-[#222] text-center px-6 min-w-20 text-2xl font-bold"> {{ photosToRemoveArray_get().length }} </p>
-        <FontAwesomeIcon :icon="faCheck" class="text-3xl text-green-500 font-bold" @click="handlePhotosDeletion"></FontAwesomeIcon>
+    <nav class="bottom-0 left-0 right-0 backdrop-blur bg-[#fff5] text-[#333] py-5 flex justify-around items-center" :class="props.isContentOverflow? `sticky` : `fixed`" >
+        <FontAwesomeIcon :icon="faXmark" class="text-3xl text-red-600 font-bold drop-shadow-[0rem_0rem_0.05rem_#222]" @click="handleCloseEditMode"></FontAwesomeIcon>
+        <p class="text-[#222] text-center px-6 min-w-20 text-2xl font-bold drop-shadow-[0rem_0rem_0.05rem_#eee]"> {{ photosToRemoveArray_get().length }} </p>
+        <FontAwesomeIcon :icon="faCheck" class="text-3xl text-green-600 font-bold drop-shadow-[0rem_0rem_0.05rem_#222]" @click="handlePhotosDeletion"></FontAwesomeIcon>
     </nav>
 </template>
 

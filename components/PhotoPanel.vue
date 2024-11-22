@@ -112,7 +112,7 @@ const photoTags = computed(() => providerObj?.retrievePhotoTags(utilizePhotoProv
             </figure>
 
             <section class="my-5">
-                <p class="text-base italic"> {{ providerObj?.getPhotoDescription(utilizePhotoProvider(props.imgData)) }} </p>
+                <p class="text-base font-light italic"> {{ providerObj?.getPhotoDescription(utilizePhotoProvider(props.imgData)) }} </p>
             </section>
 
             <NuxtLink :to="{ name: 'home-results-provider=id', params: {id: providerObj?.getPhotoId(utilizePhotoProvider(props.imgData)), provider: providerObj?.name} }"> 
