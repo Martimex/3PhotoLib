@@ -14,7 +14,7 @@
 </script>
 
 <template>
-    <div class="p-3 absolute top-0 right-0 rounded-es-full border-[#dddd] border-t-transparent border-r-transparent border-double border-4"
+    <div class="p-3 absolute top-0 right-0 rounded-es-full border-[#dddd] border-t-transparent border-r-transparent border-double border-4 hover:cursor-pointer"
         @click="handleComponentClose"
     >
         <div class="relative">

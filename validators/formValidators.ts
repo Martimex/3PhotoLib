@@ -6,8 +6,8 @@ export const usernameValidator = z.string()
 .refine(val => /^[A-z0-9]*$/.test(val), {message: 'Please do not use special characters'} );
 
 export const emailValidator = z.string()
-.email({message: 'Please provide a valid e-mail address'})
-.refine(val => /[.]{1,1}[A-Za-z]+$/.test(val), {message: 'Please provide a valid e-mail address'})
+.email({message: 'E-mail format is invalid'})
+.refine(val => /[.]{1,1}[A-Za-z]+$/.test(val), {message: 'E-mail format is invalid'})
 
 export const passwordValidator =  z.string()
 .min(8, {message: 'Please include at least 8 characters'})

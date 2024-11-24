@@ -21,11 +21,23 @@ async function handleButtonClick() {
 </script>
 
 <template>
-    <h1 class="main-title text-5xl font-semibold font-mono text-center my-6"> 3PhotoLib </h1>
-    <h2 class="main-title-alt text-lg font-mono text-center mt-9 mb-3 mx-[8%]"> The royalty-free photo delivery platform for free-forever use! </h2>
-    <div class="mt-8 mb-4 py-5 px-10 w-fit max-w-[50vw] min-h-10 bg-[#111a] rounded-md mx-auto" @click="handleButtonClick"> 
-        <p class="main-title-alt text-lg text-center font-bold text-nowrap"> Sign In </p> 
-    </div>
+    <section class="min-w-[80vw]
+        sm:min-w-fit sm:max-w-[50vw] 
+    ">
+        <h1 class="main-title text-5xl font-semibold font-mono text-center my-6
+            lg:text-6xl
+        "> 
+            3PhotoLib 
+        </h1>
+        <h2 class="main-title-alt text-lg font-mono text-center mt-9 mb-3 mx-[8%]
+            lg:text-xl
+        "> The royalty-free photo delivery platform for free-forever use! </h2>
+        <div class="mt-8 mb-4 py-5 px-10 w-fit max-w-[50vw] min-h-10 bg-[#111a] rounded-md mx-auto  hover:cursor-pointer" @click="handleButtonClick"> 
+            <p class="main-title-alt text-lg text-center font-bold text-nowrap
+                lg:text-xl
+            "> Sign In </p> 
+        </div>
+    </section>
 </template>
 
 <style scoped>

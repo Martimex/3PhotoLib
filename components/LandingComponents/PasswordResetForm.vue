@@ -84,34 +84,44 @@
 </script>
 
 <template>
-    <LandingComponentsFormClose />
-    <h1 class="main-title text-5xl font-semibold font-mono text-center mb-7 pointer-events-none"> Reset password </h1>
-    <h2 class="main-title-alt text-lg font-mono text-center mt-4 mb-6"> Please provide your e-mail first to proceed </h2>
-    <form id="resetpassword" name="resetpassword" method="post" action="" class="mx-3" @submit.prevent="handlePasswordReset">
-        <div class="my-4">
-            <div :ref="resetPasswordForm.email.inputElement" class="flex my-3 w-full outline-gray-500 bg-neutral-200 rounded-md shadow-[0.1rem_0.1rem_0.5rem_black] border-y-4 box-border">
-                <FontAwesomeIcon :icon="faEnvelope" class="text-4xl text-[#222c] drop-icon mx-3 my-auto px-1"></FontAwesomeIcon>
-                <div class="relative w-full">
-                    <input type="email" aria-label="Use an e-mail address" id="email" name="email" value="" v-model="resetPasswordForm.email.text.value" placeholder="E-mail..."
-                    class="text-black text-base font-semibold text-center w-full py-4 px-2 outline-[#222c] bg-neutral-200 appearance-none cursor-pointer rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed" 
-                    />
-                    <span :ref="resetPasswordForm.email.errorMsgElement" class="absolute bottom-0 left-0 text-red-500 font-bold text-xs w-full inline-block text-center" :class="resetPasswordForm.email.isTextCorrect.value? 'hidden' : 'inline-block'"> Error: Some error occured </span>
+    <section class="max-w-[95vw]
+        sm:w-[90vw] sm:max-w-[675px]
+        lg:w-[60vw] lg:max-w-[800px]"
+    >
+        <LandingComponentsFormClose />
+        <h1 class="main-title text-5xl font-semibold font-mono text-center mb-7 pointer-events-none"> Reset password </h1>
+        <h2 class="main-title-alt text-lg font-mono text-center mt-4 mb-6
+            lg:max-w-[80%] lg:mx-auto
+        "> Please provide your e-mail first to proceed </h2>
+        <form id="resetpassword" name="resetpassword" method="post" action="" class="mx-3" @submit.prevent="handlePasswordReset">
+            <div class="my-4 mx-auto w-[90%] 
+                sm:w-[60%]
+                lg:w-[50%]
+            ">
+                <div :ref="resetPasswordForm.email.inputElement" class="flex my-3 w-full outline-gray-500 bg-neutral-200 rounded-md shadow-[0.1rem_0.1rem_0.5rem_black] border-y-4 box-border">
+                    <FontAwesomeIcon :icon="faEnvelope" class="text-4xl text-[#222c] drop-icon mx-3 my-auto px-1"></FontAwesomeIcon>
+                    <div class="relative w-full">
+                        <input type="email" aria-label="Use an e-mail address" id="email" name="email" value="" v-model="resetPasswordForm.email.text.value" placeholder="E-mail..."
+                        class="text-black text-base font-semibold text-center w-full py-4 px-2 outline-[#222c] bg-neutral-200 appearance-none cursor-pointer rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed" 
+                        />
+                        <span :ref="resetPasswordForm.email.errorMsgElement" class="absolute bottom-0 left-0 text-red-500 font-bold text-xs w-full inline-block text-center" :class="resetPasswordForm.email.isTextCorrect.value? 'hidden' : 'inline-block'"> Error: Some error occured </span>
+                    </div>
                 </div>
             </div>
-        </div>
 
-<!--         <span class="main-title-alt text-md underline font-semibold cursor-pointer mx-3"
-            @click="handleRetryPasswordResetEmail()"
-        > 
-            Send the code again
-        </span>
+    <!--         <span class="main-title-alt text-md underline font-semibold cursor-pointer mx-3"
+                @click="handleRetryPasswordResetEmail()"
+            > 
+                Send the code again
+            </span>
 
-        <span :ref="resetPasswordForm.resendCodeLink.errorMsgElement" class="main-title-alt text-red-500 font-bold text-sm w-full inline-block my-3 mx-3">  </span> -->
+            <span :ref="resetPasswordForm.resendCodeLink.errorMsgElement" class="main-title-alt text-red-500 font-bold text-sm w-full inline-block my-3 mx-3">  </span> -->
 
-        <div class="mt-8 mb-4 py-5 px-10 w-fit max-w-[50vw] min-h-10 bg-[#111a] rounded-md mx-auto flex justify-center"> 
-            <button class="main-title-alt text-xl text-center font-bold text-nowrap" type="submit" > Confirm </button> 
-        </div>
-    </form>
+            <div class="mt-8 mb-4 py-5 px-10 w-fit max-w-[50vw] min-h-10 bg-[#111a] rounded-md mx-auto flex justify-center"> 
+                <button class="main-title-alt text-xl text-center font-bold text-nowrap" type="submit" > Confirm </button> 
+            </div>
+        </form>
+    </section>
 </template>
 
 <style scoped>
