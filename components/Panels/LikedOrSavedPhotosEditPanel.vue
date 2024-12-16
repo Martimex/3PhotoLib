@@ -2,7 +2,7 @@
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
 import type PhotoResponseModel from '@/types/responseModel_photo';
-import type { availablePhotoStorages } from '~/types/type_utilities';
+import { NavbarPosition, type availablePhotoStorages } from '~/types/type_utilities';
 
 const { collectionsOrlikedPhotos_setEditMode, photosToRemoveArray_get, photosToRemoveArray_reset } = useStatusStore();
 const { currentUser_get } = useAuthStore();
@@ -76,7 +76,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <nav class="bottom-0 left-0 right-0 backdrop-blur bg-[#fff5] text-[#333] py-5 flex justify-around items-center" :class="props.isContentOverflow? `sticky` : `fixed`" >
+    <nav class="flex justify-around items-center" :class="[props.isContentOverflow? `sticky` : `fixed`, getNavbarStyleClasses(NavbarPosition.BOTTOM)]" >
         <FontAwesomeIcon :icon="faXmark" class="text-3xl text-red-600 font-bold drop-shadow-[0rem_0rem_0.05rem_#222]" @click="handleCloseEditMode"></FontAwesomeIcon>
         <p class="text-[#222] text-center px-6 min-w-20 text-2xl font-bold drop-shadow-[0rem_0rem_0.05rem_#eee]"> {{ photosToRemoveArray_get().length }} </p>
         <FontAwesomeIcon :icon="faCheck" class="text-3xl text-green-600 font-bold drop-shadow-[0rem_0rem_0.05rem_#222]" @click="handlePhotosDeletion"></FontAwesomeIcon>

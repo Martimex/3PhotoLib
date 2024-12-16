@@ -24,12 +24,12 @@
 </script>
 
 <template>
-    <section class="flex items-center justify-around mt-8">
-        <FontAwesomeIcon :icon="faArrowLeft" class="text-3xl text-[#333] drop-shadow-[0_0_0.25rem_#222]" :class="!isLeftSwitchPossibleToPress && `opacity-35`"
+    <section class="flex items-center justify-around mt-8 mx-auto max-w-[550px]">
+        <FontAwesomeIcon :icon="faArrowLeft" class="text-3xl text-[#333] drop-shadow-[0_0_0.25rem_#222] hover:cursor-pointer" :class="!isLeftSwitchPossibleToPress && `opacity-35 hover:cursor-default`"
             @click="isLeftSwitchPossibleToPress && emits('switchPage', searchPageCount + -1)"
         />
-        <p class="text-3xl font-semibold text-center my-4"> {{  searchPageCount  }}</p>
-        <FontAwesomeIcon :icon="faArrowRight" class="text-3xl text-[#333] drop-shadow-[0_0_0.25rem_#222]" :class="!isRightSwitchPossibleToPress && `opacity-35`"
+        <p class="text-3xl font-semibold text-center my-4 hover:cursor-default"> {{  searchPageCount  }}</p>
+        <FontAwesomeIcon :icon="faArrowRight" class="text-3xl text-[#333] drop-shadow-[0_0_0.25rem_#222] hover:cursor-pointer" :class="!isRightSwitchPossibleToPress && `opacity-35 hover:cursor-default`"
             @click="isRightSwitchPossibleToPress && emits('switchPage', searchPageCount + 1)"
         />
     </section>

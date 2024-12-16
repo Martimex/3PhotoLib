@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faArrowLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { NavbarPosition } from '~/types/type_utilities';
 
 const { recentlyVisitedRouteArr } = useStatusStore();
 
@@ -15,7 +16,7 @@ const collectionsEmits = defineEmits(['openAddCollection']);
 </script>
 
 <template>
-    <nav class="bottom-0 left-0 right-0 backdrop-blur bg-[#fff5] text-[#333] py-5 flex justify-around items-center" :class="props.isContentOverflow? `sticky` : `fixed`">
+    <nav class="flex justify-around items-center" :class="[props.isContentOverflow? `sticky` : `fixed`, getNavbarStyleClasses(NavbarPosition.BOTTOM)]">
         <NuxtLink :to="getRecentRoute" class="w-fit">
             <FontAwesomeIcon :icon="faArrowLeft" class="text-3xl drop-shadow-[0rem_0rem_0.05rem_#eee]"></FontAwesomeIcon>
         </NuxtLink>

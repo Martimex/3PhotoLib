@@ -11,6 +11,7 @@ const sStore = useStatusStore();
 
 const { currentUser_get, likedPhotos_set, likedPhotos_update } = useAuthStore();
 const { isRequestPending, collectionsOrlikedPhotos_isEditModeOn } = storeToRefs(sStore);
+const { currPhotoProviderName } = useSearchQueryStore();
 const { collectionsOrlikedPhotos_setEditMode, photosToRemoveArray_reset } = useStatusStore();
 const { photoIdToUnlike_set, photoIdToUnlike_get } = usePhotoStore();
 
@@ -82,8 +83,7 @@ onUnmounted(() => {
             <div v-else-if="!userLikedPhotos.length"> <EmptyResponsesNoLikedPhotos /> </div>
             <div v-else-if="userLikedPhotos">
                 <div v-if="!isRequestPending" ref="likedPhotosContainerElement" class="">
-                    <!-- Slicing works well for providers API, which reqire minimal response photos, while this app does not  -->
-                    <PhotoItem v-for="(image, index) in userLikedPhotos" :key="image.id" :imgData="image.photoDetails" :provider="image.provider" />
+                    <ResultPhotosContainer :photosArray="userLikedPhotos" :providerName="currPhotoProviderName" />
                 </div>
                 <div v-if="isRequestPending" class="">
                     <p class="text-2xl bold text-yellow-400"> Pending... Please wait 🥰</p>

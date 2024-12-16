@@ -16,6 +16,7 @@
     const { currentUser_get, collections_edit, collections_updatePhotos } = useAuthStore();
     const { isRequestPending, collectionsOrlikedPhotos_isEditModeOn } = storeToRefs(sStore);
     const { viewedCollection } = storeToRefs(useCollectionStore());
+    const { currPhotoProviderName } = useSearchQueryStore();
 
     const isEditCollectionModalOpen = ref<boolean>(false);
 
@@ -102,8 +103,7 @@
             <div v-else-if="!viewedCollection?.collectionPhotos.length"> <EmptyResponsesNoPhotosInCollection/> </div>
             <div v-else-if="viewedCollection?.collectionPhotos.length">
                 <div v-if="!isRequestPending" ref="collectionPhotosContainerElement" class="">
-                    <!-- Slicing works well for providers API, which reqire minimal response photos, while this app does not  -->
-                    <PhotoItem v-for="(image, index) in viewedCollection?.collectionPhotos" :key="image.id" :imgData="image.photoDetails" :provider="image.provider" />
+                    <ResultPhotosContainer :photosArray="viewedCollection?.collectionPhotos" :providerName="currPhotoProviderName" />
                 </div>
                 <div v-if="isRequestPending" class="">
                     <p class="text-2xl bold text-yellow-400"> Pending... Please wait 🥰</p>

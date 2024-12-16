@@ -5,6 +5,9 @@ import { useStatusStore } from '@/stores/statusStore';
 
 import SearchBar from './SearchBar.vue';
 import AdvancedMenu from './AdvancedMenu.vue';
+import { getNavbarStyleClasses } from '~/utils/getNavbarStyleClasses';
+
+import { NavbarPosition } from '~/types/type_utilities';
 
 const sStore = useStatusStore();
 const { isAdvancedMenuOpen } = storeToRefs(useStatusStore());
@@ -25,7 +28,7 @@ defineExpose({
 
 
 <template>
-    <nav ref="navBarContainerRef" class="sticky z-10 top-0 left-0 right-0 backdrop-blur text-[#333] py-5" :class="applyBackgroundColor">
+    <nav ref="navBarContainerRef" class="sticky z-10" :class="[applyBackgroundColor, getNavbarStyleClasses(NavbarPosition.TOP)]">
         <div v-if="!sStore.isSearchbarOpen" class="px-6 flex self-start justify-between items-center w-full">
             <NuxtLink to="/home"> <span class="text-4xl text-[#111] drop-shadow-[0rem_0rem_0.05rem_#eee] font-light align-middle "> 3PhotoLib </span> </NuxtLink>
             <NuxtLink to="/home/account" class="w-fit">

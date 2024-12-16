@@ -25,7 +25,9 @@ async function checkSessionStatus() {
 <template>
   <div>
     <NuxtLayout>
-      <NuxtPage />
+      <section class="max-w-[1320px] mx-auto">
+        <NuxtPage />
+      </section>
     </NuxtLayout>
   </div>
 </template>

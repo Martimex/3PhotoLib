@@ -154,8 +154,12 @@ function handleConfirmMoveToAnotherCollection(collectionWithoutMovedPhoto: Colle
 </script>
 
 <template>
-    <div @click="[handleFullScreenPhotoView($event), checkIfPhotoToRemove()]" :class="{ loaded: isImgLoaded }"  class="blur-bg relative flex justify-center bg-cover bg-center mx-2 my-4 min-w-[80vw] max-w-[90vw] min-h-[20vh] rounded-md shadow-md shadow-black transition-opacity">
-        <img ref="imgRef" @error="requestImagePhoto($event, props.provider, `${props.imgData.id}`)" :src="providerObj?.getHighResImageURL(utilizePhotoProvider(props.imgData))" :width="providerObj?.getPhotoWidth(utilizePhotoProvider(props.imgData))" :height="providerObj?.getPhotoHeight(utilizePhotoProvider(props.imgData))" loading="lazy" class="min-h-[44vh] object-cover object-center transition-opacity rounded-md" />    
+    <div @click="[handleFullScreenPhotoView($event), checkIfPhotoToRemove()]" :class="{ loaded: isImgLoaded }"  class="blur-bg relative flex justify-center bg-cover bg-center mx-2 my-4 min-w-[80vw] max-w-[90vw] min-h-[20vh] rounded-md shadow-md shadow-black transition-opacity
+        sm:min-w-0 sm:max-w-[100%] sm:my-2 sm:mx-0
+    ">
+        <img ref="imgRef" @error="requestImagePhoto($event, props.provider, `${props.imgData.id}`)" :src="providerObj?.getHighResImageURL(utilizePhotoProvider(props.imgData))" :width="providerObj?.getPhotoWidth(utilizePhotoProvider(props.imgData))" :height="providerObj?.getPhotoHeight(utilizePhotoProvider(props.imgData))" loading="lazy" class="min-h-[44vh] max-h-[66vh] object-cover object-center transition-opacity rounded-md
+            sm:max-w-[100%] sm:max-h-[80vh]
+        " />    
         <a ref="anchorRef" href="" :download="`${props.provider}=${props.imgData.id}.png`" class="absolute"></a>
         <PhotoPanel v-if="Boolean(isPhotoPanelOpen && !collectionsOrlikedPhotos_isEditModeOn)"  
             :imgData="props.imgData" :provider="props.provider" :isPhotoLiked="isPhotoLiked" :isNowAddedToCollection="isPhotoRecentlyAddedToCollection" :isPhotoDownloaded="isPhotoDownloaded"

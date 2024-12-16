@@ -115,7 +115,6 @@ onUnmounted(() => isSearchbarOpen.value = false);
             <div v-else-if="imageData" class="py-[10vh]">
                 <p class="text-3xl font-bold text-center underline"> {{ queryText }} </p>
                 <p class="text-base mt-12 mb-6 text-center"> Searching for <b>{{ outputPhotosNumber === 1? `${outputPhotosNumber} photo` : `${outputPhotosNumber} photos` }} </b> per each page. You can alter search options at any time by using the top-left gear button. </p>
-                <!-- <Transition name="theopacity" appear> -->
                     <div v-if="!isRequestPending" class="inline-block">
                         <!-- Slicing works well for providers API, which reqire minimal response photos, while this app does not  -->
                         <section class="grid grid-rows-1 grid-cols-[1fr_auto_1fr] items-center">
@@ -125,10 +124,10 @@ onUnmounted(() => isSearchbarOpen.value = false);
                             </div>
                             <div class="bg-black h-[0.15rem] ml-3 shadow-xl shadow-black"></div>
                         </section>
-                        <PhotoItem v-for="image in imageData.slice(0, outputPhotosNumber)" :key="image.id" :imgData="image" :provider="providerName"/>
+                        <ResultPhotosContainer :photosArray="imageData.slice(0, outputPhotosNumber)" :providerName="providerName" />
+                        <!-- <PhotoItem v-for="image in imageData.slice(0, outputPhotosNumber)" :key="image.id" :imgData="image" :provider="providerName"/>  -->
                         <PageNavigation @switchPage="handleSwitchPage" :isNextPageAvailable="isNextPageAvailable" />
                     </div>
-                <!-- </Transition> -->
                 <div v-if="isRequestPending" class="">
                     <p class="text-2xl bold text-yellow-400"> Pending... Please wait 🥰</p>
                 </div>

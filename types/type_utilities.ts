@@ -47,6 +47,25 @@ export type cachedQueryResponsePhotos =  { [Key in typeof availableProviderNames
 export const featuredCategories = ['garden', 'landscape', 'girl', 'moon', 'dog', 'boy', 'sunset', 'nebula', 'cars', 'city', 'neon', 'people', 'winter', 'summer', 'cat'] as const;
 export type AllFeaturedCategories = typeof featuredCategories[number];
 
+// Used to conditionally apply proper styles based on navbar declared position 
+export enum NavbarPosition { TOP = 't', BOTTOM = 'b' };
+
+// Used for screen resize listener feature (helps with keeping responsiveness)
+export type screenSizes = {
+    xs: string,
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+    "2xl": string;
+}
+
+// Used to provide a safe type for configuration object for grid (depending on current breakpoint)
+export type screenBreakpointsObj = {
+    [key in keyof screenSizes]: { columns: 1 | 2 | 3 }
+}
+
+
 // Used for SaveOrMoveToCollection to set fetched collections to their respective statuses (states)
 export type collectionStates = {
 	base: CollectionResponseModel[],
