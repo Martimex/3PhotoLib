@@ -16,6 +16,7 @@ const { isRequestPending, isSearchbarOpen } = storeToRefs(sStore);
 const featuredPhotosResultsMax = ref(3);
 
 const { featuredPhotosCategory, featuredPhotosProviderName } = storeToRefs(usePhotoStore());
+const { currentBreakpoint } = storeToRefs(useStatusStore());
 
 const featuredImages = ref<availablePhotoTypes[]>([]);
 const providerName = ref<availableProviderNames>('pixabay');
@@ -57,7 +58,7 @@ onUnmounted(() => isSearchbarOpen.value = false);
         </Suspense>
     
     </section>
-    <ActionPanel />
+    <ActionPanel v-if="!responsiveLayoutData[currentBreakpoint].panels.disableBottomPanels" />
 </template>
 
 

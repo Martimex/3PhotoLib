@@ -1,9 +1,21 @@
 <script setup lang="ts">
-import { sortById } from './utils/sortById';
 
 if(process.server) {
   checkSessionStatus();
 }
+
+const { currentBreakpoint_set, currentBreakpoint_get } = useStatusStore();
+
+onBeforeMount(() => calculatePhotosLayout())
+
+function calculatePhotosLayout() {
+    const currentViewportWidth = document.documentElement.clientWidth;
+    const updatedBreakpoint =  getCurrentBreakpointName(currentViewportWidth);
+    if(updatedBreakpoint === currentBreakpoint_get()) return;
+    currentBreakpoint_set(updatedBreakpoint);
+}
+
+window.addEventListener('resize', calculatePhotosLayout);
 
 async function checkSessionStatus() {
   const { currentUser_set, isAuthenticated_get, isAuthenticated_set } = useAuthStore();

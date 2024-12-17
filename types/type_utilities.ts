@@ -62,7 +62,10 @@ export type screenSizes = {
 
 // Used to provide a safe type for configuration object for grid (depending on current breakpoint)
 export type screenBreakpointsObj = {
-    [key in keyof screenSizes]: { columns: 1 | 2 | 3 }
+    [key in keyof screenSizes]: { 
+        grid: { columns: 1 | 2 | 3}, 
+        panels: { disableBottomPanels: boolean } 
+    }
 }
 
 

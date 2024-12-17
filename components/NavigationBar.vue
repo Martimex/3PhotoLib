@@ -8,17 +8,15 @@ import AdvancedMenu from './AdvancedMenu.vue';
 import { getNavbarStyleClasses } from '~/utils/getNavbarStyleClasses';
 
 import { NavbarPosition } from '~/types/type_utilities';
+import { responsiveLayoutData } from '../utils/getResponsiveLayoutData';
 
 const sStore = useStatusStore();
-const { isAdvancedMenuOpen } = storeToRefs(useStatusStore());
+const { isAdvancedMenuOpen, currentBreakpoint } = storeToRefs(useStatusStore());
 
 const navBarContainerRef = ref();
 
-const applyBackgroundColor = computed(() => isAdvancedMenuOpen.value? `bg-gray-200` : `bg-[#fff5]`)
+const applyBackgroundColor = computed(() => isAdvancedMenuOpen.value && `bg-gray-200`);
 
-onMounted(() => {
-    
-})
 
 defineExpose({
     navBarContainerRef: navBarContainerRef
@@ -29,9 +27,12 @@ defineExpose({
 
 <template>
     <nav ref="navBarContainerRef" class="sticky z-10" :class="[applyBackgroundColor, getNavbarStyleClasses(NavbarPosition.TOP)]">
-        <div v-if="!sStore.isSearchbarOpen" class="px-6 flex self-start justify-between items-center w-full">
+        <div v-if="!sStore.isSearchbarOpen" class="px-6 grid grid-cols-3 items-center w-full">
             <NuxtLink to="/home"> <span class="text-4xl text-[#111] drop-shadow-[0rem_0rem_0.05rem_#eee] font-light align-middle "> 3PhotoLib </span> </NuxtLink>
-            <NuxtLink to="/home/account" class="w-fit">
+            <div class="justify-self-center w-full">
+                <ActionPanel v-if="responsiveLayoutData[currentBreakpoint].panels.disableBottomPanels" :disableBlur="true" class="mx-auto justify-start py-0 bg-[#0000]" />
+            </div>
+            <NuxtLink to="/home/account" class="w-fit justify-self-end">
                 <FontAwesomeIcon :icon="faCircleUser" class="text-4xl text-[#333] drop-shadow-[0rem_0rem_0.05rem_#eee]" @click=""></FontAwesomeIcon>
             </NuxtLink>
         </div>

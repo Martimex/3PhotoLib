@@ -9,7 +9,7 @@ import type { availablePhotoTypes, availableProviderNames, requestParamsObject }
 
 const [sStore, sqStore] = [useStatusStore(), useSearchQueryStore()];
 const { queryText, currPhotoProvider, currPhotoProviderName, outputPhotosNumber, searchPageCount, searchPageObj, cachedResults } = storeToRefs(sqStore);
-const { isRequestPending, isSearchbarOpen} = storeToRefs(sStore);
+const { isRequestPending, isSearchbarOpen, currentBreakpoint } = storeToRefs(sStore);
 
 definePageMeta({
     middleware: 'handle-url-params'
@@ -134,7 +134,7 @@ onUnmounted(() => isSearchbarOpen.value = false);
             </div>
         </Transition>
     </section>
-    <ActionPanel />
+    <ActionPanel v-if="!responsiveLayoutData[currentBreakpoint].panels.disableBottomPanels" />
 </template>
 
 

@@ -1,4 +1,4 @@
-import type { availableHomePageViews } from "~/types/type_utilities";
+import type { availableHomePageViews, screenSizes } from "~/types/type_utilities";
 import type PhotoResponseModel from "~/types/responseModel_photo";
 
 export const useStatusStore = defineStore(`statusStore`, () => {
@@ -13,6 +13,16 @@ export const useStatusStore = defineStore(`statusStore`, () => {
     const collectionsOrlikedPhotos_isEditModeOn = ref<boolean>(false);
     const isAddToNewCollectionTextActive = ref<boolean>(true); // Determines if blue text (Add to new collection) should be present inside SaveOrMoveToCollection (mode: Save)
     const recentlyVisitedRouteArr = ref<string[]>([]);
+
+    const currentBreakpoint = ref<keyof screenSizes>('xs');
+    
+    function currentBreakpoint_set(newValue: keyof screenSizes) {
+        currentBreakpoint.value = newValue;
+    }
+
+    function currentBreakpoint_get() {
+        return currentBreakpoint.value;
+    }
 
     function isAddToNewCollectionTextActive_set(newVal: boolean) {
         isAddToNewCollectionTextActive.value = newVal;
@@ -71,5 +81,7 @@ export const useStatusStore = defineStore(`statusStore`, () => {
         collections_isEditModeOn.value = newValue;
     }
  */
-    return { isAddToNewCollectionTextActive, isAddToNewCollectionTextActive_set, isSearchbarOpen, isAdvancedMenuOpen, isRequestPending, isFullScreenPhotoView, currentHomePageView, setCurrentHomePageView, homePageViewsHierarchy, addHomePageViewHierarchy, removeHomePageViewHierarchy, resetHomePageViewHierarchy, collectionsOrlikedPhotos_isEditModeOn, recentlyVisitedRouteArr, /* collections_isEditModeOn, */ collectionsOrlikedPhotos_setEditMode, /* collections_setEditMode, */ photosToRemoveArray_get, photosToRemoveArray_modify, photosToRemoveArray_reset, asyncProcess_get, asyncProcess_set }
+    return { isAddToNewCollectionTextActive, isAddToNewCollectionTextActive_set, isSearchbarOpen, isAdvancedMenuOpen, isRequestPending, isFullScreenPhotoView, currentHomePageView, setCurrentHomePageView, homePageViewsHierarchy, addHomePageViewHierarchy, removeHomePageViewHierarchy, resetHomePageViewHierarchy, collectionsOrlikedPhotos_isEditModeOn, recentlyVisitedRouteArr, /* collections_isEditModeOn, */ collectionsOrlikedPhotos_setEditMode, /* collections_setEditMode, */ photosToRemoveArray_get, photosToRemoveArray_modify, photosToRemoveArray_reset, asyncProcess_get, asyncProcess_set,
+        currentBreakpoint, currentBreakpoint_set, currentBreakpoint_get
+    }
 });

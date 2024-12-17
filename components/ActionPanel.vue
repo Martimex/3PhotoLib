@@ -9,6 +9,10 @@ import { NavbarPosition } from '~/types/type_utilities';
 const sStore = useStatusStore();
 const { isSearchbarOpen } = storeToRefs(sStore);
 
+const props = defineProps<{
+    disableBlur?: boolean,
+}>();
+
 function toggleSearchbar() {
     sStore.$patch({
         isSearchbarOpen: !sStore.isSearchbarOpen
@@ -19,7 +23,7 @@ function toggleSearchbar() {
 
 
 <template>
-    <nav class="sticky flex justify-around items-center" :class="getNavbarStyleClasses(NavbarPosition.BOTTOM)" >
+    <nav class="sticky flex justify-around items-center" :class="getNavbarStyleClasses(NavbarPosition.BOTTOM, props.disableBlur)" >
         <NuxtLink to="/home/liked" class="w-fit">
             <FontAwesomeIcon :icon="faFire" class="text-3xl drop-shadow-[0rem_0rem_0.05rem_#eee]"></FontAwesomeIcon>
         </NuxtLink>
