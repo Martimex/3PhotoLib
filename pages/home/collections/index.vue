@@ -5,10 +5,12 @@
     
     const { currentUser_get, collections_add, collections_delete } = useAuthStore();
     const { viewedCollection_set } = useCollectionStore();
+    const { currentBreakpoint } = storeToRefs(useStatusStore());
 
     const isAddCollectionModalOpen = ref<boolean>(false);
     const collectionToDeleteData = ref<false | CollectionResponseModel>(false);
 
+    const isTeleportReady = ref<boolean>(false);
     const allCollectionsContainerElement = ref();
     const navBarElement = ref();
 
@@ -58,6 +60,7 @@
     })
 
     onMounted(() => {
+        isTeleportReady.value = true;
         isContentOverflow.value = testContentOverflow();
     })
 
@@ -65,10 +68,13 @@
         isContentOverflow.value = testContentOverflow();
     })
 
+    // Used for <Teleport> functionality
+    const checkTeleportConditions = computed(() => { return testTeleportConditions(currentBreakpoint.value, isTeleportReady.value); })
+
 </script>
 
 <template>
-    <NavigationBar ref="navBarElement" />
+    <NavigationBar  ref="navBarElement" />
 
     <section class="my-12 mx-4 min-h-fit" :class="isContentOverflow && `min-h-screen`">
 
@@ -118,7 +124,15 @@
         @confirm-delete="handleConfirmDeleteCollection"
     />
     
-    <PanelsCollectionsMainPanel @openAddCollection="openAddCollectionModal" :isContentOverflow="isContentOverflow" />
+
+    <Teleport to="#top-panel-teleport" v-if="checkTeleportConditions" >
+        <PanelsCollectionsMainPanel @openAddCollection="openAddCollectionModal" :isContentOverflow="isContentOverflow"
+            :class="getTeleportedPanelClasses()" :disable-blur="true"
+        />
+    </Teleport>
+
+    <PanelsCollectionsMainPanel v-else @openAddCollection="openAddCollectionModal" :isContentOverflow="isContentOverflow" />
+
 </template>
 
 <style scoped>

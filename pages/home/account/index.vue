@@ -13,12 +13,14 @@ import UserLikedImage from '~/components/Account/UserLikedImage.vue';
 const { currentUser_get } = useAuthStore();
 
 const userData = currentUser_get();
+const { currentBreakpoint } = storeToRefs(useStatusStore());
 
 if(!userData) { throw new Error('ERROR: User data not found'); }
 
 const [userLikedPhotos, userCollections] = [ref<PhotoResponseModel[]>(userData.likedPhotos), ref<CollectionResponseModel[]>(userData.collections)];
 const [randomLikedPhotos, randomCollections] = [ref<PhotoResponseModel[]>([]), ref<CollectionResponseModel[]>([])];
 const isLogoutMenuOpen = ref<boolean>(false);
+const isTeleportReady = ref<boolean>(false);
 
 // Used to determine if page content requires a Y-scrollbar to be used 
 const isContentOverflow = ref<boolean>(false);
@@ -37,6 +39,7 @@ function testContentOverflow(): boolean {
 }
 
 onMounted(() => {
+    isTeleportReady.value = true;
     isContentOverflow.value = testContentOverflow();
 })
 
@@ -65,9 +68,15 @@ onBeforeMount(() => {
     
 })
 
+// Used for <Teleport> functionality
+const checkTeleportConditions = computed(() => { return testTeleportConditions(currentBreakpoint.value, isTeleportReady.value); })
+
 </script>
 
 <template>
+
+    <NavigationBar />
+
     <section class="my-12 mx-4 min-h-fit pb-20" :class="isContentOverflow && `min-h-screen`">
         <div class="grid grid-cols-[auto_1fr] grid-rows-1 items-center gap-x-9 mb-6">
             <img class="w-28 h-28 rounded-[50%] bg-contain border-4 border-solid border-black" alt="Profile picture" src="/public/icon-default.png" />
@@ -116,10 +125,14 @@ onBeforeMount(() => {
         @modalClose="handleModalClose"
     />
 
-    <PanelsAccountActionPanel
-        :isContentOverflow="isContentOverflow"
-        @tryToLogOut="handleTryToLogout"
-    />
+    <Teleport to="#top-panel-teleport" v-if="checkTeleportConditions" >
+        <PanelsAccountActionPanel :isContentOverflow="isContentOverflow" @tryToLogOut="handleTryToLogout" 
+            :class="getTeleportedPanelClasses()" :disable-blur="true" 
+        />
+    </Teleport>
+
+    <PanelsAccountActionPanel v-else :isContentOverflow="isContentOverflow" @tryToLogOut="handleTryToLogout" />
+    
 </template>
 
 <style scoped>

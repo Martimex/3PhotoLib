@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import PhotoItem from '../../../components/PhotoItem.vue';
+import ActionPanel from '~/components/Panels/ActionPanel.vue';
 import { ref, onMounted } from 'vue';
 import { useSearchQueryStore } from '../../../stores/searchQueryStore';
 import { useStatusStore } from '../../../stores/statusStore';
@@ -14,6 +15,8 @@ const { isRequestPending, isSearchbarOpen, currentBreakpoint } = storeToRefs(sSt
 definePageMeta({
     middleware: 'handle-url-params'
 })
+
+const isTeleportReady = ref<boolean>(false);
 
 const imageData = ref<availablePhotoTypes[]>([]);
 const providerName = ref<availableProviderNames>(currPhotoProviderName.value);
@@ -103,11 +106,15 @@ onBeforeMount(async() => {
 });
 onUnmounted(() => isSearchbarOpen.value = false);
 
+// Used for <Teleport> functionality
+onMounted(() => isTeleportReady.value = true);
+const checkTeleportConditions = computed(() => { return testTeleportConditions(currentBreakpoint.value, isTeleportReady.value); })
+
 </script>
 
 
 <template>
-    <NavigationBar />
+    <NavigationBar  />
     <section class="min-h-screen text-xl mx-4">
         <Transition name="content"> 
             <div v-if="isRequestPending"> <Loading /> </div>
@@ -134,7 +141,13 @@ onUnmounted(() => isSearchbarOpen.value = false);
             </div>
         </Transition>
     </section>
-    <ActionPanel v-if="!responsiveLayoutData[currentBreakpoint].panels.disableBottomPanels" />
+    
+    <Teleport to="#top-panel-teleport" v-if="checkTeleportConditions" >
+        <ActionPanel :class="getTeleportedPanelClasses()" :disable-blur="true" />
+    </Teleport>
+
+    <ActionPanel v-else />
+
 </template>
 
 

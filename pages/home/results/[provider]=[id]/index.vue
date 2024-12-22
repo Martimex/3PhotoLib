@@ -18,7 +18,11 @@ const { currPhotoProvider } = storeToRefs(sqStore);
 const { viewedPhoto } = usePhotoStore() as any;
 const providerObj = new PhotoProvider(sqStore.currPhotoProviderName).setCurrentProvider();
 
+const { currentBreakpoint } = storeToRefs(useStatusStore());
+
 const { collectionsToAddPhoto } = useTemporalStore();
+
+const isTeleportReady = ref<boolean>(false);
 
 const isPhotoLiked = ref<boolean>(false);
 const isPhotoRecentlyAddedToCollection = ref<boolean>(false);
@@ -75,6 +79,7 @@ function handleImgLoadded() {
 }
 
 onMounted(() => {
+    isTeleportReady.value = true;
     if(imgRef?.value?.complete) {
         handleImgLoadded();
     } else {
@@ -88,10 +93,13 @@ onBeforeMount(() => {
     img_height.value = providerObj?.getPhotoHeight(viewedPhoto);
 })
 
+// Used for <Teleport> functionality
+const checkTeleportConditions = computed(() => { return testTeleportConditions(currentBreakpoint.value, isTeleportReady.value); })
+
 </script>
 
 <template>
-    <NavigationBar />
+    <NavigationBar  />
     <section class="min-h-screen text-lg">
         <section>
             <div class="relative flex justify-center">
@@ -179,7 +187,13 @@ onBeforeMount(() => {
         />
 
     </section>
-    <PanelsDetailedPhotoActionPanel />
+
+    <Teleport to="#top-panel-teleport" v-if="checkTeleportConditions" >
+        <PanelsDetailedPhotoActionPanel :class="getTeleportedPanelClasses()" :disable-blur="true" />
+    </Teleport>
+
+    <PanelsDetailedPhotoActionPanel v-else />
+
 </template>
 
 

@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import FeaturedPhotosSkeleton from '@/components/FeaturedPhotosSkeleton.vue';
+import ActionPanel from '../../components/Panels/ActionPanel.vue';
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import type { availablePhotoTypes, availableProviderNames } from '@/types/type_utilities';
 import { availableProviderNames_Array, featuredCategories } from '@/types/type_utilities';
 import PhotoProvider from '~/providers/photoProvidersInitializer';
+import { getTeleportedPanelClasses } from '~/utils/getTeleportedPanelClasses';
 
 
-
+const isTeleportReady = ref<boolean>(false);
 const { currentUser_get } = useAuthStore();
 const [sStore, sqStore] = [useStatusStore(), useSearchQueryStore()];
 const { queryText, currPhotoProvider } = storeToRefs(sqStore);
@@ -36,11 +38,17 @@ onBeforeMount(async() => {
 
 onUnmounted(() => isSearchbarOpen.value = false);
 
+// Used for <Teleport> functionality
+onMounted(() => isTeleportReady.value = true);
+const checkTeleportConditions = computed(() => { return testTeleportConditions(currentBreakpoint.value, isTeleportReady.value); })
+
 </script>
 
 
 <template>
+
     <NavigationBar />
+
     <section class="min-h-screen text-xl mx-4 py-[10vh]">
         <h1 class="text-3xl mb-24 bold text-center break-all
             lg:text-5xl
@@ -58,7 +66,13 @@ onUnmounted(() => isSearchbarOpen.value = false);
         </Suspense>
     
     </section>
-    <ActionPanel v-if="!responsiveLayoutData[currentBreakpoint].panels.disableBottomPanels" />
+
+    <Teleport to="#top-panel-teleport" v-if="checkTeleportConditions" >
+        <ActionPanel :class="getTeleportedPanelClasses()" :disable-blur="true" />
+    </Teleport>
+
+    <ActionPanel v-else />
+
 </template>
 
 

@@ -14,10 +14,11 @@
     const { viewedCollection_get, viewedCollection_set } = useCollectionStore();
     const { collectionsOrlikedPhotos_setEditMode, photosToRemoveArray_reset } = useStatusStore();
     const { currentUser_get, collections_edit, collections_updatePhotos } = useAuthStore();
-    const { isRequestPending, collectionsOrlikedPhotos_isEditModeOn } = storeToRefs(sStore);
+    const { isRequestPending, collectionsOrlikedPhotos_isEditModeOn, currentBreakpoint } = storeToRefs(sStore);
     const { viewedCollection } = storeToRefs(useCollectionStore());
     const { currPhotoProviderName } = useSearchQueryStore();
 
+    const isTeleportReady = ref<boolean>(false);
     const isEditCollectionModalOpen = ref<boolean>(false);
 
     const collectionPhotosContainerElement = ref();
@@ -59,6 +60,7 @@
     }
 
     onMounted(() => {
+        isTeleportReady.value = true;
         isContentOverflow.value = testContentOverflow();
     })
 
@@ -74,6 +76,9 @@
         viewedCollection_set(null);
         collectionsOrlikedPhotos_setEditMode(false);
     })
+
+    // Used for <Teleport> functionality
+    const checkTeleportConditions = computed(() => { return testTeleportConditions(currentBreakpoint.value, isTeleportReady.value); })
 
 </script>
 
@@ -121,8 +126,21 @@
         @modalClose="closeEditCollectionModal" 
     />
 
-    <LikedOrSavedPhotosEditPanel v-if="collectionsOrlikedPhotos_isEditModeOn" :isContentOverflow="isContentOverflow" storageType="collection" @photosRemove="handleCurrentPhotosUpdate"  />
-    <PanelsCollectionActionPanel v-else @openEditCollection="openEditCollectionModal" :isContentOverflow="isContentOverflow" />
+    <Teleport to="#top-panel-teleport" v-if="checkTeleportConditions" >
+        <div>
+            <LikedOrSavedPhotosEditPanel v-if="collectionsOrlikedPhotos_isEditModeOn" :isContentOverflow="isContentOverflow" storageType="collection" @photosRemove="handleCurrentPhotosUpdate"  
+                :class="getTeleportedPanelClasses()" :disable-blur="true"
+            />
+            <PanelsCollectionActionPanel v-else @openEditCollection="openEditCollectionModal" :isContentOverflow="isContentOverflow"
+                :class="getTeleportedPanelClasses()" :disable-blur="true"
+            />
+        </div>
+    </Teleport>
+
+    <div v-else>
+        <LikedOrSavedPhotosEditPanel v-if="collectionsOrlikedPhotos_isEditModeOn" :isContentOverflow="isContentOverflow" storageType="collection" @photosRemove="handleCurrentPhotosUpdate"  />
+        <PanelsCollectionActionPanel v-else @openEditCollection="openEditCollectionModal" :isContentOverflow="isContentOverflow" :class="getTeleportedPanelClasses()" :disable-blur="true" />
+    </div>
 
 </template>
 

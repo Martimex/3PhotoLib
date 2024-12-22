@@ -5,7 +5,8 @@ import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 import { NavbarPosition } from '~/types/type_utilities';
 
 const props = defineProps<{
-    isContentOverflow: boolean
+    isContentOverflow: boolean,
+    disableBlur?: boolean
 }>();
 
 const emits = defineEmits(['tryToLogOut']);
@@ -16,7 +17,7 @@ const getRecentRoute = computed(() => (recentlyVisitedRouteArr.length > 1? recen
 </script>
 
 <template>
-    <nav class="flex justify-around items-center" :class="[props.isContentOverflow? `sticky` : `fixed`, getNavbarStyleClasses(NavbarPosition.BOTTOM)]">
+    <nav class="flex justify-around items-center" :class="[props.isContentOverflow? `sticky` : `fixed`, getNavbarStyleClasses(NavbarPosition.BOTTOM, props.disableBlur)]">
         <NuxtLink :to="getRecentRoute" class="w-fit">
             <FontAwesomeIcon :icon="faArrowLeft" class="text-3xl drop-shadow-[0rem_0rem_0.05rem_#eee]"></FontAwesomeIcon>
         </NuxtLink>

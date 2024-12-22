@@ -9,6 +9,7 @@ const getRecentRoute = computed(() => (recentlyVisitedRouteArr.length > 1? recen
 
 const props = defineProps<{
     isContentOverflow: boolean
+    disableBlur?: boolean
 }>();
 
 const collectionsEmits = defineEmits(['openEditCollection']);
@@ -21,7 +22,7 @@ function handleSetEditMode() {
 </script>
 
 <template>
-    <nav class="flex justify-around items-center" :class="[props.isContentOverflow? `sticky` : `fixed`, getNavbarStyleClasses(NavbarPosition.BOTTOM)]">
+    <nav class="flex justify-around items-center" :class="[props.isContentOverflow? `sticky` : `fixed`, getNavbarStyleClasses(NavbarPosition.BOTTOM, props.disableBlur)]">
         <NuxtLink :to="getRecentRoute" class="w-fit">
             <FontAwesomeIcon :icon="faArrowLeft" class="text-3xl drop-shadow-[0rem_0rem_0.05rem_#eee]"></FontAwesomeIcon>
         </NuxtLink>

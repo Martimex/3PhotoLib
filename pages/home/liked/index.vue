@@ -10,13 +10,14 @@ import type { availablePhotoStorages } from '~/types/type_utilities';
 const sStore = useStatusStore();
 
 const { currentUser_get, likedPhotos_set, likedPhotos_update } = useAuthStore();
-const { isRequestPending, collectionsOrlikedPhotos_isEditModeOn } = storeToRefs(sStore);
+const { isRequestPending, collectionsOrlikedPhotos_isEditModeOn, currentBreakpoint } = storeToRefs(sStore);
 const { currPhotoProviderName } = useSearchQueryStore();
 const { collectionsOrlikedPhotos_setEditMode, photosToRemoveArray_reset } = useStatusStore();
 const { photoIdToUnlike_set, photoIdToUnlike_get } = usePhotoStore();
 
 const userLikedPhotos = ref(currentUser_get()?.likedPhotos);
 
+const isTeleportReady = ref<boolean>(false);
 const likedPhotosContainerElement = ref();
 const navBarElement = ref();
 
@@ -43,7 +44,10 @@ watch(userLikedPhotos, () => {
     isContentOverflow.value = testContentOverflow();
 })
 
-onMounted(() => { isContentOverflow.value = testContentOverflow(); })
+onMounted(() => {
+    isTeleportReady.value = true; 
+    isContentOverflow.value = testContentOverflow(); 
+})
 
 onUpdated(() => {
     isContentOverflow.value = testContentOverflow();
@@ -54,6 +58,9 @@ onUnmounted(() => {
     collectionsOrlikedPhotos_setEditMode(false);
     photosToRemoveArray_reset();
 })
+
+// Used for <Teleport> functionality
+const checkTeleportConditions = computed(() => { return testTeleportConditions(currentBreakpoint.value, isTeleportReady.value); })
 
 </script>
 
@@ -93,8 +100,22 @@ onUnmounted(() => {
 
     </section>
 
-    <LikedOrSavedPhotosEditPanel v-if="collectionsOrlikedPhotos_isEditModeOn" :isContentOverflow="isContentOverflow" storageType="liked" @photosRemove="handleCurrentPhotosUpdate"  />
-    <LikedPhotosActionPanel v-else :isContentOverflow="isContentOverflow" />
+    <Teleport to="#top-panel-teleport" v-if="checkTeleportConditions" >
+        <div>
+            <LikedOrSavedPhotosEditPanel v-if="collectionsOrlikedPhotos_isEditModeOn" :isContentOverflow="isContentOverflow" storageType="liked" @photosRemove="handleCurrentPhotosUpdate"  
+                :class="getTeleportedPanelClasses()" :disable-blur="true"
+            />
+            <LikedPhotosActionPanel v-else :isContentOverflow="isContentOverflow" 
+                :class="getTeleportedPanelClasses()" :disable-blur="true"
+            />
+        </div>
+    </Teleport>
+
+    <div v-else>
+        <LikedOrSavedPhotosEditPanel v-if="collectionsOrlikedPhotos_isEditModeOn" :isContentOverflow="isContentOverflow" storageType="liked" @photosRemove="handleCurrentPhotosUpdate"  />
+        <LikedPhotosActionPanel v-else :isContentOverflow="isContentOverflow" />
+    </div>
+
 </template>
 
 <style scoped>
