@@ -87,19 +87,36 @@
 
     <section class="my-12 mx-4 min-h-fit" :class="isContentOverflow && `min-h-screen`">
         <section class="mx-[5vw] mb-3 text-center">
-            <h1 class="text-4xl font-bold mb-8 break-words leading-12 max-w-screen break-all"> {{ viewedCollection?.name }} </h1>
-            <p class="text-base py-3 break-all"> {{ viewedCollection?.description }}  </p>
+            <div class="mx-auto
+                md:max-w-[500px]
+                lg:max-w-[660px]
+            ">
+                <h1 class="text-4xl mb-8 break-words leading-12 max-w-screen break-all
+                    lg:text-5xl
+                "> {{ viewedCollection?.name }} </h1>
+                <p class="py-2 text-base
+                    lg:py-5 lg:text-lg
+                "> {{ viewedCollection?.description }}  </p>
+            </div>
         </section>
         
         <section class="grid grid-rows-1 grid-cols-[1fr_auto_1fr] items-center">
-            <div class="bg-black h-[0.15rem] mr-3 shadow-xl shadow-black"></div>
+            <div class="bg-black h-[0.15rem] mr-3 shadow-xl shadow-black w-full justify-self-end
+                sm:max-w-[250px]
+                md:max-w-[290px] md:mr-6
+                lg:max-w-[330px] lg:mr-9
+            "></div>
             <div class="w-fit mt-6 mb-8 mx-auto border-black rounded-md border-2">
                 <div v-if="viewedCollection?.collectionPhotos.length" class="flex items-center justify-start py-6 px-4">
                     <FontAwesomeIcon :icon="faFolder" class="text-4xl mr-4 drop-shadow-[0rem_0rem_0.20rem_#222d]" :class="`text-[${viewedCollection?.folderColor}]`"></FontAwesomeIcon>
                     <h2 class="text-3xl font-semibold ml-3"> {{ viewedCollection?.collectionPhotos.length }} / {{ getPhotosInCollectionLimit() }} </h2>
                 </div>
             </div>
-            <div class="bg-black h-[0.15rem] ml-3 shadow-xl shadow-black"></div>
+            <div class="bg-black h-[0.15rem] ml-3 shadow-xl shadow-black w-full
+                sm:max-w-[250px]
+                md:max-w-[290px] md:ml-6
+                lg:max-w-[330px] lg:ml-9
+            "></div>
         </section>
 
 

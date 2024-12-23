@@ -69,20 +69,36 @@ const checkTeleportConditions = computed(() => { return testTeleportConditions(c
 
     <section class="my-12 mx-4 min-h-fit" :class="isContentOverflow && `min-h-screen`">
         <section class="mx-[5vw] mb-3 text-center">
-            <h1 class="text-4xl font-bold mb-8 break-words leading-12 max-w-screen"> Liked photos </h1>
-            <p class="py-3 text-base"> This page contains all the photos liked by you. It is a supercollection, meaning you can store up to 100 of your favourite photos. </p>
-            <p class="py-3 text-base"> You are able to manage your liked photo collection at any time inside this panel. </p>
+            <div class="mx-auto 
+                md:max-w-[500px]
+                lg:max-w-[660px]
+            ">
+                <h1 class="text-4xl mb-8 break-words leading-12 max-w-screen
+                    lg:text-5xl
+                "> Liked photos </h1>
+                <p class="py-2 text-base
+                    lg:py-5 lg:text-lg
+                "> This page contains all the photos liked by you. It is a supercollection, meaning you can store up to 100 of your favourite photos. You are able to manage your liked photo collection at any time inside this panel. </p>
+            </div>
         </section>
 
         <section class="grid grid-rows-1 grid-cols-[1fr_auto_1fr] items-center">
-            <div class="bg-black h-[0.15rem] mr-3 shadow-xl shadow-black"></div>
+            <div class="bg-black h-[0.15rem] mr-3 shadow-xl shadow-black w-full justify-self-end
+                sm:max-w-[250px]
+                md:max-w-[290px] md:mr-6
+                lg:max-w-[330px] lg:mr-9
+            "></div>
             <div class="w-fit mt-6 mb-8 mx-auto border-black rounded-md border-2">
                 <div v-if="userLikedPhotos.length" class="flex items-center justify-start py-6 px-4">
                     <FontAwesomeIcon :icon="faHeart" class="text-4xl text-red-500 mr-4 drop-shadow-[0rem_0rem_0.20rem_#ef4444]"></FontAwesomeIcon>
                     <h2 class="text-3xl font-semibold ml-3"> {{ userLikedPhotos.length }} / {{ getLikedPhotosLimit() }} </h2>
                 </div>
             </div>
-            <div class="bg-black h-[0.15rem] ml-3 shadow-xl shadow-black"></div>
+            <div class="bg-black h-[0.15rem] ml-3 shadow-xl shadow-black w-full
+                sm:max-w-[250px]
+                md:max-w-[290px] md:ml-6
+                lg:max-w-[330px] lg:ml-9
+            "></div>
         </section>
 
         <Transition> 

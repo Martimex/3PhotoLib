@@ -79,39 +79,27 @@
     <section class="my-12 mx-4 min-h-fit" :class="isContentOverflow && `min-h-screen`">
 
         <section class="mx-[5vw] mb-6 text-center">
-            <h1 class="text-4xl font-bold mb-8 break-words leading-12 max-w-screen"> Your collections </h1>
-            <p class="py-3 text-base"> Here you can find the list of all collections you have created. Optionally, you can also add an empty collection.   </p>
-            <p class="py-3 text-base"> You may also click on the specific collection to view its photos, edit the collection and more! </p>
+            <div class="mx-auto
+                md:max-w-[500px]
+                lg:max-w-[660px]
+            ">
+                <h1 class="text-4xl mb-8 break-words leading-12 max-w-screen
+                    lg:text-5xl
+                "> Your collections </h1>
+                <p class="py-2 text-base
+                    lg:py-5 lg:text-lg
+                "> Here you can find the list of all collections you have created. Optionally, you can also add an empty collection. You may also click on the specific collection to view its photos, edit the collection and more!   </p>
+            </div>
         </section>
 
         <div v-if="!userCollections.length"> <EmptyResponsesNoCollections /> </div>
         <div v-else ref="allCollectionsContainerElement" class="">
-            <CollectionPreviewListItem v-for="collection in userCollections" :key="collection.id"  :collectionData="collection" 
-                @set-collection-as-viewed="handleSetCollectionAsViewed(collection)"
-                @try-to-delete-collection="handleTryToDeleteCollection(collection)"
+            <ResultCollectionsContainer :collections-array="userCollections"
+                @set-collection-as-viewed="handleSetCollectionAsViewed"
+                @try-to-delete-collection="handleTryToDeleteCollection"
             />
         </div>
 
-
-<!--         <div class="flex flex-col my-12">
-            <div v-for="collection in userCollections" :key="collection.id" class="grid grid-cols-[auto_1fr] place-items-start my-4 gap-x-9">
-                <div class="flex items-center justify-center h-full">
-                    <FontAwesomeIcon :icon="faFolder" class="text-[25vw] width-full block drop-icon m-auto px-1 drop-shadow-[0rem_0rem_0.20rem_#222d]" :class="`text-[${collection.folderColor}]`" ></FontAwesomeIcon>
-                </div>
-                <div class="flex flex-col justify-center py-4">
-                    <p class="text-2xl font-semibold text-wrap overflow-hidden break-all my-2"> {{ collection.name }} </p>
-                    <p class="text-lg"> 30 / 50 </p>
-                </div>
-
-            </div>
-        </div> -->
-
-<!--         <div class="grid grid-cols-2 gap-6 grid-rows-auto place-items-center my-12">
-            <div v-for="collection in userCollections" :key="collection.id">
-                <FontAwesomeIcon :icon="faFolder" class="text-[20vw] width-full block drop-icon m-auto px-1 drop-shadow-[0rem_0rem_0.20rem_#222d]" :class="`text-[${collection.folderColor}]`" ></FontAwesomeIcon>
-                <p class="text-xl font-semibold text-center text-wrap overflow-hidden break-all my-2"> {{ collection.name.toLowerCase() }} </p>
-            </div>
-        </div>  -->
     </section>
 
     <ModalsAddOrEditCollection  v-if="isAddCollectionModalOpen" :isEditMode="false" 
