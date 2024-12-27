@@ -100,19 +100,25 @@ const checkTeleportConditions = computed(() => { return testTeleportConditions(c
 
 <template>
     <NavigationBar  />
-    <section class="min-h-screen text-lg">
-        <section>
+    <section class="min-h-screen text-lg mx-auto
+    ">
+        <section class="mx-auto flex flex-col items-center justify-center w-fit
+            sm:max-w-[660px]
+            lg:max-w-[990px]
+        ">
             <div class="relative flex justify-center">
                 <a ref="anchorRef" href="" :download="`${sqStore.currPhotoProviderName}=${providerObj?.getPhotoId(viewedPhoto)}.png`" class="absolute"></a>
                 <img 
                     ref="imgRef"
                     :src="currPhotoProvider?.getHighResImageURL(utilizePhotoProvider(viewedPhoto))" alt="Detailed photo"  @error="requestImagePhoto($event, sqStore.currPhotoProviderName, `${viewedPhoto.id}`)" 
                     :width="img_width" :height="img_height" 
-                    class="custom-photo my-1 max-w-full h-auto object-cover object-center transition-opacity rounded-md shadow-md shadow-black"
+                    class="custom-photo my-1 max-w-full h-auto object-cover object-center transition-opacity rounded-md shadow-md shadow-black
+                        w-fit max-h-[66vh] 
+                    "
                     :class="{ loaded: isImgLoaded }"
                 />
             </div>
-            <div class="grid grid-cols-4 grid-rows-1 justify-between">
+            <div class="grid grid-cols-4 grid-rows-1 w-full">
                 <!-- BUTTONS FUNCTIONALITY TO BE IMPLEMENTED SOON -->
                 <div class="p-3 py-5 flex flex-col justify-between align-top shadow-md shadow-red-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0"
                     @click="handlePhotoLikedToggle"
@@ -142,36 +148,68 @@ const checkTeleportConditions = computed(() => { return testTeleportConditions(c
                 </div>
             </div>
         </section>
-        <section class="mx-6 mt-12 mb-16">
-            <h2 class="min-w-[70vw] text-center mt-4 mb-8 -ml-6 py-3 px-6 text-3xl font-bold bg-[#eee] inline-block rounded-r-2xl"> Details </h2>
-            <p> <span class="text-base font-bold my-3 mr-2">Image ID:</span>  {{ currPhotoProvider?.getPhotoId(utilizePhotoProvider(viewedPhoto)) }}</p>
-            <p> <span class="text-base font-bold my-3 mr-2">Photo resolution:</span> {{ currPhotoProvider?.getPhotoResolution(utilizePhotoProvider(viewedPhoto)) }}</p>
-            <p> <span class="text-base font-bold my-3 mr-2">Description:</span> {{ currPhotoProvider?.getPhotoDescription(utilizePhotoProvider(viewedPhoto)) }}</p>
-        </section>
+        <div class="mx-auto
+            sm:max-w-[660px]
+            lg:max-w-[1320px] lg:grid lg:grid-cols-3
+        ">
+            <section class="mx-6 mt-12 mb-16
+                sm:mb-12 
+                lg:col-start-3 lg:row-start-1
+            ">
+                <h2 class="min-w-[70vw] text-center mt-4 mb-8 -ml-6 py-3 px-6 text-3xl font-bold bg-[#eeed] inline-block rounded-r-2xl
+                sm:ml-0 sm:px-0 sm:rounded-l-2xl sm:min-w-full
+                lg:min-w-full lg:rounded-l-none
+                "> Details </h2>
+                <p class="lg:font-light lg:text-lg"> <span class="text-base font-bold my-3 mr-2">Image ID:</span>  {{ currPhotoProvider?.getPhotoId(utilizePhotoProvider(viewedPhoto)) }}</p>
+                <p class="lg:font-light lg:text-lg"> <span class="text-base font-bold my-3 mr-2">Photo resolution:</span> {{ currPhotoProvider?.getPhotoResolution(utilizePhotoProvider(viewedPhoto)) }}</p>
+                <p class="lg:font-light lg:text-base"> <span class="text-base font-bold my-3 mr-2">Description:</span> {{ currPhotoProvider?.getPhotoDescription(utilizePhotoProvider(viewedPhoto)) }}</p>
+            </section>
 
-        <section class="mx-6 mt-12 mb-16">
-            <div class="grid grid-rows-1 grid-cols-[1fr_auto_1fr] items-center">
-                <div class="bg-black h-[0.15rem] mr-3 shadow-xl shadow-black"></div>
-                <a :href="currPhotoProvider?.getPhotoAuthorImage(utilizePhotoProvider(viewedPhoto))" target="_blank"> <img class="w-24 h-24 mx-3 rounded-full text-xs border-2 shadow-md shadow-black" :src="currPhotoProvider?.getPhotoAuthorImage(utilizePhotoProvider(viewedPhoto))" alt="Author profile picture" /> </a>
-                <div class="bg-black h-[0.15rem] ml-3 shadow-xl shadow-black"></div>
-            </div>
-            <p class="mt-4 mb-6 inline-block text-3xl font-bold text-center w-full"> <a :href="currPhotoProvider?.getAuthorProfileURL(utilizePhotoProvider(viewedPhoto))" target="_blank"> {{ currPhotoProvider?.getPhotoAuthorName(utilizePhotoProvider(viewedPhoto)) }} </a> </p>
-            <p class="mb-3"> <span class="text-base my-3 mr-2">If you enjoyed this photo, consider checking out the author page for more photos just like that!  </span></p>
-            <p class="mt-3 text-center"> <span class="text-base font-bold my-3 mr-2">Author ID:</span>  #{{ currPhotoProvider?.getAuthorID(utilizePhotoProvider(viewedPhoto)) }} </p>
-            <div class="bg-black h-[0.11rem] my-12 shadow-xl shadow-black"></div>
-        </section> 
-        
-        <section class="mx-6 mt-12 mb-16">
-            <div class="flex flex-col items-end">
-                <h2 class="w-fit min-w-[70vw] text-center mt-4 mb-8 -mr-6 ml-0 py-3 px-6 text-3xl font-bold bg-[#eee] rounded-l-2xl justify-self-end"> Attribution </h2>
-            </div>
-            <p class="mb-3"> <span class="text-base font-bold my-3 mr-2">Photo provider: </span>  {{ currPhotoProvider?.name?.charAt(0)?.toUpperCase().concat(currPhotoProvider?.name?.slice(1)) }}</p>
-            <p class="mb-3"><span class="text-base my-3 mr-2">This photo is available thanks to out provider, {{ currPhotoProvider?.name?.charAt(0)?.toUpperCase().concat(currPhotoProvider?.name?.slice(1)) }}. You can also view the photo on the provider website </span> <a :href="currPhotoProvider?.getProviderWebsite()" target="_blank" class="-mx-1 underline font-medium italic text-base"> <FontAwesomeIcon :icon="faUpRightFromSquare" /> accessible  here </a>  </p>
+            <section class="mx-6 mt-12 mb-16
+                sm:mb-12
+                lg:col-start-2 lg:row-start-1 lg:px-2
+            ">
+                <div class="grid grid-rows-1 grid-cols-[1fr_auto_1fr] items-center">
+                    <div class="bg-black h-[0.15rem] mr-3 shadow-xl shadow-black"></div>
+                    <a :href="currPhotoProvider?.getPhotoAuthorImage(utilizePhotoProvider(viewedPhoto))" target="_blank"> <img class="w-24 h-24 mx-3 rounded-full text-xs border-2 shadow-md shadow-black" :src="currPhotoProvider?.getPhotoAuthorImage(utilizePhotoProvider(viewedPhoto))" alt="Author profile picture" /> </a>
+                    <div class="bg-black h-[0.15rem] ml-3 shadow-xl shadow-black"></div>
+                </div>
+                <div class="
+                    lg:pt-2
+                ">
+                    <p class="mt-4 mb-6 inline-block text-3xl font-bold text-center w-full"> <a :href="currPhotoProvider?.getAuthorProfileURL(utilizePhotoProvider(viewedPhoto))" target="_blank"> {{ currPhotoProvider?.getPhotoAuthorName(utilizePhotoProvider(viewedPhoto)) }} </a> </p>
+                    <p class="mb-3
+                        lg:text-center
+                    "> <span class="text-base my-3 mr-2">If you enjoyed this photo, consider checking out the author page for more photos just like that!  </span></p>
+                    <p class="mt-3 text-center"> <span class="text-base font-bold my-3 mr-2">Author ID:</span>  #{{ currPhotoProvider?.getAuthorID(utilizePhotoProvider(viewedPhoto)) }} </p>
+                    <div class="bg-black h-[0.11rem] my-12 shadow-xl shadow-black
+                        lg:my-8
+                    "></div>
+                </div>
+            </section> 
             
-            <p class="mt-9 mb-3"> <span class="text-base font-bold my-3 mr-2">Photo author: </span>  {{ currPhotoProvider?.getPhotoAuthorName(utilizePhotoProvider(viewedPhoto)) }}</p>
-            <p class="mb-3"><span class="text-base my-3 mr-2">Support the creator by visiting his profile on the Provider website. Also you can check out the original image source </span> <a :href="currPhotoProvider?.getPhotoOriginalSource(utilizePhotoProvider(viewedPhoto))" target="_blank" class="-mx-1 underline font-medium italic text-base"> <FontAwesomeIcon :icon="faUpRightFromSquare" /> available  here </a>  </p>
+            <section class="mx-6 mt-12 mb-16
+                sm:mb-12
+                lg:col-start-1 lg:row-start-1
+            ">
+                <div class="flex flex-col items-end">
+                    <h2 class="w-fit min-w-[70vw] text-center mt-4 mb-8 -mr-6 ml-0 py-3 px-6 text-3xl font-bold bg-[#eeed] rounded-l-2xl justify-self-end
+                        sm:mr-0 sm:px-0 sm:rounded-r-2xl sm:min-w-full
+                        lg:min-w-full lg:rounded-r-none
+                    "> Attribution </h2>
+                </div>
+                <p class="mb-3"> <span class="text-base font-bold my-3 mr-2">Photo provider: </span>  {{ currPhotoProvider?.name?.charAt(0)?.toUpperCase().concat(currPhotoProvider?.name?.slice(1)) }}</p>
+                <p class="mb-3
+                    lg:text-sm lg:font-light
+                "><span class="text-base my-3 mr-2">This photo is available thanks to out provider, {{ currPhotoProvider?.name?.charAt(0)?.toUpperCase().concat(currPhotoProvider?.name?.slice(1)) }}. You can also view the photo on the provider website </span> <a :href="currPhotoProvider?.getProviderWebsite()" target="_blank" class="-mx-1 underline font-medium italic text-base lg:text-sm"> <FontAwesomeIcon :icon="faUpRightFromSquare" /> accessible  here </a>  </p>
+                
+                <p class="mt-9 mb-3"> <span class="text-base font-bold my-3 mr-2">Photo author: </span>  {{ currPhotoProvider?.getPhotoAuthorName(utilizePhotoProvider(viewedPhoto)) }}</p>
+                <p class="mb-3
+                    lg:text-sm lg:font-light
+                "><span class="text-base my-3 mr-2">Support the creator by visiting his profile on the Provider website. Also you can check out the original image source </span> <a :href="currPhotoProvider?.getPhotoOriginalSource(utilizePhotoProvider(viewedPhoto))" target="_blank" class="-mx-1 underline font-medium italic text-base lg:text-sm"> <FontAwesomeIcon :icon="faUpRightFromSquare" /> available  here </a>  </p>
 
-        </section>
+            </section>
+        </div>
 
         <ModalsSaveOrMoveToCollection v-if="isSaveToCollectionModalOpen" 
             :isMoveToMode="false" :imgData="viewedPhoto" :provider="sqStore.currPhotoProviderName" 
