@@ -36,7 +36,9 @@ onMounted(() => {
         ref="imgRef"
         :src="providerObj?.getHighResImageURL(utilizePhotoProvider(props.photoData.photoDetails))" alt="User photo" loading="lazy" @error="requestImagePhoto($event, props.photoData.provider, `${props.photoData.photoDetails.id}`)"
         :width="providerObj?.getPhotoWidth(utilizePhotoProvider(props.photoData.photoDetails))" :height="providerObj?.getPhotoHeight(utilizePhotoProvider(props.photoData.photoDetails))"
-        class="blur-bg bg-clip-content p-2 w-full h-36 object-cover object-center transition-opacity rounded-md shadow-md shadow-black border-2 border-[#2227]"
+        class="blur-bg bg-clip-content p-2 w-full h-36 object-cover object-center transition-opacity rounded-md shadow-md shadow-black border-2 border-[#2227]
+            lg:h-44
+        "
         :class="{ loaded: isImgLoaded }"
     />
 </template>

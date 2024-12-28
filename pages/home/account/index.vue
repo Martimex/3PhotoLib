@@ -77,48 +77,85 @@ const checkTeleportConditions = computed(() => { return testTeleportConditions(c
 
     <NavigationBar />
 
-    <section class="my-12 mx-4 min-h-fit pb-20" :class="isContentOverflow && `min-h-screen`">
-        <div class="grid grid-cols-[auto_1fr] grid-rows-1 items-center gap-x-9 mb-6">
-            <img class="w-28 h-28 rounded-[50%] bg-contain border-4 border-solid border-black" alt="Profile picture" src="/public/icon-default.png" />
-            <h2 class="text-4xl font-semibold break-all"> {{ userData.name }} </h2>
+    <section :class="isContentOverflow && `min-h-screen`" class="my-12 mx-4 min-h-fit pb-20
+        sm:pb-0
+    ">
+        <div class="mb-9
+            sm:flex sm:flex-col sm:items-center sm:justify-center
+        ">
+            <div class="grid grid-cols-[auto_1fr] grid-rows-1 items-center gap-x-9 mb-6
+                lg:justify-content-center
+            ">
+                <img alt="Profile picture" src="/public/icon-default.png" class="w-28 h-28 ml-3 rounded-[50%] bg-contain border-4 border-solid border-black
+                    sm:mx-0
+                    lg:w-36 lg:h-36
+                " />
+                <h2 class="text-4xl font-semibold break-all
+                    lg:text-6xl lg:leading-relaxed
+                "> {{ userData.name }} </h2>
+            </div>
+            <p class="italic font-light text-lg text-[#222] mx-3
+                sm:max-w-[440px] sm:text-center sm:my-3
+                lg:max-w-[660px] lg:text-xl 
+            ">
+                Hello there! I am the 3PhotoLib verified user.
+                Feel free to explore my portfolio of fresh and creative photographies.
+            </p>
         </div>
-        <p class="italic font-light text-lg text-[#222] mx-3">
-            Hello there! I am the 3PhotoLib verified user.
-            Feel free to explore my portfolio of fresh and creative photographies.
-        </p>
-        <section class="my-9">
-            <div class="flex flex-col">
-                <NuxtLink to="/home/liked">
-                    <div class="flex mb-3 w-fit">
-                        <FontAwesomeIcon :icon="faArrowRight" class="text-4xl mx-6"></FontAwesomeIcon>
-                        <p class="text-2xl w-fit mb-3"> Liked photos ({{ userLikedPhotos.length }}) </p>
-                    </div>
-                </NuxtLink>
-                <div class="grid grid-cols-2 grid-rows-auto gap-3">
-                    <div v-for="(photo, index) in randomLikedPhotos" >
-                        <UserLikedImage :photoData="photo" />
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section>
-            <div class="flex flex-col">
-                <NuxtLink to="/home/collections" >      
-                    <div class="flex mb-6 w-fit">
-                        <FontAwesomeIcon :icon="faArrowRight" class="text-4xl mx-6"></FontAwesomeIcon>
-                        <p class="text-2xl mb-3"> My collections ({{ userCollections.length }}) </p>
-                    </div>
-                </NuxtLink>
-                <div class="grid grid-cols-3 grid-rows-auto gap-3 place-content-center">
-                    <div v-for="collection in randomCollections">
-                        <NuxtLink :to="`/home/collections/${collection.releaseId}`" class="blur-bg flex flex-col justify-center items-center truncate">
-                            <FontAwesomeIcon :icon="faFolder" :class="`text-[${collection.folderColor}]`" class="text-7xl drop-shadow-[0rem_0rem_0.2rem_#000]" />
-                            <p class="text-base font-semibold truncate w-max-[10%] mt-2 mb-4"> {{ collection.name }} </p>
-                        </NuxtLink>
+        <div class="grid grid-cols-1 gap-y-12
+            sm:grid-cols-2 sm:gap-x-12 sm:my-16
+            lg:my-24
+        ">
+            <section>
+                <div class="flex flex-col">
+                    <NuxtLink to="/home/liked">
+                        <div class="flex mb-3 w-fit">
+                            <FontAwesomeIcon :icon="faArrowRight" class="text-4xl mx-6"></FontAwesomeIcon>
+                            <p class="text-2xl w-fit mb-3
+                                sm:mb-5
+                                lg:mb-8 lg:text-3xl
+                            "> Liked photos ({{ userLikedPhotos.length }}) </p>
+                        </div>
+                    </NuxtLink>
+                    <div class="grid grid-cols-2 grid-rows-auto gap-3">
+                        <div v-for="(photo, index) in randomLikedPhotos" >
+                            <UserLikedImage :photoData="photo" />
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+            <section>
+                <div class="flex flex-col">
+                    <NuxtLink to="/home/collections" >      
+                        <div class="flex mb-6 w-fit">
+                            <FontAwesomeIcon :icon="faArrowRight" class="text-4xl mx-6
+                                sm:ml-9
+                            "></FontAwesomeIcon>
+                            <p class="text-2xl mb-3
+                                sm:mb-5
+                                lg:mb-8 lg:text-3xl
+                            "> My collections ({{ userCollections.length }}) </p>
+                        </div>
+                    </NuxtLink>
+                    <div class="grid grid-cols-2 grid-rows-auto gap-3 place-content-center
+                        lg:grid-cols-3
+                    ">
+                        <div v-for="collection in randomCollections">
+                                <NuxtLink :to="`/home/collections/${collection.releaseId}`" class="blur-bg flex flex-col justify-center items-center truncate">
+                                    <FontAwesomeIcon :icon="faFolder" :class="`text-[${collection.folderColor}]`" class="text-7xl drop-shadow-[0rem_0rem_0.2rem_#000]
+                                        sm:text-[5rem]
+                                        md:text-[6rem]
+                                        lg:text-[7rem]
+                                    " />
+                                    <p class="text-base font-semibold truncate w-max-[10%] mt-2 mb-4
+                                        lg:text-lg lg:font-normal
+                                    "> {{ collection.name }} </p>
+                                </NuxtLink>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
     </section>
 
     <ModalsLogout v-if="isLogoutMenuOpen" 

@@ -156,13 +156,13 @@ const checkTeleportConditions = computed(() => { return testTeleportConditions(c
                 sm:mb-12 
                 lg:col-start-3 lg:row-start-1
             ">
-                <h2 class="min-w-[70vw] text-center mt-4 mb-8 -ml-6 py-3 px-6 text-3xl font-bold bg-[#eeed] inline-block rounded-r-2xl
+                <h2 class="min-w-[70vw] text-center mt-4 mb-8 -ml-6 py-3 px-6 text-3xl font-bold bg-[#222e] text-[#eee] inline-block rounded-r-2xl
                 sm:ml-0 sm:px-0 sm:rounded-l-2xl sm:min-w-full
                 lg:min-w-full lg:rounded-l-none
                 "> Details </h2>
-                <p class="lg:font-light lg:text-lg"> <span class="text-base font-bold my-3 mr-2">Image ID:</span>  {{ currPhotoProvider?.getPhotoId(utilizePhotoProvider(viewedPhoto)) }}</p>
-                <p class="lg:font-light lg:text-lg"> <span class="text-base font-bold my-3 mr-2">Photo resolution:</span> {{ currPhotoProvider?.getPhotoResolution(utilizePhotoProvider(viewedPhoto)) }}</p>
-                <p class="lg:font-light lg:text-base"> <span class="text-base font-bold my-3 mr-2">Description:</span> {{ currPhotoProvider?.getPhotoDescription(utilizePhotoProvider(viewedPhoto)) }}</p>
+                <p class="lg:font-light lg:text-base lg:leading-relaxed"> <span class="text-base font-bold my-3 mr-2">Image ID:</span>  {{ currPhotoProvider?.getPhotoId(utilizePhotoProvider(viewedPhoto)) }}</p>
+                <p class="lg:font-light lg:text-base lg:leading-relaxed"> <span class="text-base font-bold my-3 mr-2">Photo resolution:</span> {{ currPhotoProvider?.getPhotoResolution(utilizePhotoProvider(viewedPhoto)) }}</p>
+                <p class="lg:font-light lg:text-base lg:leading-relaxed"> <span class="text-base font-bold my-3 mr-2">Description:</span> {{ currPhotoProvider?.getPhotoDescription(utilizePhotoProvider(viewedPhoto)) }}</p>
             </section>
 
             <section class="mx-6 mt-12 mb-16
@@ -180,7 +180,7 @@ const checkTeleportConditions = computed(() => { return testTeleportConditions(c
                     <p class="mt-4 mb-6 inline-block text-3xl font-bold text-center w-full"> <a :href="currPhotoProvider?.getAuthorProfileURL(utilizePhotoProvider(viewedPhoto))" target="_blank"> {{ currPhotoProvider?.getPhotoAuthorName(utilizePhotoProvider(viewedPhoto)) }} </a> </p>
                     <p class="mb-3
                         lg:text-center
-                    "> <span class="text-base my-3 mr-2">If you enjoyed this photo, consider checking out the author page for more photos just like that!  </span></p>
+                    "> <span class="text-base my-3 mr-2 lg:font-light">If you enjoyed this photo, consider checking out the author page for more photos just like that!  </span></p>
                     <p class="mt-3 text-center"> <span class="text-base font-bold my-3 mr-2">Author ID:</span>  #{{ currPhotoProvider?.getAuthorID(utilizePhotoProvider(viewedPhoto)) }} </p>
                     <div class="bg-black h-[0.11rem] my-12 shadow-xl shadow-black
                         lg:my-8
@@ -193,7 +193,7 @@ const checkTeleportConditions = computed(() => { return testTeleportConditions(c
                 lg:col-start-1 lg:row-start-1
             ">
                 <div class="flex flex-col items-end">
-                    <h2 class="w-fit min-w-[70vw] text-center mt-4 mb-8 -mr-6 ml-0 py-3 px-6 text-3xl font-bold bg-[#eeed] rounded-l-2xl justify-self-end
+                    <h2 class="w-fit min-w-[70vw] text-center mt-4 mb-8 -mr-6 ml-0 py-3 px-6 text-3xl font-bold bg-[#222e] text-[#eee] rounded-l-2xl justify-self-end
                         sm:mr-0 sm:px-0 sm:rounded-r-2xl sm:min-w-full
                         lg:min-w-full lg:rounded-r-none
                     "> Attribution </h2>
