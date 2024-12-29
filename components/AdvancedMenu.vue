@@ -100,75 +100,109 @@ import { storeToRefs } from 'pinia';
 
 
 <template>
-    <div class="h-screen left-0 mt-4 px-6 w-full absolute bg-gray-200 text-[#111] overflow-auto">
-        <div class="my-6">
-            <section>
-                <div class="relative flex items-center mb-6 mt-9">
-                    <div class="w-12 h-0 py-[0.075rem] bg-black"></div>
-                    <p class="relative text-2xl mx-3 inline-block"> Providers </p>
-                    <div class="w-full h-0 py-[0.075rem] bg-black"></div>
-                </div>
-
-                <p class="text-base mb-6"> 
-                    Choose the photo provider, from which to look for photos. You can pick one option at a time. 
-                </p>
-
-                <div class="flex flex-wrap">
-                    <!-- Switch input + associated text -->
-                    <div class="flex items-center mr-6">
-                        <input type="radio" id="pixabay" name="provider" value="pixabay"
-                            class="relative w-[4.5rem] h-8 my-4 mr-3 outline-none bg-[#333] appearance-none cursor-pointer rounded-3xl duration-500 shadow-[-0.1rem_-0.1rem_0.5rem_black] checked:bg-[lightgreen]"
-                            @click="switchPhotoProvider('pixabay')"
-                        >
-                        <label for="pixabay" class="button text-lg">Pixabay</label> 
+    <div class="h-screen left-0 mt-4 px-6 w-full absolute bg-neutral-200 text-[#111] overflow-auto">
+        <div class="my-6 mx-auto
+            md:flex md:justify-center md:items-center
+            lg:max-w-[990px] 
+        ">
+            <div class="grid grid-cols-1 gap-x-12 
+                md:grid-cols-2
+            ">
+                <section>
+                    <div class="relative flex items-center mb-6 mt-4
+                        sm:mt-4
+                        lg:mt-12
+                    ">
+                        <div class="w-12 h-0 py-[0.075rem] bg-black
+                            sm:w-[50%]
+                        "></div>
+                        <p class="relative text-2xl mx-3 inline-block"> Providers </p>
+                        <div class="w-full h-0 py-[0.075rem] bg-black
+                            sm:w-[50%]
+                        "></div>
                     </div>
 
-                    <div class="flex items-center mr-6">
-                        <input type="radio" id="pexels" name="provider" value="pexels"
-                            class="relative w-[4.5rem] h-8 my-4 mr-3 outline-none bg-[#333] appearance-none cursor-pointer rounded-3xl duration-500 shadow-[-0.1rem_-0.1rem_0.5rem_black] checked:bg-[lightgreen]"
-                            @click="switchPhotoProvider('pexels')"
-                        >
-                        <label for="pexels" class="button text-lg">Pexels</label>
+                    <p class="text-base mb-6
+                        sm:text-center
+                    "> 
+                        Choose the photo provider, from which to look for photos. You can pick one option at a time. 
+                    </p>
+
+                    <div class="flex flex-wrap
+                        sm:w-full sm:place-items-center sm:grid sm:grid-cols-3
+                        md:grid-cols-2
+                    ">
+                        <!-- Switch input + associated text -->
+                        <div class="flex items-center mr-8">
+                            <input type="radio" id="pixabay" name="provider" value="pixabay"
+                                class="relative w-[4.5rem] h-8 my-4 mr-3 outline-none bg-[#333] appearance-none cursor-pointer rounded-3xl duration-500 shadow-[-0.1rem_-0.1rem_0.5rem_black] checked:bg-[lightgreen]"
+                                @click="switchPhotoProvider('pixabay')"
+                            >
+                            <label for="pixabay" class="button text-lg">Pixabay</label> 
+                        </div>
+
+                        <div class="flex items-center mr-8">
+                            <input type="radio" id="pexels" name="provider" value="pexels"
+                                class="relative w-[4.5rem] h-8 my-4 mr-3 outline-none bg-[#333] appearance-none cursor-pointer rounded-3xl duration-500 shadow-[-0.1rem_-0.1rem_0.5rem_black] checked:bg-[lightgreen]"
+                                @click="switchPhotoProvider('pexels')"
+                            >
+                            <label for="pexels" class="button text-lg">Pexels</label>
+                        </div>
+
+                        <div class="flex items-center mr-8">
+                            <input type="radio" id="unsplash" name="provider" value="unsplash"
+                                class="relative w-[4.5rem] h-8 my-4 mr-3 outline-none bg-[#333] appearance-none cursor-pointer rounded-3xl duration-500 shadow-[-0.1rem_-0.1rem_0.5rem_black] checked:bg-[lightgreen] :checked:before:left-6"
+                                @click="switchPhotoProvider('unsplash')"
+                            >
+                            <label for="unsplash" class="button text-lg">Unsplash</label>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="relative flex items-center mb-6 mt-9
+                        sm:mt-4
+                        lg:mt-12
+                    ">
+                        <div class="w-12 h-0 py-[0.075rem] bg-black
+                            sm:w-[50%]
+                        "></div>
+                        <p class="relative text-2xl mx-3 inline-block"> Searching </p>
+                        <div class="w-full h-0 py-[0.075rem] bg-black
+                            sm:w-[50%]
+                        "></div>
                     </div>
 
-                    <div class="flex items-center mr-6">
-                        <input type="radio" id="unsplash" name="provider" value="unsplash"
-                            class="relative w-[4.5rem] h-8 my-4 mr-3 outline-none bg-[#333] appearance-none cursor-pointer rounded-3xl duration-500 shadow-[-0.1rem_-0.1rem_0.5rem_black] checked:bg-[lightgreen] :checked:before:left-6"
-                            @click="switchPhotoProvider('unsplash')"
+                    <p class="text-md mb-6
+                        sm:text-center
+                    "> 
+                        Alter the search behavior by specifying number of output photos, initial search page, etc.
+                    </p>
+
+                    <div class="test mt-9 grid place-content-start grid-rows-[auto] grid-cols-[auto_auto] gap-6 items-center
+                        sm:grid sm:grid-cols-2 sm:gap-x-9
+                    ">
+                        <label for="output_no" class="text-lg
+                            sm:place-self-end
+                        ">Output photos: </label>
+                        <input ref="outputPhotosInput" type="number" id="output_no" name="search" :placeholder="outputPhotosObj.default.toString()" :value="outputPhotosObj.current.toString()" :min="outputPhotosObj.min" :max="outputPhotosObj.max" @keydown="(event) => isNumberKey(event, sqStore.outputPhotosObj)"
+                            class="text-base font-semibold text-center min-w-24 py-1 px-2 ml-6 outline-gray-500 bg-neutral-200 appearance-none cursor-pointer rounded-lg shadow-[0.1rem_0.1rem_0.5rem_black]
+                                sm:place-self-start sm:ml-0
+                            "
+                            @change="updateNumberInputValue(sqStore.outputPhotosObj)"
                         >
-                        <label for="unsplash" class="button text-lg">Unsplash</label>
+                        <label for="page_no" class="text-lg
+                            sm:place-self-end
+                        ">Page number: </label>
+                        <input ref="pageNumberInput" type="number" id="page_no" name="search" :placeholder="searchPageObj.default.toString()" :value="searchPageObj.current.toString()" :min="searchPageObj.min" :max="searchPageObj.max" @keydown="(event) => isNumberKey(event, sqStore.searchPageObj)"
+                            class="text-base font-semibold text-center min-w-24 py-1 px-2 ml-6 outline-gray-500 bg-neutral-200 appearance-none cursor-pointer rounded-lg shadow-[0.1rem_0.1rem_0.5rem_black]
+                                sm:place-self-start sm:ml-0
+                            "
+                            @change="updateNumberInputValue(sqStore.searchPageObj)"
+                        >
                     </div>
-                </div>
-            </section>
-
-            <section>
-                <div class="relative flex items-center mb-6 mt-9">
-                    <div class="w-12 h-0 py-[0.075rem] bg-black"></div>
-                    <p class="relative text-2xl mx-3 inline-block"> Searching </p>
-                    <div class="w-full h-0 py-[0.075rem] bg-black"></div>
-                </div>
-
-                <p class="text-md mb-6"> 
-                    Alter the search behavior by specifying number of output photos, initial search page, etc.
-                </p>
-
-                <div class="test mt-9 grid place-content-start grid-rows-[auto] grid-cols-[auto_auto] gap-y-6 items-center">
-                    <label for="output_no" class="text-lg">Output photos: </label>
-                    <input ref="outputPhotosInput" type="number" id="output_no" name="search" :placeholder="outputPhotosObj.default.toString()" :value="outputPhotosObj.current.toString()" :min="outputPhotosObj.min" :max="outputPhotosObj.max" @keydown="(event) => isNumberKey(event, sqStore.outputPhotosObj)"
-                        class="text-base font-semibold text-center min-w-24 py-1 px-2 ml-6 outline-gray-500 bg-neutral-200 appearance-none cursor-pointer rounded-lg shadow-[0.1rem_0.1rem_0.5rem_black]"
-                        @change="updateNumberInputValue(sqStore.outputPhotosObj)"
-                    >
-
-                    <label for="page_no" class="text-lg">Page number: </label>
-                    <input ref="pageNumberInput" type="number" id="page_no" name="search" :placeholder="searchPageObj.default.toString()" :value="searchPageObj.current.toString()" :min="searchPageObj.min" :max="searchPageObj.max" @keydown="(event) => isNumberKey(event, sqStore.searchPageObj)"
-                        class="text-base font-semibold text-center min-w-24 py-1 px-2 ml-6 outline-gray-500 bg-neutral-200 appearance-none cursor-pointer rounded-lg shadow-[0.1rem_0.1rem_0.5rem_black]"
-                        @change="updateNumberInputValue(sqStore.searchPageObj)"
-                    >
-
-                    <!-- For debugging reasons only-->
-                    <!-- <div class="w-7 h-4 bg-blue-400 text-white p-6" @click="debugTest"> Click me</div> -->
-                </div>
-            </section>
+                </section>
+            </div>
         </div>
     </div>
 </template>

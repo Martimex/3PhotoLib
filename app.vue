@@ -5,6 +5,7 @@ if(process.server) {
 }
 
 const { currentBreakpoint_set, currentBreakpoint_get } = useStatusStore();
+const { isAdvancedMenuOpen } = storeToRefs(useStatusStore());
 
 onBeforeMount(() => calculatePhotosLayout())
 
@@ -35,7 +36,7 @@ async function checkSessionStatus() {
 </script>
 
 <template>
-  <div>
+  <div :class="isAdvancedMenuOpen && `bg-zinc-200`">
     <NuxtLayout>
       <section class="max-w-[1320px] mx-auto">
         <NuxtPage />

@@ -16,7 +16,7 @@ const { isAdvancedMenuOpen, currentBreakpoint } = storeToRefs(useStatusStore());
 
 const navBarContainerRef = ref();
 
-const applyBackgroundColor = computed(() => isAdvancedMenuOpen.value && `bg-gray-200`);
+const applyBackgroundColor = computed(() => isAdvancedMenuOpen.value && `bg-neutral-200`);
 
 
 defineExpose({
