@@ -24,12 +24,19 @@ onUnmounted(() => isSearchbarOpen.value = false );
 </script>
 
 <template>
-    <section ref="rootElement" class="transition-opacity duration-500 delay-200 flex flex-col items-center justify-center h-screen fixed top-[45%] left-[50%] mr-[-50%] -translate-x-2/4 -translate-y-2/4">
-        <FontAwesomeIcon :icon="faXmarkCircle" class="text-9xl text-gray-300 my-10"/>
-        <div class="mx-6 text-gray-400 flex flex-col items-center gap-y-4">
-            <p class="text-base text-center"> No results found for:  </p>
+    <section ref="rootElement" class="transition-opacity duration-500 delay-200 flex flex-col items-center justify-center min-h-full fixed top-[45%] left-[50%] mr-[-50%] -translate-x-2/4 -translate-y-2/4
+        sm:top-[50%]
+    ">
+        <FontAwesomeIcon :icon="faXmarkCircle" class="text-9xl text-gray-200 mt-10 mb-10
+            sm:mb-6
+            lg:mb-10 lg:text-[10rem]
+        "/>
+        <div class="mx-6 text-gray-300 font-semibold flex flex-col items-center gap-y-4">
+            <p class="text-base text-center"> No results found for:  
+                <span class="text-base text-center font-bold">  {{ queryText.slice(0, maxQueryDisplayLength) + (Boolean(queryText.length > maxQueryDisplayLength)? '...' : '')}}  </span>  <!-- If query text length is longer than 20 chars, we will trim it specifically for NoResults -->
+            </p>
                 
-            <p class="text-base text-center font-bold">  {{ queryText.slice(0, maxQueryDisplayLength) + (Boolean(queryText.length > maxQueryDisplayLength)? '...' : '')}}  </p>  <!-- If query text length is longer than 20 chars, we will trim it specifically for NoResults -->
+            
             
             <p class="text-base text-center"> {{ provideTip() }} </p>
         </div>
