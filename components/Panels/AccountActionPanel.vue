@@ -11,13 +11,15 @@ const props = defineProps<{
 
 const emits = defineEmits(['tryToLogOut']);
 const { recentlyVisitedRouteArr } = useStatusStore();
+const { currentBreakpoint } = storeToRefs(useStatusStore());
 
 const getRecentRoute = computed(() => (recentlyVisitedRouteArr.length > 1? recentlyVisitedRouteArr[recentlyVisitedRouteArr.length - 1] : '/home'));
+const setNavbarPositionClass = computed(() => getNavbarPositionClass(currentBreakpoint.value));
 
 </script>
 
 <template>
-    <nav class="flex justify-around items-center" :class="[props.isContentOverflow? `sticky` : `fixed`, getNavbarStyleClasses(NavbarPosition.BOTTOM, props.disableBlur)]">
+    <nav class="flex justify-around items-center" :class="[setNavbarPositionClass, getNavbarStyleClasses(NavbarPosition.BOTTOM, props.disableBlur)]">
         <NuxtLink :to="getRecentRoute" class="w-fit">
             <FontAwesomeIcon :icon="faArrowLeft" class="text-3xl drop-shadow-[0rem_0rem_0.05rem_#eee]"></FontAwesomeIcon>
         </NuxtLink>

@@ -18,7 +18,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
             lg:max-w-[330px] lg:ml-9
         "></div>
     </section>
-    <section class="transition-opacity duration-500 delay-200 flex flex-col items-center justify-center pb-20">
+    <section class="transition-opacity duration-500 delay-200 flex flex-col items-center justify-center">
         <FontAwesomeIcon :icon="faFolder" class="text-9xl text-gray-200 my-10
             sm:my-5
             lg:text-[10rem]

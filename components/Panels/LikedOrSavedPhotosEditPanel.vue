@@ -5,6 +5,7 @@ import type PhotoResponseModel from '@/types/responseModel_photo';
 import { NavbarPosition, type availablePhotoStorages } from '~/types/type_utilities';
 
 const { collectionsOrlikedPhotos_setEditMode, photosToRemoveArray_get, photosToRemoveArray_reset } = useStatusStore();
+const { currentBreakpoint } = storeToRefs(useStatusStore());
 const { currentUser_get } = useAuthStore();
 const { viewedCollection_get } = useCollectionStore();
 
@@ -73,11 +74,12 @@ onUnmounted(() => {
     collectionsOrlikedPhotos_setEditMode(false);
 })
 
+const setNavbarPositionClass = computed(() => getNavbarPositionClass(currentBreakpoint.value));
 
 </script>
 
 <template>
-    <nav class="flex justify-around items-center" :class="[props.isContentOverflow? `sticky` : `fixed`, getNavbarStyleClasses(NavbarPosition.BOTTOM, props.disableBlur)]" >
+    <nav class="flex justify-around items-center" :class="[setNavbarPositionClass, getNavbarStyleClasses(NavbarPosition.BOTTOM, props.disableBlur)]" >
         <FontAwesomeIcon :icon="faXmark" class="text-3xl text-red-600 font-bold drop-shadow-[0rem_0rem_0.05rem_#222]" @click="handleCloseEditMode"></FontAwesomeIcon>
         <p class="text-[#222] text-center px-6 min-w-20 text-2xl font-bold drop-shadow-[0rem_0rem_0.05rem_#eee]"> {{ photosToRemoveArray_get().length }} </p>
         <FontAwesomeIcon :icon="faCheck" class="text-3xl text-green-600 font-bold drop-shadow-[0rem_0rem_0.05rem_#222]" @click="handlePhotosDeletion"></FontAwesomeIcon>

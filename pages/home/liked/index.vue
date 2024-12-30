@@ -67,7 +67,7 @@ const checkTeleportConditions = computed(() => { return testTeleportConditions(c
 <template>
     <NavigationBar ref="navBarElement" />
 
-    <section class="my-12 mx-4 min-h-fit" :class="isContentOverflow && `min-h-screen`">
+    <section class="my-12 mx-4">
         <section class="mx-[5vw] mb-3 text-center">
             <div class="mx-auto 
                 md:max-w-[500px]
