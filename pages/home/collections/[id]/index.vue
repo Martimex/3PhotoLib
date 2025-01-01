@@ -156,7 +156,7 @@
 
     <div v-else>
         <LikedOrSavedPhotosEditPanel v-if="collectionsOrlikedPhotos_isEditModeOn" :isContentOverflow="isContentOverflow" storageType="collection" @photosRemove="handleCurrentPhotosUpdate"  />
-        <PanelsCollectionActionPanel v-else @openEditCollection="openEditCollectionModal" :isContentOverflow="isContentOverflow" :class="getTeleportedPanelClasses()" :disable-blur="true" />
+        <PanelsCollectionActionPanel v-else @openEditCollection="openEditCollectionModal" :isContentOverflow="isContentOverflow" :class="getTeleportedPanelClasses()" :disable-blur="false" />
     </div>
 
 </template>
