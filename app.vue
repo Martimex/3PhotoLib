@@ -1,5 +1,17 @@
 <script setup lang="ts">
 
+useHead({
+  title: '3PhotoLib - The roylaty-free photos store for your next project',
+  meta: [
+    {
+      name: 'description',
+      content: `3PhotoLib is an online photo library, which allows you to view, save and download royalty-free images, 
+      whether for personal or commercial use. After setting up an account and successfully verifying it, you can search 
+      for photos of any kind through 3 of our Providers: Pixabay, Pexels and Unsplash.` 
+    },
+  ]
+})
+
 if(process.server) {
   checkSessionStatus();
 }
