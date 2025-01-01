@@ -120,16 +120,29 @@ const checkTeleportConditions = computed(() => { return testTeleportConditions(c
             <div v-if="isRequestPending"> <Loading /> </div>
             <div v-else-if="!imageData.length"> <EmptyResponsesNoResults /> </div>
             <div v-else-if="imageData" class="py-[10vh]">
-                <p class="text-3xl font-bold text-center underline"> {{ queryText }} </p>
-                <p class="text-base mt-12 mb-6 text-center"> Searching for <b>{{ outputPhotosNumber === 1? `${outputPhotosNumber} photo` : `${outputPhotosNumber} photos` }} </b> per each page. You can alter search options at any time by using the top-left gear button. </p>
+                <h1 class="text-4xl mb-8 break-words leading-12 text-center font-semibold
+                    lg:text-5xl
+                "> {{ queryText }} </h1>
+                <p class="text-base mt-12 mb-3 text-center w-full mx-auto
+                    sm:max-w-[440px]
+                    lg:max-w-[480px]
+                "> Searching for <b>{{ outputPhotosNumber === 1? `${outputPhotosNumber} photo` : `${outputPhotosNumber} photos` }} </b> per each page. You can alter search options at any time by using the top-left gear button. </p>
                     <div v-if="!isRequestPending" class="inline-block">
                         <!-- Slicing works well for providers API, which reqire minimal response photos, while this app does not  -->
                         <section class="grid grid-rows-1 grid-cols-[1fr_auto_1fr] items-center">
-                            <div class="bg-black h-[0.15rem] mr-3 shadow-xl shadow-black"></div>
+                            <div class="bg-black h-[0.15rem] mr-3 shadow-xl shadow-black w-full justify-self-end
+                                sm:max-w-[250px]
+                                md:max-w-[290px] md:mr-6
+                                lg:max-w-[330px] lg:mr-9
+                            "></div>
                             <div class="flex items-center justify-start w-fit py-3 px-6 my-8 mx-auto border-black rounded-md border-2">
                                 <p class="text-xl font-semibold"> Page: {{ searchPageCount }} </p>
                             </div>
-                            <div class="bg-black h-[0.15rem] ml-3 shadow-xl shadow-black"></div>
+                            <div class="bg-black h-[0.15rem] ml-3 shadow-xl shadow-black w-full
+                                sm:max-w-[250px]
+                                md:max-w-[290px] md:ml-6
+                                lg:max-w-[330px] lg:ml-9
+                            "></div>
                         </section>
                         <ResultPhotosContainer :photosArray="imageData.slice(0, outputPhotosNumber)" :providerName="providerName" />
                         <!-- <PhotoItem v-for="image in imageData.slice(0, outputPhotosNumber)" :key="image.id" :imgData="image" :provider="providerName"/>  -->
