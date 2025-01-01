@@ -92,7 +92,10 @@ async function handleDeleteCollection() {
 
 <template>
     <div class="h-screen w-full bg-[#222b] fixed top-0 left-0 z-10 backdrop-blur flex items-center justify-center overflow-auto" @click.self="!asyncProcess_get() && modalEmits('modalClose')">
-        <section class="bg-[#eee] m-auto w-full h-fit px-3 py-6 rounded-md shadow-[0.3rem_0.3rem_0.5rem_#222] border-2 border-[#222] border-solid">
+        <section class="bg-[#eee] m-auto w-full h-fit px-3 py-6 rounded-md shadow-[0.3rem_0.3rem_0.5rem_#222] border-2 border-[#222] border-solid
+            sm:max-w-[550px]
+            lg:max-w-[660px]
+        ">
             <h2 class="max-w-[80%] align-middle mx-auto text-4xl font-bold text-center py-6 mb-9 border-[#222] border-solid border-b-4"> Delete Collection </h2>
             <div class="mx-3">
                 <p class="text-base"> Do you want to remove collection: <b> {{  props.collectionData.name }}</b>{{ setCollectionLengthText }} </p>

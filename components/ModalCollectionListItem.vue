@@ -26,7 +26,7 @@ const testCollectionChosen = computed(() => isCollectionChosen.value? `text-[#81
 const testCloneOptionChosen = computed(() => isCloneOptionChosen.value? `text-[#ffdf33]` : `text-[#ddd]`)
 
 const simulateCollectionPhotosCount = computed(() => {
-    if(isChosenPhotoInCollection.value) { return 'x'}
+    if(isChosenPhotoInCollection.value) { return 'X'}
     else if(isMoveFromFolder.value) { return props.collectionData.collectionPhotos.length - (((collectionsToAddPhoto.chosenCollections.length > 0) && (!isCloneOptionChosen.value))? 1 : 0)}
     return props.collectionData.collectionPhotos.length + (isCollectionChosen.value? 1 : 0) 
 });
@@ -70,7 +70,10 @@ onBeforeMount(() => {
 </script>
 
 <template>
-    <div class="py-5 grid grid-cols-[auto_1fr_auto_auto] grid-rows-1 items-center" :class="tryToApplyInactiveStyling">
+    <div :class="tryToApplyInactiveStyling" class="py-5 grid grid-cols-[auto_1fr_auto_auto] grid-rows-1 items-center
+        sm:py-3
+        lg:py-5
+    ">
         <div class="relative">
             <FontAwesomeIcon :icon="faFolder" class="drop-icon mx-3 my-auto px-1 drop-shadow-[0rem_0rem_0.20rem_#222d]" :class="[`text-[${collectionData.folderColor}]`, handleIconSizing]"></FontAwesomeIcon>
             <div class="flex h-full w-full items-center justify-center absolute top-0 left-0">
