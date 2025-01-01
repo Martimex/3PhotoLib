@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 useHead({
-  title: '3PhotoLib - The roylaty-free photos store for your next project',
+  title: '3PhotoLib - The royalty-free photos store for your next project',
   meta: [
     {
       name: 'description',
