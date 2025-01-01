@@ -96,32 +96,42 @@ async function handleDeleteCollection() {
             sm:max-w-[550px]
             lg:max-w-[660px]
         ">
-            <h2 class="max-w-[80%] align-middle mx-auto text-4xl font-bold text-center py-6 mb-9 border-[#222] border-solid border-b-4"> Delete Collection </h2>
-            <div class="mx-3">
-                <p class="text-base"> Do you want to remove collection: <b> {{  props.collectionData.name }}</b>{{ setCollectionLengthText }} </p>
-                <p v-if="collectionPhotosCount > 0" class="text-base mt-6 font-light"> To proceed, type word "DELETE" in the field below, and then press the confirm button.  </p>
-                <p v-else class="text-base font-bold my-4"> NOTE: This action cannot be undone. </p>
-            </div>
 
-            <form v-if="collectionPhotosCount > 0"  id="col-delete" name="col-delete" method="post" @submit.prevent="validateFieldText"
-                class="mx-2 mt-6"
-            >
-                <div class="mt-3 mb-6">
-                    <div :ref="deleteCollectionForm.confirmationText.inputElement" class="flex my-3 w-full outline-gray-500 bg-neutral-100 rounded-md shadow-[0.1rem_0.1rem_0.5rem_black] border-y-4 box-border">
-                        <FontAwesomeIcon :icon="faFont" class="text-4xl text-[#222a] drop-icon mx-3 my-auto px-1 drop-shadow-[0rem_0rem_0.20rem_#222d]" ></FontAwesomeIcon>
-                        <div class="relative w-full">
-                            <input type="text" aria-label="Add a collection name" id="cname" name="cname" value="" v-model="deleteCollectionForm.confirmationText.text.value" placeholder="Confirmation phrase..."
-                            class="text-black text-base font-semibold text-center w-full py-4 px-2 outline-[#222c] bg-neutral-100 appearance-none cursor-pointer rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed" 
-                            />
-                            <span :ref="deleteCollectionForm.confirmationText.errorMsgElement" class="absolute bottom-0 left-0 text-red-500 font-bold text-xs w-full inline-block text-center" :class="deleteCollectionForm.confirmationText.isTextCorrect.value? 'hidden' : 'inline-block'"> Error: Some error occured </span>
-                        </div>
-                    </div>
+            <div class="text-center">
+                <h2 class="max-w-[80%] align-middle mx-auto text-4xl font-bold text-center py-6 mb-8 border-[#222] border-solid border-b-4"> Delete Collection </h2>
+                <div class="mx-3
+                    sm:max-w-[330px] sm:mx-auto
+                    lg:max-w-[440px]
+                ">
+                    <p class="text-base"> Do you want to remove collection: <b> {{  props.collectionData.name }}</b>{{ setCollectionLengthText }} </p>
+                    <p v-if="collectionPhotosCount > 0" class="text-base mt-6"> To proceed, type word "DELETE" in the field below, and then press the confirm button.  </p>
+                    <p v-else class="text-base font-medium mt-4 mb-6"> NOTE: This action cannot be undone. </p>
                 </div>
 
-                <p class="text-sm font-bold my-4"> NOTE: This action cannot be undone. </p>
-            </form>
+                <form v-if="collectionPhotosCount > 0"  id="col-delete" name="col-delete" method="post" @submit.prevent="validateFieldText"
+                    class="mx-2 mt-6"
+                >
+                    <div class="mt-3 mb-4 mx-auto max-w-[330px]
+                        lg:max-w-[440px]
+                    ">
+                        <div :ref="deleteCollectionForm.confirmationText.inputElement" class="flex my-3 w-full outline-gray-500 bg-neutral-100 rounded-md shadow-[0.1rem_0.1rem_0.5rem_black] border-y-4 box-border">
+                            <FontAwesomeIcon :icon="faFont" class="text-4xl text-[#222a] drop-icon mx-3 my-auto px-1 drop-shadow-[0rem_0rem_0.20rem_#222d]" ></FontAwesomeIcon>
+                            <div class="relative w-full">
+                                <input type="text" aria-label="Add a collection name" id="cname" name="cname" value="" v-model="deleteCollectionForm.confirmationText.text.value" placeholder="Confirmation phrase..."
+                                class="text-black text-base font-semibold text-center w-full py-4 px-2 outline-[#222c] bg-neutral-100 appearance-none cursor-pointer rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed" 
+                                />
+                                <span :ref="deleteCollectionForm.confirmationText.errorMsgElement" class="absolute bottom-0 left-0 text-red-500 font-bold text-xs w-full inline-block text-center" :class="deleteCollectionForm.confirmationText.isTextCorrect.value? 'hidden' : 'inline-block'"> Error: Some error occured </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-sm font-medium mb-6"> NOTE: This action cannot be undone. </p>
+                </form>
+            </div>
             
-            <div class="grid grid-cols-2 grid-rows-1 pt-9">
+            <div class="grid grid-cols-2 grid-rows-1 pt-3 gap-x-4
+                sm:mx-6
+            ">
                 <button type="reset" @click.self="!asyncProcess_get() && modalEmits('modalClose')" class="font-normal text-lg border-2 border-black rounded-md py-4"> Cancel </button>
                 <button type="submit" @click.self="!asyncProcess_get() && validateFieldText()" class="font-bold text-lg border-2 border-black bg-[#222d] text-neutral-100 rounded-md py-4"> Confirm </button>
             </div>
