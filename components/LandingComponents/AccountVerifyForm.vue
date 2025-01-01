@@ -144,7 +144,7 @@
                     <FontAwesomeIcon :icon="faSquareCheck" class="text-4xl text-[#222c] drop-icon mx-3 my-auto px-1"></FontAwesomeIcon>
                     <div class="relative w-full">
                         <input type="number" min="0" max="999999" aria-label="Write your verification code here" id="verify" name="verify" value="" v-model="verifyForm.verificationCode.text.value" placeholder="Verification code"
-                            class="text-black text-base font-semibold text-center w-full py-4 px-2 outline-[#222c] bg-neutral-200 appearance-none cursor-pointer rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed" 
+                            class="text-black text-base font-semibold text-center w-full py-4 px-2 outline-[#222c] bg-neutral-200 appearance-none cursor-text rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed" 
                         />
                         <span :ref="verifyForm.verificationCode.errorMsgElement" class="absolute bottom-0 left-0 text-red-500 font-bold text-xs w-full inline-block text-center" :class="verifyForm.verificationCode.isTextCorrect? 'hidden' : 'inline-block'"> Error: Some error occured </span>
                     </div>
@@ -160,14 +160,14 @@
                 sm:text-center sm:mx-auto
             ">  </span>
 
-            <div class="mt-4 mb-4 py-5 px-10 w-fit max-w-[50vw] min-h-10 bg-[#111a] rounded-md mx-auto flex justify-center
+            <button type="submit" class="mt-4 mb-4 py-5 px-10 w-fit max-w-[50vw] min-h-10 bg-[#111a] rounded-md mx-auto flex justify-center
                 sm:mb-0
                 lg:mb-2
             "> 
-                <button class="main-title-alt text-xl text-center font-bold text-nowrap" type="submit"> 
+                <p class="main-title-alt text-xl text-center font-bold text-nowrap"> 
                     Confirm
-                </button> 
-            </div>
+                </p> 
+            </button>
         </form>
     </section>
 </template>

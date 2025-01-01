@@ -192,7 +192,7 @@
                         <FontAwesomeIcon :icon="faSquareCheck" class="text-4xl text-[#222c] drop-icon mx-3 my-auto px-2"></FontAwesomeIcon>
                         <div class="relative w-full">
                             <input type="number" min="0" max="999999" aria-label="Write your verification code here" id="verify" name="verify" value="" v-model="newPasswordForm.verificationCode.text.value" placeholder="Verification code"
-                                class="text-black text-base font-semibold text-center w-full py-4 px-2 outline-[#222c] bg-neutral-200 appearance-none cursor-pointer rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed 
+                                class="text-black text-base font-semibold text-center w-full py-4 px-2 outline-[#222c] bg-neutral-200 appearance-none cursor-text rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed 
                                 sm:py-3
                                 lg:py-4
                             "/>
@@ -206,7 +206,7 @@
                         <FontAwesomeIcon :icon="faRectangleXmark" class="text-4xl text-[#222c] drop-icon mx-3 my-auto px-1"></FontAwesomeIcon>
                         <div class="relative w-full">
                             <input type="password" aria-label="Set a password" id="password" name="password" value="" v-model="newPasswordForm.password.text.value" placeholder="Password..." 
-                                class="text-black text-base font-semibold text-center w-full py-4 px-2 outline-[#222c] bg-neutral-200 appearance-none cursor-pointer rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed
+                                class="text-black text-base font-semibold text-center w-full py-4 px-2 outline-[#222c] bg-neutral-200 appearance-none cursor-text rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed
                                 sm:py-3
                                 lg:py-4
                             "/>
@@ -223,7 +223,7 @@
                         <FontAwesomeIcon :icon="faRectangleXmark_solid" class="text-4xl text-[#222c] drop-icon mx-3 my-auto px-1"></FontAwesomeIcon>
                         <div class="relative w-full">
                             <input type="password" aria-label="Set a password" id="confirmpassword" name="confirmpassword" value="" v-model="newPasswordForm.confirmpassword.text.value" placeholder="Confirm password..." 
-                                class="text-black text-base font-semibold text-center w-full py-4 px-2 outline-[#222c] bg-neutral-200 appearance-none cursor-pointer rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed
+                                class="text-black text-base font-semibold text-center w-full py-4 px-2 outline-[#222c] bg-neutral-200 appearance-none cursor-text rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed
                                 sm:py-3
                                 lg:py-4
                             "/>
@@ -246,9 +246,9 @@
                     sm:text-center
                 ">  </span>
 
-                <div class="mt-4 mb-4 py-5 px-10 w-fit max-w-[50vw] min-h-10 bg-[#111a] rounded-md mx-auto flex justify-center"> 
-                    <button class="main-title-alt text-xl text-center font-bold text-nowrap" type="submit" > Confirm </button> 
-                </div>
+                <button type="submit" class="mt-4 mb-4 py-5 px-10 w-fit max-w-[50vw] min-h-10 bg-[#111a] rounded-md mx-auto flex justify-center"> 
+                    <p class="main-title-alt text-xl text-center font-bold text-nowrap" > Confirm </p> 
+                </button>
             </div>
         </form>
     </section>

@@ -125,7 +125,7 @@
                         <FontAwesomeIcon :icon="faEnvelope" class="text-4xl text-[#222c] drop-icon mx-3 my-auto px-1"></FontAwesomeIcon>
                         <div class="relative w-full">
                             <input type="email" aria-label="Use an e-mail address" id="email" name="email" value="" v-model="loginForm.email.text.value" placeholder="E-mail..."
-                                class="text-black text-base font-semibold text-center w-full py-4 px-2 outline-[#222c] bg-neutral-200 appearance-none cursor-pointer rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed
+                                class="text-black text-base font-semibold text-center w-full py-4 px-2 outline-[#222c] bg-neutral-200 appearance-none cursor-text rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed
                                 sm:py-3
                                 lg:py-4
                             "/>
@@ -142,7 +142,7 @@
                         <FontAwesomeIcon :icon="faRectangleXmark" class="text-4xl text-[#222c] drop-icon mx-3 my-auto px-1"></FontAwesomeIcon>
                         <div class="relative w-full">
                             <input type="password" aria-label="Set a password" id="password" name="password" value="" v-model="loginForm.password.text.value" placeholder="Password..." 
-                                class="text-black text-base font-semibold text-center w-full py-4 px-2 outline-[#222c] bg-neutral-200 appearance-none cursor-pointer rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed
+                                class="text-black text-base font-semibold text-center w-full py-4 px-2 outline-[#222c] bg-neutral-200 appearance-none cursor-text rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed
                                 sm:py-3
                                 lg:py-4
                             "/>
@@ -162,12 +162,12 @@
                 sm:mt-4 sm:flex sm:flex-col-reverse
             ">
                 <div>
-                    <div class="mt-8 mb-4 py-5 px-10 w-fit max-w-[50vw] min-h-10 bg-[#111a] rounded-md mx-auto flex justify-center
+                    <button type="submit" class="mt-8 mb-4 py-5 px-10 w-fit max-w-[50vw] min-h-10 bg-[#111a] rounded-md mx-auto flex justify-center
                         sm:mt-3
                         lg:mt-3
                     "> 
-                        <button class="main-title-alt text-lg text-center font-bold text-nowrap" type="submit" > Continue </button> 
-                    </div>
+                        <p class="main-title-alt text-lg text-center font-bold text-nowrap" > Continue </p> 
+                    </button>
                 </div>
                 <LandingComponentsFormSwitch />
             </div>

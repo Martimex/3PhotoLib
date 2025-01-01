@@ -186,7 +186,7 @@ import { storeToRefs } from 'pinia';
                             sm:place-self-end
                         ">Output photos: </label>
                         <input ref="outputPhotosInput" type="number" id="output_no" name="search" :placeholder="outputPhotosObj.default.toString()" :value="outputPhotosObj.current.toString()" :min="outputPhotosObj.min" :max="outputPhotosObj.max" @keydown="(event) => isNumberKey(event, sqStore.outputPhotosObj)"
-                            class="text-base font-semibold text-center min-w-24 py-1 px-2 ml-6 outline-gray-500 bg-neutral-200 appearance-none cursor-pointer rounded-lg shadow-[0.1rem_0.1rem_0.5rem_black]
+                            class="text-base font-semibold text-center min-w-24 py-1 px-2 ml-6 outline-gray-500 bg-neutral-200 appearance-none cursor-pointer rounded-lg shadow-[0.1rem_0.1rem_0.5rem_black] hover:cursor-text
                                 sm:place-self-start sm:ml-0
                             "
                             @change="updateNumberInputValue(sqStore.outputPhotosObj)"
@@ -195,7 +195,7 @@ import { storeToRefs } from 'pinia';
                             sm:place-self-end
                         ">Page number: </label>
                         <input ref="pageNumberInput" type="number" id="page_no" name="search" :placeholder="searchPageObj.default.toString()" :value="searchPageObj.current.toString()" :min="searchPageObj.min" :max="searchPageObj.max" @keydown="(event) => isNumberKey(event, sqStore.searchPageObj)"
-                            class="text-base font-semibold text-center min-w-24 py-1 px-2 ml-6 outline-gray-500 bg-neutral-200 appearance-none cursor-pointer rounded-lg shadow-[0.1rem_0.1rem_0.5rem_black]
+                            class="text-base font-semibold text-center min-w-24 py-1 px-2 ml-6 outline-gray-500 bg-neutral-200 appearance-none cursor-pointer rounded-lg shadow-[0.1rem_0.1rem_0.5rem_black] hover:cursor-text
                                 sm:place-self-start sm:ml-0
                             "
                             @change="updateNumberInputValue(sqStore.searchPageObj)"

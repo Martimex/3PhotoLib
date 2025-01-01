@@ -16,7 +16,7 @@ const getRecentRoute = computed(() => (recentlyVisitedRouteArr.length > 1? recen
 <template>
     <nav class="sticky flex justify-around items-center" :class="getNavbarStyleClasses(NavbarPosition.BOTTOM, props.disableBlur)">
         <NuxtLink :to="getRecentRoute" class="w-fit">
-            <FontAwesomeIcon :icon="faArrowLeft" class="text-3xl drop-shadow-[0rem_0rem_0.05rem_#eee]"></FontAwesomeIcon>
+            <FontAwesomeIcon :icon="faArrowLeft" class="text-3xl drop-shadow-[0rem_0rem_0.05rem_#eee] hover:cursor-pointer"></FontAwesomeIcon>
         </NuxtLink>
     </nav>
 </template>

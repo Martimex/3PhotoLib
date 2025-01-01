@@ -81,8 +81,8 @@ onBeforeMount(() => {
             </div>
         </div>
         <h3 class="text-over truncate break-words ml-2 mr-4" :class="handleCollectionTextSizing"> {{ collectionData.name }}</h3>
-        <FontAwesomeIcon v-if="canPhotoBeAdded" :icon="faPlus" @click="!asyncProcess_get() && handlePlusIconClick(collectionData)" :class="testCollectionChosen" class="text-4xl drop-icon mx-3 my-auto px-1 drop-shadow-[0rem_0rem_0.20rem_#222d]"></FontAwesomeIcon>
-        <FontAwesomeIcon v-else-if="isMoveFromFolder" :icon=faLock @click="!asyncProcess_get() && handleLockIconClick()" :class="testCloneOptionChosen" class="text-3xl drop-icon mx-3 my-auto px-1 drop-shadow-[0rem_0rem_0.20rem_#222d]" />
+        <FontAwesomeIcon v-if="canPhotoBeAdded" :icon="faPlus" @click="!asyncProcess_get() && handlePlusIconClick(collectionData)" :class="testCollectionChosen" class="text-4xl drop-icon mx-3 my-auto px-1 drop-shadow-[0rem_0rem_0.20rem_#222d] hover:cursor-pointer"></FontAwesomeIcon>
+        <FontAwesomeIcon v-else-if="isMoveFromFolder" :icon=faLock @click="!asyncProcess_get() && handleLockIconClick()" :class="testCloneOptionChosen" class="text-3xl drop-icon mx-3 my-auto px-1 drop-shadow-[0rem_0rem_0.20rem_#222d] hover:cursor-pointer" />
     </div>
 </template>
 

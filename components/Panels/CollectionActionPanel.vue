@@ -26,10 +26,10 @@ function handleSetEditMode() {
 <template>
     <nav class="flex justify-around items-center" :class="[setNavbarPositionClass, getNavbarStyleClasses(NavbarPosition.BOTTOM, props.disableBlur)]">
         <NuxtLink :to="getRecentRoute" class="w-fit">
-            <FontAwesomeIcon :icon="faArrowLeft" class="text-3xl drop-shadow-[0rem_0rem_0.05rem_#eee]"></FontAwesomeIcon>
+            <FontAwesomeIcon :icon="faArrowLeft" class="text-3xl drop-shadow-[0rem_0rem_0.05rem_#eee] hover:cursor-pointer"></FontAwesomeIcon>
         </NuxtLink>
-        <FontAwesomeIcon :icon="faPenToSquare" class="text-3xl drop-shadow-[0rem_0rem_0.05rem_#eee]" @click="collectionsEmits('openEditCollection')" ></FontAwesomeIcon>
-        <FontAwesomeIcon :icon="faTools" class="text-3xl drop-shadow-[0rem_0rem_0.05rem_#eee]" @click="handleSetEditMode" ></FontAwesomeIcon>
+        <FontAwesomeIcon :icon="faPenToSquare" class="text-3xl drop-shadow-[0rem_0rem_0.05rem_#eee] hover:cursor-pointer" @click="collectionsEmits('openEditCollection')" ></FontAwesomeIcon>
+        <FontAwesomeIcon :icon="faTools" class="text-3xl drop-shadow-[0rem_0rem_0.05rem_#eee] hover:cursor-pointer" @click="handleSetEditMode" ></FontAwesomeIcon>
     </nav>
 </template>
 

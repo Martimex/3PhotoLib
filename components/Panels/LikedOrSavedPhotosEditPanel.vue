@@ -80,9 +80,9 @@ const setNavbarPositionClass = computed(() => getNavbarPositionClass(currentBrea
 
 <template>
     <nav class="flex justify-around items-center" :class="[setNavbarPositionClass, getNavbarStyleClasses(NavbarPosition.BOTTOM, props.disableBlur)]" >
-        <FontAwesomeIcon :icon="faXmark" class="text-3xl text-red-600 font-bold drop-shadow-[0rem_0rem_0.05rem_#222]" @click="handleCloseEditMode"></FontAwesomeIcon>
+        <FontAwesomeIcon :icon="faXmark" class="text-3xl text-red-600 font-bold drop-shadow-[0rem_0rem_0.05rem_#222] hover:cursor-pointer" @click="handleCloseEditMode"></FontAwesomeIcon>
         <p class="text-[#222] text-center px-6 min-w-20 text-2xl font-bold drop-shadow-[0rem_0rem_0.05rem_#eee]"> {{ photosToRemoveArray_get().length }} </p>
-        <FontAwesomeIcon :icon="faCheck" class="text-3xl text-green-600 font-bold drop-shadow-[0rem_0rem_0.05rem_#222]" @click="handlePhotosDeletion"></FontAwesomeIcon>
+        <FontAwesomeIcon :icon="faCheck" class="text-3xl text-green-600 font-bold drop-shadow-[0rem_0rem_0.05rem_#222] hover:cursor-pointer" @click="handlePhotosDeletion"></FontAwesomeIcon>
     </nav>
 </template>
 

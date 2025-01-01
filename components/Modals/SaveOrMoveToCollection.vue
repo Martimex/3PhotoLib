@@ -170,7 +170,7 @@ onUnmounted(() => {
                             />
                         </div>
                         <!-- IF USER DOES NOT REACH MAXIMUM COLLECTIONS YET, SHOW THE ONCE-TO-USE BUTTON -->
-                        <div v-if="shouldAddToNewCollectionTextBeDisplayed" @click="!asyncProcess_get() && $emit('addCollectionModalOpen')" class="flex items-center mt-4 mx-3 py-1 mb-3 border-blue-300 border-b-2 border-bottom-solid w-fit">
+                        <div v-if="shouldAddToNewCollectionTextBeDisplayed" @click="!asyncProcess_get() && $emit('addCollectionModalOpen')" class="flex items-center mt-4 mx-3 py-1 mb-3 border-blue-300 border-b-2 border-bottom-solid w-fit hover:cursor-pointer">
                             <FontAwesomeIcon :icon="faPlus" class="text-3xl mr-4 text-blue-400 drop-icon my-auto px-1 drop-shadow-[0rem_0rem_0.40rem_#fff]"></FontAwesomeIcon>
                             <p class="text-blue-400 text-extrabold text-xl  custom-text-shadow drop-shadow-[0rem_0rem_0.40rem_#fff]"> {{ props.isMoveToMode? `Move to new collection` : `Add to new collection` }} </p>
                         </div>

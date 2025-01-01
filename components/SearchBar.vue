@@ -106,12 +106,12 @@ onMounted(() => { searchbar?.value?.focus() })
 </script>
 
 <template>
-    <FontAwesomeIcon :icon="faGear" @click="toggleAdvancedMenu()" class="mt-1 text-3xl justify-self-start drop-shadow-[0rem_0rem_0.05rem_#eee]"></FontAwesomeIcon>
+    <FontAwesomeIcon :icon="faGear" @click="toggleAdvancedMenu()" class="mt-1 text-3xl justify-self-start drop-shadow-[0rem_0rem_0.05rem_#eee] hover:cursor-pointer"></FontAwesomeIcon>
             <!-- <input v-model="searchText" placeholder="Looking for..." class="p-2 min-w-[50vw]" ref="searchbar" /> -->
             <!-- Another cool  input alternative - check this one out ! -->
             <div class="flex gap-x-6 items-center justify-center">
-                <FontAwesomeIcon v-if="testBreakpoint" :icon="faSquareMinus" class="text-4xl drop-shadow-[0rem_0rem_0.05rem_#eee] place-self-end text-[#333a] mt-1" @click="toggleSearchbarAndCloseAdvancedOptions()"></FontAwesomeIcon>
-                <input v-model="searchText" placeholder="Looking for..." ref="searchbar" class="custom-text-shadow mt-1 min-w-[50vw] text-sm font-semibold text-center py-2 px-2 text-[#222] bg-inherit outline-[#222]  appearance-none cursor-pointer rounded-lg shadow-[0rem_0rem_0.3rem_black]
+                <FontAwesomeIcon v-if="testBreakpoint" :icon="faSquareMinus" class="text-4xl drop-shadow-[0rem_0rem_0.05rem_#eee] place-self-end text-[#333a] mt-1 hover:cursor-pointer" @click="toggleSearchbarAndCloseAdvancedOptions()"></FontAwesomeIcon>
+                <input v-model="searchText" placeholder="Looking for..." ref="searchbar" class="custom-text-shadow mt-1 min-w-[50vw] text-sm font-semibold text-center py-2 px-2 text-[#222] bg-inherit outline-[#222]  appearance-none cursor-text rounded-lg shadow-[0rem_0rem_0.3rem_black]
                     sm:min-w-0 sm:w-[33vw] sm:max-w-[420px]
                 " />
             </div>
@@ -120,7 +120,7 @@ onMounted(() => { searchbar?.value?.focus() })
                 <!-- THE #top-panel-teleport DIV IS A TELEPORT TARGET. DO NOT CHANGE THE CLASSNAME AND DO NOT REMOVE THIS ELEMENT -->
             </div>
 
-    <FontAwesomeIcon :icon="faMagnifyingGlass" @click="{ closeAdvancedMenu(); getImagesByQuery(searchText); }" class="mt-1 text-3xl justify-self-end drop-shadow-[0rem_0rem_0.05rem_#eee]"></FontAwesomeIcon>
+    <FontAwesomeIcon :icon="faMagnifyingGlass" @click="{ closeAdvancedMenu(); getImagesByQuery(searchText); }" class="mt-1 text-3xl justify-self-end drop-shadow-[0rem_0rem_0.05rem_#eee] hover:cursor-pointer"></FontAwesomeIcon>
 </template>
 
 <style scoped>

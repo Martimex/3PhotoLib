@@ -102,7 +102,7 @@
                     <FontAwesomeIcon :icon="faEnvelope" class="text-4xl text-[#222c] drop-icon mx-3 my-auto px-1"></FontAwesomeIcon>
                     <div class="relative w-full">
                         <input type="email" aria-label="Use an e-mail address" id="email" name="email" value="" v-model="resetPasswordForm.email.text.value" placeholder="E-mail..."
-                        class="text-black text-base font-semibold text-center w-full py-4 px-2 outline-[#222c] bg-neutral-200 appearance-none cursor-pointer rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed" 
+                        class="text-black text-base font-semibold text-center w-full py-4 px-2 outline-[#222c] bg-neutral-200 appearance-none cursor-text rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed" 
                         />
                         <span :ref="resetPasswordForm.email.errorMsgElement" class="absolute bottom-0 left-0 text-red-500 font-bold text-xs w-full inline-block text-center" :class="resetPasswordForm.email.isTextCorrect.value? 'hidden' : 'inline-block'"> Error: Some error occured </span>
                     </div>
@@ -117,9 +117,9 @@
 
             <span :ref="resetPasswordForm.resendCodeLink.errorMsgElement" class="main-title-alt text-red-500 font-bold text-sm w-full inline-block my-3 mx-3">  </span> -->
 
-            <div class="mt-8 mb-4 py-5 px-10 w-fit max-w-[50vw] min-h-10 bg-[#111a] rounded-md mx-auto flex justify-center"> 
-                <button class="main-title-alt text-xl text-center font-bold text-nowrap" type="submit" > Confirm </button> 
-            </div>
+            <button type="submit" class="mt-8 mb-4 py-5 px-10 w-fit max-w-[50vw] min-h-10 bg-[#111a] rounded-md mx-auto flex justify-center"> 
+                <p class="main-title-alt text-xl text-center font-bold text-nowrap" > Confirm </p> 
+            </button>
         </form>
     </section>
 </template>

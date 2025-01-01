@@ -120,27 +120,27 @@ const checkTeleportConditions = computed(() => { return testTeleportConditions(c
             </div>
             <div class="grid grid-cols-4 grid-rows-1 w-full">
                 <!-- BUTTONS FUNCTIONALITY TO BE IMPLEMENTED SOON -->
-                <div class="p-3 py-5 flex flex-col justify-between align-top shadow-md shadow-red-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0"
+                <div class="p-3 py-5 flex flex-col justify-between align-top shadow-md shadow-red-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0 hover:cursor-pointer"
                     @click="handlePhotoLikedToggle"
                 >
                     <FontAwesomeIcon :icon="faHeart" class="text-2xl text-[#333]" :class="isPhotoLiked && `text-red-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#f87171]`" />
                     <span class="text-center hidden">Like</span>
                 </div>
-                <div class="px-3 py-5 flex flex-col justify-center align-top shadow-md shadow-green-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0"
+                <div class="px-3 py-5 flex flex-col justify-center align-top shadow-md shadow-green-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0 hover:cursor-pointer"
                     @click="async() => isPhotoDownloaded = await handlePhotoDownload(anchorRef, sqStore.currPhotoProviderName, viewedPhoto)"
                 >
                     <FontAwesomeIcon :icon="faDownload" class="text-2xl text-[#333]" :class="isPhotoDownloaded && `text-green-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#4ade80]`" />
                     <span class="text-center hidden">Download</span>
                 </div>
-                <div class="p-3 flex flex-col justify-center items-center shadow-md shadow-blue-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0">
-                    <a :href="currPhotoProvider?.getAuthorProfileURL(utilizePhotoProvider(viewedPhoto))" target="_blank" class="absolute flex items-center"
+                <div class="relative flex flex-col justify-center items-center shadow-md shadow-blue-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0 hover:cursor-pointer">
+                    <a :href="currPhotoProvider?.getAuthorProfileURL(utilizePhotoProvider(viewedPhoto))" target="_blank" class="flex items-center justify-center w-full h-full"
                         @click="handleVisitAuthorPage"
                     >
                         <FontAwesomeIcon :icon="faLink" class="text-2xl text-[#333]" :class="isAuthorPageVisited && `text-blue-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#60a5fa]`" />
                         <!-- <span class="text-center hidden">Website</span> -->
                     </a>
                 </div>
-                <div class="p-3 flex flex-col justify-center align-top shadow-md shadow-yellow-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0"
+                <div class="p-3 flex flex-col justify-center align-top shadow-md shadow-yellow-500 rounded-[10%] border-solid border-[#333] border-2 border-t-0 hover:cursor-pointer"
                     @click="openSaveToCollectionModal"
                 >
                     <FontAwesomeIcon :icon="faSave" class="text-2xl text-[#333]" :class="isPhotoRecentlyAddedToCollection && `text-yellow-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#facc15]`" />
@@ -150,7 +150,7 @@ const checkTeleportConditions = computed(() => { return testTeleportConditions(c
         </section>
         <div class="mx-auto
             sm:max-w-[660px]
-            lg:max-w-[1320px] lg:grid lg:grid-cols-3
+            lg:max-w-[1320px] lg:grid lg:grid-cols-3 lg:mt-9
         ">
             <section class="mx-6 mt-12 mb-16
                 sm:mb-12 

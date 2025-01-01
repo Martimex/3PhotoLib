@@ -21,12 +21,12 @@ const setNavbarPositionClass = computed(() => getNavbarPositionClass(currentBrea
 <template>
     <nav class="flex justify-around items-center" :class="[setNavbarPositionClass, getNavbarStyleClasses(NavbarPosition.BOTTOM, props.disableBlur)]">
         <NuxtLink :to="getRecentRoute" class="w-fit">
-            <FontAwesomeIcon :icon="faArrowLeft" class="text-3xl drop-shadow-[0rem_0rem_0.05rem_#eee]"></FontAwesomeIcon>
+            <FontAwesomeIcon :icon="faArrowLeft" class="text-3xl drop-shadow-[0rem_0rem_0.05rem_#eee] hover:cursor-pointer"></FontAwesomeIcon>
         </NuxtLink>
         <NuxtLink :to="`https://github.com/Martimex/3PhotoLib#the-purpose-of-an-app`" target="_blank" class="w-fit">
-            <FontAwesomeIcon :icon="faQuestionCircle" class="text-3xl drop-shadow-[0rem_0rem_0.05rem_#eee]"></FontAwesomeIcon>
+            <FontAwesomeIcon :icon="faQuestionCircle" class="text-3xl drop-shadow-[0rem_0rem_0.05rem_#eee] hover:cursor-pointer"></FontAwesomeIcon>
         </NuxtLink>
-        <FontAwesomeIcon :icon="faSignOut" @click="emits('tryToLogOut')" class="text-3xl drop-shadow-[0rem_0rem_0.05rem_#eee]"></FontAwesomeIcon>
+        <FontAwesomeIcon :icon="faSignOut" @click="emits('tryToLogOut')" class="text-3xl drop-shadow-[0rem_0rem_0.05rem_#eee] hover:cursor-pointer"></FontAwesomeIcon>
     </nav>
 </template>
 

@@ -49,12 +49,12 @@
             <p class="text-4xl font-light text-center text-[#444]"> #{{ props.collectionData.releaseId }} </p>
             <div class="grid grid-rows-1 grid-cols-[1fr_1fr] items-center">
                 <NuxtLink :to="{name: 'home-collections-id', params: { id: props.collectionData.releaseId}}" class="w-fit" >
-                    <FontAwesomeIcon :icon="faExternalLinkSquareAlt" class="text-4xl block drop-icon  px-1 drop-shadow-[0.1rem_0.1rem_0.2rem_#222d]" :class="`text-green-200`" 
+                    <FontAwesomeIcon :icon="faExternalLinkSquareAlt" class="text-4xl block drop-icon  px-1 drop-shadow-[0.1rem_0.1rem_0.2rem_#222d] hover:cursor-pointer" :class="`text-green-200`" 
                         @click="emits(`setCollectionAsViewed`)"
                     >
                     </FontAwesomeIcon>
                 </NuxtLink>
-                <FontAwesomeIcon :icon="faMinusCircle" class="text-4xl block drop-icon px-1 drop-shadow-[0.1rem_0.1rem_0.2rem_#222d]" :class="`text-red-200`" 
+                <FontAwesomeIcon :icon="faMinusCircle" class="text-4xl block drop-icon px-1 drop-shadow-[0.1rem_0.1rem_0.2rem_#222d] hover:cursor-pointer" :class="`text-red-200`" 
                         @click="emits('tryToDeleteCollection')"
                     >
                 </FontAwesomeIcon>

@@ -123,9 +123,9 @@ const photoTags = computed(() => providerObj?.retrievePhotoTags(utilizePhotoProv
         <div data-role="panel" class="py-[1rem] px-[1rem] flex w-full items-end justify-between backdrop-blur-md
             border-t-2 border-white shadow-[0rem_-.25rem_.5rem_0rem_#fffa]
         ">
-            <FontAwesomeIcon :icon="faHeart" @click.stop="photoPanelEmit('photoLikedToggle')" class="text-xl mx-[1.5rem] place-self-start" :class="isPhotoLiked && `text-red-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#ef4444]`"></FontAwesomeIcon>
-            <FontAwesomeIcon :icon="faDownload" @click.stop="photoPanelEmit('photoDownload')" class="text-xl mx-[1.5rem] place-self-start" :class="isPhotoDownloaded && `text-green-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#22c55e]`" ></FontAwesomeIcon>
-            <FontAwesomeIcon :icon="faSave" @click.stop="$emit('modalOpen')" class="text-xl mx-[1.5rem] place-self-start" :class="isNowAddedToCollection && `text-yellow-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#eab308]`"></FontAwesomeIcon>
+            <FontAwesomeIcon :icon="faHeart" @click.stop="photoPanelEmit('photoLikedToggle')" class="text-xl mx-[1.5rem] place-self-start hover:cursor-pointer" :class="isPhotoLiked && `text-red-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#ef4444]`"></FontAwesomeIcon>
+            <FontAwesomeIcon :icon="faDownload" @click.stop="photoPanelEmit('photoDownload')" class="text-xl mx-[1.5rem] place-self-start hover:cursor-pointer" :class="isPhotoDownloaded && `text-green-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#22c55e]`" ></FontAwesomeIcon>
+            <FontAwesomeIcon :icon="faSave" @click.stop="$emit('modalOpen')" class="text-xl mx-[1.5rem] place-self-start hover:cursor-pointer" :class="isNowAddedToCollection && `text-yellow-500 drop-shadow-[0.15rem_0.15rem_0.125rem_#eab308]`"></FontAwesomeIcon>
         </div>
     </div>
 

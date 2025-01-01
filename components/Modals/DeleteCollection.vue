@@ -118,7 +118,7 @@ async function handleDeleteCollection() {
                             <FontAwesomeIcon :icon="faFont" class="text-4xl text-[#222a] drop-icon mx-3 my-auto px-1 drop-shadow-[0rem_0rem_0.20rem_#222d]" ></FontAwesomeIcon>
                             <div class="relative w-full">
                                 <input type="text" aria-label="Add a collection name" id="cname" name="cname" value="" v-model="deleteCollectionForm.confirmationText.text.value" placeholder="Confirmation phrase..."
-                                class="text-black text-base font-semibold text-center w-full py-4 px-2 outline-[#222c] bg-neutral-100 appearance-none cursor-pointer rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed" 
+                                class="text-black text-base font-semibold text-center w-full py-4 px-2 outline-[#222c] bg-neutral-100 appearance-none cursor-pointer rounded-lg rounded-l-none border-l-2  border-[#222c] border-dashed hover:cursor-text" 
                                 />
                                 <span :ref="deleteCollectionForm.confirmationText.errorMsgElement" class="absolute bottom-0 left-0 text-red-500 font-bold text-xs w-full inline-block text-center" :class="deleteCollectionForm.confirmationText.isTextCorrect.value? 'hidden' : 'inline-block'"> Error: Some error occured </span>
                             </div>
